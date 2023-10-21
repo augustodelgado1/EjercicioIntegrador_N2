@@ -2,18 +2,31 @@
 {
     public class Cliente:Usuario
     {
-        string direccion;
-        List<Pedido> pedidos;
-        MetodoDePago metodo;
-        public Cliente(string nombre, string email, string clave, string path, string direccion) : base(nombre, email, clave, path, Roles.Cliente)
+        string telefono;
+        List<Compra> compras;
+       
+        public Cliente(string nombre, string email, string clave, string telefono, string path = null) : base(nombre, email, clave ,Roles.Cliente, path)
         {
-            this.pedidos = new List<Pedido>();
-            this.direccion = direccion;
+            this.Telefono = telefono;
+            this.compras = new List<Compra>();
         }
 
-        public enum MetodoDePago
-        {
-            Efectivo,TargetaDebito,TarjetaCredito
+        public string Telefono { get => telefono; 
+            
+            set {
+                if (string.IsNullOrWhiteSpace(value) == false
+                 && value.EsNumerica() == true
+                 && value.Length <= 11)
+                {
+                    telefono = value;
+                }  
+            } 
+
+            
+        
         }
     }
+
+   
+    
 }

@@ -9,22 +9,58 @@ namespace Entidades
     public abstract class Usuario
     {
         int id;
-        string nombre;
+        string user;
         string email;
         string clave;
         string path;
         Roles rol;
+ 
+
+        public string Email
+        {
+            get { return this.email; } 
+            
+            
+            set
+            {
+                if (ValidarEmail(value))
+                {
+                    this.email = value;
+                }
+
+            }
+        }
+
+        public string Clave {
+
+            set
+            {
+                if (ValidarContracenia(value))
+                {
+                    this.clave = value;
+                }
+            }
+        }
+        public string User { get => user;
+            set
+            {
+                if (ValidarUser(value))
+                {
+                    this.user = value;
+                }
+            }
+        }
 
         private Usuario()
         {
             this.id = this.GetHashCode();
         }
 
-        public Usuario(string nombre, string email, string clave, string path, Roles rol):this()
+        public Usuario(string user, string email, string clave, Roles rol,string path = null) :this()
         {
-            this.nombre = nombre;
-            this.email = email;
-            this.clave = clave;
+            this.User = user;
+            this.Email = email;
+            this.Clave = clave;
             this.path = path;
             this.rol = rol;
         }
@@ -36,16 +72,50 @@ namespace Entidades
                    this.rol == usuario.rol;
         }
 
-        public static Usuario EncontarUsuario(List<Usuario> listaDeUsuario,string email,string clave)
+        public static bool ValidarContracenia(string contracenia)
         {
-            Usuario usuario = null;
+            return string.IsNullOrWhiteSpace(contracenia) == false && contracenia.Length >= 8
+             && contracenia.Length <= 30;
+        }
 
-            if(string.IsNullOrWhiteSpace(email) == false && string.IsNullOrWhiteSpace(clave) == false)
+        public static bool ValidarUser(string user)
+        {
+            bool estado = false;
+            if(string.IsNullOrWhiteSpace(user) == false)
             {
-                usuario = listaDeUsuario.Find(unUsuario => unUsuario is not null && unUsuario.email == email && unUsuario.clave == clave);
+                user = user.Trim();
+                user = user.ToLower();
+                estado = user.Length >= 3 && user.Length <= 25
+                 && user.EsAlphaNumerica() && user.Count(char.IsLetter) >= 3;
+            }
+           
+            return estado;
+        }
+
+        private bool ValidarEmail(string email)
+        {
+            List<Char> listaDeCaracteres = new List<Char>()
+            {
+                '.','_','-','@','a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+                'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','0',
+                '1', '2', '3', '4', '5', '6', '7', '8', '9'
+            };
+            
+            bool estado = false;
+            if (string.IsNullOrWhiteSpace(user) == false)
+            {
+                email = email.ToLower();
+                email = email.Trim();
+                estado = user.Length >= 3 && user.Length <= 25
+                 && user.VerificarCaracteres(listaDeCaracteres) == true;
             }
 
-            return usuario;
+            return estado;
+        }
+        public static Usuario EncontarUsuario(List<Usuario> listaDeUsuario,string email,string clave)
+        {
+            return listaDeUsuario.Find(unUsuario => unUsuario is not null 
+            && unUsuario.email == email && unUsuario.clave == clave); ;
         }
         public override int GetHashCode()
         {
@@ -55,7 +125,7 @@ namespace Entidades
         public enum Roles
         {
             Cliente,
-            Personal,
+            Vendedor,
             Administrador
         }
 

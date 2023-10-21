@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class Personal:Usuario
+    public class Proveedor:Usuario
     {
-        public Personal(string nombre, string email, string clave, string path = null) : base(nombre, email, clave, path, Roles.Personal)
+        List<Producto> productos;
+        public Proveedor(string nombre, string email, string clave, string path = null) : base(nombre, email, clave, Roles.Vendedor, path)
         {
-
+            this.productos = new List<Producto>();
         }
     }
 }

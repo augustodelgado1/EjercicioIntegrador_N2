@@ -8,9 +8,11 @@ namespace Entidades
 {
     public static class Negocio
     {
+        static List<Cliente> listaDeClientes;
+        static List<Producto> listaDeProductos;
         static Negocio()
         {
-
+            listaDeProductos = new List<Producto>() { };
         }
     }
 }

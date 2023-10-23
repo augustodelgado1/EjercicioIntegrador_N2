@@ -9,9 +9,11 @@ namespace Entidades
     public class Proveedor:Usuario
     {
         List<Producto> productos;
+        List<Compra> compras;
         public Proveedor(string nombre, string email, string clave, string path = null) : base(nombre, email, clave, Roles.Vendedor, path)
         {
             this.productos = new List<Producto>();
+            this.compras = new List<Compra>();
         }
     }
 }

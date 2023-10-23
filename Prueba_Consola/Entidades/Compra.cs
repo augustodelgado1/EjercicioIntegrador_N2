@@ -2,20 +2,18 @@
 
 namespace Entidades
 {
-    internal class Compra
+    public class Compra
     {
         int id;
         Cliente cliente;
         DateTime fechaDeCompra;
         Dictionary<Producto,int> productos;
-        EstadoDelCompra estado;
         MetodoDePago metodo;
 
         private Compra()
         {
             this.id = this.GetHashCode();
             this.productos = new Dictionary<Producto, int>();
-            this.estado = EstadoDelCompra.EnProceso;
         }
 
         public Compra(Cliente cliente, DateTime fechaDeCompra, MetodoDePago metodo = MetodoDePago.Efectivo) : this()
@@ -23,8 +21,12 @@ namespace Entidades
             this.cliente = cliente;
             this.fechaDeCompra = fechaDeCompra;
             this.metodo = metodo;
+        }  
+        
+        public Compra(Cliente cliente, DateTime fechaDeCompra, Dictionary<Producto, int> productos, MetodoDePago metodo = MetodoDePago.Efectivo) : this(cliente, fechaDeCompra, metodo)
+        {
+            this.productos = productos;
         }
-
         public bool AniadirUnProducto(Producto unProducto)
         {
             bool result = false;
@@ -47,7 +49,6 @@ namespace Entidades
 
             return result;
         }
-
         public static bool operator +(Compra unaCompra, Producto unProducto)
         {
             return unaCompra.AniadirUnProducto(unProducto);
@@ -113,16 +114,7 @@ namespace Entidades
         public Cliente Cliente { get => cliente;  }
         public DateTime FechaDeCompra { get => fechaDeCompra;  }
         public float Cotizacion { get => this.CalcularCosto(); }
-        private EstadoDelCompra Estado { get => estado; }
         public string Produtos { get => this.ObtenerProductos(); }
-        
-        enum EstadoDelCompra
-        {
-            EnProceso,
-            Terminado,
-            Cancelado
-        }
-
         public enum MetodoDePago
         {
             Efectivo, TargetaDebito, TarjetaCredito

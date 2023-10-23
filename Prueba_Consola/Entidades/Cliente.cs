@@ -11,19 +11,49 @@
             this.compras = new List<Compra>();
         }
 
+
+        public static bool ValidarTelefono(string telefono)
+        {
+            return string.IsNullOrWhiteSpace(telefono) == false
+                 && telefono.EsNumerica() == true
+                 && telefono.Length  >= 8 && telefono.Length <= 12;
+        }
+        public static bool operator +(Cliente unCliente, Compra unaCompra)
+        {
+            bool result = false;
+
+            if(unCliente  is not null && unaCompra is not null 
+              && unCliente.compras.Contains(unaCompra) == false)
+            {
+                unCliente.compras.Add(unaCompra);
+                result = true;
+            }
+
+
+            return result;
+        }
+        
+        public static bool operator -(Cliente unCliente, Compra unaCompra)
+        {
+            bool result = false;
+
+            if(unCliente.compras.Contains(unaCompra) == true)
+            {
+                unCliente.compras.Remove(unaCompra);
+                result = true;
+            }
+
+
+            return result;
+        }
         public string Telefono { get => telefono; 
             
             set {
-                if (string.IsNullOrWhiteSpace(value) == false
-                 && value.EsNumerica() == true
-                 && value.Length <= 11)
+                if (ValidarTelefono(value))
                 {
                     telefono = value;
                 }  
             } 
-
-            
-        
         }
     }
 

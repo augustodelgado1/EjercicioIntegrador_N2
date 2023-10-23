@@ -14,43 +14,6 @@ namespace Entidades
         string clave;
         string path;
         Roles rol;
- 
-
-        public string Email
-        {
-            get { return this.email; } 
-            
-            
-            set
-            {
-                if (ValidarEmail(value))
-                {
-                    this.email = value;
-                }
-
-            }
-        }
-
-        public string Clave {
-
-            set
-            {
-                if (ValidarContracenia(value))
-                {
-                    this.clave = value;
-                }
-            }
-        }
-        public string User { get => user;
-            set
-            {
-                if (ValidarUser(value))
-                {
-                    this.user = value;
-                }
-            }
-        }
-
         private Usuario()
         {
             this.id = this.GetHashCode();
@@ -64,18 +27,34 @@ namespace Entidades
             this.path = path;
             this.rol = rol;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             return obj is Usuario usuario &&
                    this.email == usuario.email &&
-                   this.clave == usuario.clave && 
-                   this.rol == usuario.rol;
+                   this.clave == usuario.clave;
         }
 
         public static bool ValidarContracenia(string contracenia)
         {
             return string.IsNullOrWhiteSpace(contracenia) == false && contracenia.Length >= 8
              && contracenia.Length <= 30;
+        }
+
+        public static List<T> ObtenerLista<T>()
+            where T : Usuario
+        {
+            List<T> listaDeUsuarios = new List<T>();
+
+            foreach (Usuario UnUsuario in listaDeUsuarios)
+            {
+                if (UnUsuario is not null &&
+               UnUsuario.GetType() == typeof(T))
+                {
+                    listaDeUsuarios.Add(((T)UnUsuario));
+                }
+            }
+
+            return listaDeUsuarios;
         }
 
         public static bool ValidarUser(string user)
@@ -121,6 +100,46 @@ namespace Entidades
         {
             return base.GetHashCode();
         }
+
+        public string Email
+        {
+            get { return this.email; }
+
+
+            set
+            {
+                if (ValidarEmail(value))
+                {
+                    this.email = value;
+                }
+
+            }
+        }
+
+        public string Clave
+        {
+
+            set
+            {
+                if (ValidarContracenia(value))
+                {
+                    this.clave = value;
+                }
+            }
+        }
+        public string User
+        {
+            get => user;
+            set
+            {
+                if (ValidarUser(value))
+                {
+                    this.user = value;
+                }
+            }
+        }
+
+        public string Path { get => path; set => path = value; }
 
         public enum Roles
         {

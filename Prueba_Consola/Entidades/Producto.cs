@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using System.Text.Json;
+using System.Xml.Serialization;
 
 namespace Entidades
 {
@@ -10,22 +12,131 @@ namespace Entidades
         CategoriaDelProduto categoria;
         int stock;
         string path;
-        EstadoDelProducto estado;
 
         public Producto(string nombre, float cotizacion, 
             CategoriaDelProduto categoria,int stock, string path)
         {
             this.id = this.GetHashCode();
             this.Nombre = nombre;
-            this.cotizacion = cotizacion;
+            this.Costo = cotizacion;
             this.categoria = categoria;
-            this.stock = stock;
+            this.Stock = stock;
             this.path = path;
         }
 
-       
+        private bool ValidarNombre(string nombre)
+        {
+            return string.IsNullOrWhiteSpace(nombre) == false
+                 && nombre.EsAlphaNumerica() == true;
+        }
+        
+        /*
 
-        public override bool Equals(object? obj)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="listadoDeProducto"></param>
+        /// <returns></returns>
+        /// <exception cref="SerializarException"></exception>
+        public bool LeerJson(string path, List<Producto> listadoDeProducto)
+        {
+            bool estado;
+            string partidaJson;
+            estado = false;
+
+            try
+            {
+                if (listadoDeProducto.Count > 0 && path is not null)
+                {
+                    using (StreamReader sw = new StreamReader(path))
+                    {
+                        partidaJson = sw.ReadLine();
+                        partidaJson = JsonSerializer.Deserialize(partidaJson);
+                        JsonCo
+                        estado = true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new SerializarException("Se Produjo un prolema al intentar Serializar en Json la lista", e);
+            }
+
+
+
+            return estado;
+        }*/
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="listadoDeProducto"></param>
+        /// <returns></returns>
+        /// <exception cref="SerializarException"></exception>
+        public bool GuardarJson(string path, List<Producto> listadoDeProducto)
+        {
+            bool estado;
+            string partidaJson;
+            estado = false;
+
+            try
+            {
+                if (listadoDeProducto.Count > 0 && path is not null)
+                {
+                    using (StreamWriter sw = new StreamWriter(path))
+                    {
+                        partidaJson = JsonSerializer.Serialize(listadoDeProducto);
+                        sw.Write(partidaJson);
+                        estado = true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new SerializarException("Se Produjo un prolema al intentar Serializar en Json la lista", e);
+            }
+
+
+
+            return estado;
+        }
+
+        /// <summary>
+        /// G
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="listadoDeProducto"></param>
+        /// <returns></returns>
+        /// <exception cref="SerializarException"></exception>
+        public bool GuardarArchivoXml(string path, List<Producto> listadoDeProducto)
+        {
+            bool estado;
+            estado = false;
+
+            try
+            {
+                if (listadoDeProducto.Count > 0 && path is not null)
+                {
+                    using (StreamWriter sw = new StreamWriter(path))
+                    {
+                        XmlSerializer ser = new XmlSerializer(typeof(List<Producto>));
+                        ser.Serialize(sw, listadoDeProducto);
+                        estado = true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new SerializarException("Se Produjo un prolema al intentar Serializar en Xml la lista", e);
+            }
+
+            return estado;
+        }
+
+        public override bool Equals(object obj)
         {
             return obj is Producto producto &&
                    id == producto.id;
@@ -73,8 +184,7 @@ namespace Entidades
             set
             {
                 this.nombre = "nombre invalido";
-                if (string.IsNullOrWhiteSpace(value) == false
-                 && value.EsAlphaNumerica() == true)
+                if (ValidarNombre(value))
                 {
                     this.nombre = value;
                 }

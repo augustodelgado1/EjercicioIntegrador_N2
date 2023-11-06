@@ -4,13 +4,21 @@ namespace Entidades
 {
     public class Vehiculo
     {
+        int id;
         string patente;
         TipoDeVehiculo tipo;
         MarcaDelVehiculo marca;
         string modelo;
         string path;
         Servicio servicio;
-        
+
+        internal Vehiculo(int id, string patente, MarcaDelVehiculo marca, TipoDeVehiculo tipo, string modelo,Servicio unServicio, string path = null) 
+            :this(patente, marca, tipo,modelo,path)
+        { 
+            this.id = id;
+            this.Servicio = unServicio;
+        }
+
         public Vehiculo(string patente, MarcaDelVehiculo marca,TipoDeVehiculo tipo, string modelo, string path = null)
         {
             this.Patente = patente;
@@ -40,6 +48,19 @@ namespace Entidades
                    patente == vehiculo.patente;
         }
 
+        internal static Vehiculo BuscarPorId(List<Vehiculo> listaDeVehiculos, int id)
+        {
+            Vehiculo result = null;
+            
+            if (listaDeVehiculos is not null )
+            {
+                result = listaDeVehiculos.Find(unVehiculo => unVehiculo  is not null && unVehiculo.id == id);
+            }
+
+            return result;
+        }
+
+        internal int Id { get => id; }
         public string Patente
         {
             get => patente;

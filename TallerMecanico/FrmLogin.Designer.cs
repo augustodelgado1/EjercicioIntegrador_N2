@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ComboBox cmBoxPrueba;
+           
             lbl_fallas = new Label();
             btnAceptar = new Button();
             btnRegistrarse = new Button();
@@ -37,6 +37,17 @@
             lbl_Titulo = new Label();
             cmBoxPrueba = new ComboBox();
             SuspendLayout();
+            // 
+            // cmBoxPrueba
+            // 
+            cmBoxPrueba.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmBoxPrueba.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            cmBoxPrueba.FormattingEnabled = true;
+            cmBoxPrueba.Location = new Point(116, 166);
+            cmBoxPrueba.Name = "cmBoxPrueba";
+            cmBoxPrueba.Size = new Size(194, 25);
+            cmBoxPrueba.TabIndex = 13;
+            cmBoxPrueba.SelectedIndexChanged += cmBoxPrueba_SelectedIndexChanged;
             // 
             // lbl_fallas
             // 
@@ -77,6 +88,7 @@
             txtUser.PlaceholderText = "Usuario";
             txtUser.Size = new Size(376, 32);
             txtUser.TabIndex = 9;
+            txtUser.TextChanged += txtUser_TextChanged_1;
             // 
             // txtClave
             // 
@@ -87,6 +99,7 @@
             txtClave.PlaceholderText = "Clave";
             txtClave.Size = new Size(376, 32);
             txtClave.TabIndex = 10;
+            txtClave.TextChanged += txtClave_TextChanged;
             // 
             // lbl_Titulo
             // 
@@ -97,17 +110,6 @@
             lbl_Titulo.Size = new Size(155, 32);
             lbl_Titulo.TabIndex = 11;
             lbl_Titulo.Text = "Iniciar Secion";
-            // 
-            // cmBoxPrueba
-            // 
-            cmBoxPrueba.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmBoxPrueba.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            cmBoxPrueba.FormattingEnabled = true;
-            cmBoxPrueba.Location = new Point(116, 166);
-            cmBoxPrueba.Name = "cmBoxPrueba";
-            cmBoxPrueba.Size = new Size(194, 25);
-            cmBoxPrueba.TabIndex = 13;
-            cmBoxPrueba.SelectedIndexChanged += cmBoxPrueba_SelectedIndexChanged;
             // 
             // FrmLogin
             // 
@@ -136,5 +138,6 @@
         private TextBox txtUser;
         private TextBox txtClave;
         private Label lbl_Titulo;
+        private ComboBox cmBoxPrueba;
     }
 }

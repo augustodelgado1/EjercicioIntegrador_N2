@@ -10,7 +10,6 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace Interfaz
 {
@@ -20,6 +19,7 @@ namespace Interfaz
         private bool retornoDeUser;
         private bool retornoDeClave;
         private bool retornoDeEmail;
+        public event Action<Usuario> SeRegistroUnUsuario;
 
         public FrmCrearUsuario()
         {
@@ -29,16 +29,9 @@ namespace Interfaz
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-
-
-
-        }
-        private void MostrarLabelError(System.Windows.Forms.Label unLabel, string msgError)
-        {
-            if (string.IsNullOrEmpty(msgError) == false)
+            if(retornoDeUser == true && retornoDeClave == true && retornoDeEmail == true)
             {
-                unLabel.Visible = true;
-                unLabel.Text = msgError;
+                /*OnSeRegistroUnUsuario();*/
             }
         }
         private string ManejadorDeFallas()
@@ -51,6 +44,15 @@ namespace Interfaz
             return stringBuilder.ToString();
         }
 
+        private void OnSeRegistroUnUsuario(Usuario unUsuario)
+        {
+            if (unUsuario is not null
+             && this.SeRegistroUnUsuario is not null)
+            {
+                this.SeRegistroUnUsuario(unUsuario);
+            }
+        }
+
         private void FrmCrearUsuario_Load(object sender, EventArgs e)
         {
 
@@ -59,7 +61,7 @@ namespace Interfaz
 
         private void txtUser_TextChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void txtClave_TextChanged(object sender, EventArgs e)

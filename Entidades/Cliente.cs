@@ -11,10 +11,27 @@ namespace Entidades
         List<Servicio> servicios;
         public event Action<Cliente,Servicio> SeAgregoUnServicio;
         public event Action<Cliente, Servicio> SeCanceloUnServicio;
-        public Cliente(string nombre, string email, string clave, string dni, string path = null) : base(nombre, email, clave ,Roles.Cliente, path)
+
+        internal Cliente(int id,string nombre, string email, string clave, string dni, string path = null)
+            : this(nombre, email, clave,path)
+        {
+            base.id = id;
+        }
+        public Cliente(string nombre, string email, string clave, string dni, string path = null) :base(nombre, email, clave, Roles.Cliente, path)
         {
             this.Dni = dni;
             this.servicios = new List<Servicio>();
+        }
+
+        public static Cliente BuscarPorId(List<Cliente> listaDeCliente, int id)
+        {
+            Cliente result = null;
+            if (listaDeCliente is not null)
+            {
+                result = listaDeCliente.Find(unCliente => unCliente is not null && unCliente.id == id);
+            }
+
+            return result;
         }
 
         public override string ToString()
@@ -30,6 +47,11 @@ namespace Entidades
         {
             return base.Equals(obj) && obj is Cliente unCliente 
                  && unCliente.dni == this.dni;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public static bool ValidarDni(string dni)
@@ -59,11 +81,10 @@ namespace Entidades
             bool result = false;
 
             if (unCliente is not null && unServicio is not null
-              && unCliente.servicios.Contains(unServicio) == false
-              && unServicio + unCliente)
+              && unCliente.servicios.Contains(unServicio) == false)
             {
-                unCliente.OnSeAgregoUnServicio(unServicio);
                 unCliente.servicios.Add(unServicio);
+                unCliente.OnSeAgregoUnServicio(unServicio);
                 result = true;
             }
 
@@ -127,13 +148,11 @@ namespace Entidades
                 }  
             } 
         }
-        public List<Servicio> Servicios { get => this.servicios; }
+        internal List<Servicio> Servicios { get => this.servicios; }
         public List<Servicio> ServiciosEnProcesos { get =>  Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.EnProceso); }
         public List<Servicio> ServiciosTerminados { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Terminado); }
         public List<Servicio> ServiciosCancelado { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Cancelado); }
-
-
-
+       
     }
 
    

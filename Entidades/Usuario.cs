@@ -8,7 +8,7 @@ namespace Entidades
 {
     public abstract class Usuario
     {
-        int id;
+        protected int id;
         string user;
         string email;
         string clave;
@@ -18,7 +18,7 @@ namespace Entidades
         {
             this.id = this.GetHashCode();
         }
-        public Usuario(string user, string email, string clave, Roles rol,string path = null) :this()
+        internal Usuario(string user, string email, string clave, Roles rol,string path = null):this()
         {
             this.User = user;
             this.Email = email;
@@ -117,6 +117,12 @@ namespace Entidades
             return base.GetHashCode();
         }
 
+        public static Usuario BuscarUnUsuarioPorUser(List<Usuario> listaDeUsuarios, string user)
+        {
+            return listaDeUsuarios.Find(unUsuario => unUsuario is not null && unUsuario.user == user);
+        }
+
+        internal int Id { get => id; }
         public string Email
         {
             get { return this.email; }

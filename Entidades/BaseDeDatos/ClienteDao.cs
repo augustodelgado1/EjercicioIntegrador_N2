@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BaseDeDatos.BaseDeDatos_1
+namespace Entidades.BaseDeDatos
 {
     public class ClienteDao : ConeccionABaseDeDatos<Cliente>
     {
+       
         public override bool Agregar(Cliente unElemento)
         {
             bool estado;
@@ -18,14 +19,14 @@ namespace BaseDeDatos.BaseDeDatos_1
             try
             {
                 comando.Parameters.Clear();
-                comando.Parameters.AddWithValue("@Email", unElemento.Email);
+                comando.Parameters.AddWithValue("@email", unElemento.Email);
                 comando.Parameters.AddWithValue("@User", unElemento.User);
-                comando.Parameters.AddWithValue("@Clave", unElemento.Clave);
-                comando.Parameters.AddWithValue("@Dni", unElemento.Dni);
+                comando.Parameters.AddWithValue("@clave", unElemento.Clave);
+                comando.Parameters.AddWithValue("@dni", unElemento.Dni);
 
                 coneccionSql.Open();
-                comando.CommandText = "INSERT INTO Cliente(User,email,clave,dni) " +
-                    "Values(@ColorDeLaServicio,@CaracteristicaDeLaServicio,@Valor,@Path)";
+                comando.CommandText = "INSERT INTO Cliente(user,email,clave,dni) " +
+                    "Values(@user,@email,@clave,@dni)";
 
                 if (comando.ExecuteNonQuery() == 1)
                 {
@@ -82,7 +83,11 @@ namespace BaseDeDatos.BaseDeDatos_1
 
         public override Cliente ObtenerUnElemento(SqlDataReader dataReader)
         {
-            return new Cliente(Convert.ToString(dataReader["user"]), Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]), Convert.ToString(dataReader["dni"]));
+            return new Cliente(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["user"]),
+                Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]), 
+                Convert.ToString(dataReader["dni"]),null);
         }
+
+       
     }
 }

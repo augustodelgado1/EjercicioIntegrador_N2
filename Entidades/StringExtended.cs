@@ -35,11 +35,15 @@ namespace Entidades
             return VerificarString(texto, char.IsLetterOrDigit);
         } 
         
+        public static bool isLetter(this string texto)
+        {
+            return VerificarString(texto, char.IsLetter);
+        } 
+        
         public static bool EsNumerica(this string texto)
         {
             return VerificarString(texto, char.IsDigit);
-        }
-        
+        } 
         public static bool VerificarCaracteres(this string cadena, List<Char> listaDeCaracteres)
         {
             return cadena.VerificarString(listaDeCaracteres.Contains); 

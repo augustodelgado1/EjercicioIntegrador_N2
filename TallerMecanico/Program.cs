@@ -1,3 +1,5 @@
+using Interfaz;
+using Entidades;
 namespace TallerMecanico
 {
     internal static class Program
@@ -8,10 +10,12 @@ namespace TallerMecanico
         [STAThread]
         static void Main()
         {
+            FrmLogin frmLogin = new FrmLogin();
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new FrmMenuPrincipal());
+            frmLogin.loginUser += Negocio.SetUser;
+            Application.Run(frmLogin);
         }
     }
 }

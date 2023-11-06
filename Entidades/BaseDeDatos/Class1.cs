@@ -1,5 +1,4 @@
-﻿
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Runtime.Serialization;
@@ -7,7 +6,7 @@ using Entidades.Interfaces;
 using Entidades;
 using System.Collections.Generic;
 
-namespace BaseDeDatos.BaseDeDatos_1
+namespace Entidades.BaseDeDatos
 {
     public abstract class ConeccionABaseDeDatos<T> : IConeccionABaseDeDatos<T>
          where T : class

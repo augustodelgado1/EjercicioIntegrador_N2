@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Channels;
-using BaseDeDatos;
 using Entidades;
+using Entidades.BaseDeDatos;
 
 namespace TestConsole
 {
@@ -274,7 +274,7 @@ namespace TestConsole
 
                                             try
                                             {
-                                                new ClienteDao().Agregar(new Cliente("Pablo",""));
+                                                
                                             }
                                             catch (Exception e)
                                             {

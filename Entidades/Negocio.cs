@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entidades.BaseDeDatos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,18 +10,26 @@ namespace Entidades
     public static class Negocio
     {
         public static List<Usuario> listaDeUsuarios;
+        public static List<Cliente> listaDeCliente;
         public static List<Vehiculo> listaDeVehiculos;
         public static List<Diagnostico> listaDiagnostico;
         public static List<Servicio> listaDeServicio;
+        private static Usuario unUsuario;
         static Negocio()
         {
-            listaDiagnostico = new List<Diagnostico>()
+            listaDeUsuarios = new List<Usuario>();
+            try
             {
-                new Diagnostico("CambioDeAceite","cambio de aceite",950),
-                new Diagnostico("ReparacionDeMotor","cambio de aceite",1050),
-                new Diagnostico("Suspension","cambio de aceite",850),
-                new Diagnostico("CambioDeRuedas","cambio de aceite",350),
-            };
+                listaDeUsuarios.AddRange(new ClienteDao().Leer());
+                listaDeUsuarios.AddRange(new MecanicoDao().Leer());
+                listaDeVehiculos = new VehiculoDao().Leer();
+                listaDiagnostico = new DignosticoDao().Leer();
+                listaDeServicio = new ServicioDao().Leer();
+            }
+            catch (ConeccionBaseDeDatosException)
+            {
+                throw;
+            }
 
             listaDeUsuarios = new List<Usuario>()
             {
@@ -48,7 +57,6 @@ namespace Entidades
 
 
         }
-
         public static List<Cliente> ListaDeClientes { get => Usuario.ObtenerLista<Cliente>(listaDeUsuarios); }
         public static Cliente unClienteRandom {
 
@@ -69,5 +77,13 @@ namespace Entidades
         }
         public static List<Mecanico> ListaDeMecanicos { get => Usuario.ObtenerLista<Mecanico>(listaDeUsuarios); }
         public static List<Servicio> ListaDeServicio { get => listaDeServicio; set => listaDeServicio = value; }
+
+        public static void SetUser(Usuario obj)
+        {
+            if(obj is not null)
+            {
+                unUsuario = obj;
+            }
+        }
     }
 }

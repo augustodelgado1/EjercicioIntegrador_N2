@@ -20,8 +20,9 @@ namespace Entidades.BaseDeDatos
             {
                 comando.Parameters.Clear();
                 comando.Parameters.AddWithValue("@email", unElemento.Email);
-                comando.Parameters.AddWithValue("@User", unElemento.User);
                 comando.Parameters.AddWithValue("@clave", unElemento.Clave);
+                comando.Parameters.AddWithValue("@Nombre", unElemento.Nombre);
+                comando.Parameters.AddWithValue("@FechaDeNacimiento", unElemento.FechaDeNacimiento);
                 comando.Parameters.AddWithValue("@dni", unElemento.Dni);
 
                 coneccionSql.Open();
@@ -83,9 +84,12 @@ namespace Entidades.BaseDeDatos
 
         public override Cliente ObtenerUnElemento(SqlDataReader dataReader)
         {
-            return new Cliente(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["user"]),
-                Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]), 
-                Convert.ToString(dataReader["dni"]),null);
+
+
+            throw new ConeccionBaseDeDatosException("Ocurrio un problema al intentar obtener los archivos de la base de datos");
+            /* return new Cliente(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["user"]),
+                 Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]), 
+                 Convert.ToString(dataReader["dni"]),null);*/
         }
 
        

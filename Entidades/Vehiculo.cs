@@ -28,14 +28,14 @@ namespace Entidades
             this.path = path;
         }
 
-        public static bool ValidarPatente(string patente)
+        private static bool ValidarPatente(string patente)
         {
             bool result;
             result = false;
             if (string.IsNullOrWhiteSpace(patente) == false)
             {
                 patente = patente.ToUpper();
-                patente = patente.Replace(" ","");
+                patente = patente.Replace(" ", "");
                 result = patente.EsAlphaNumerica()
                     && patente.Length >= 6 && patente.Length <= 7;
             }
@@ -67,6 +67,7 @@ namespace Entidades
 
             set
             {
+                this.patente = null;
                 if (ValidarPatente(value) == true)
                 {
                     patente = value;

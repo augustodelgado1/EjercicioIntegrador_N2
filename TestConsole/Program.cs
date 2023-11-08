@@ -120,24 +120,14 @@ namespace TestConsole
                                                 index = int.Parse(Console.ReadLine());
                                                 
 
-                                            if((ser = ((Cliente)unUsuario).Servicios.ElementAt(index)) is not null 
-                                             && ((Cliente)unUsuario) - ser)
-                                            {
-                                                Console.WriteLine("Se Cancelo con exito");
-                                            }
+                                            
 
                                                 break;
 
 
                                             case 4:
 
-                                            foreach (Servicio unServicio in ((Cliente)unUsuario).Servicios)
-                                            {
-                                                if (unServicio is not null)
-                                                {
-                                                    Console.WriteLine(unServicio.ToString());
-                                                }
-                                            }
+                                            
 
                                             break;
 

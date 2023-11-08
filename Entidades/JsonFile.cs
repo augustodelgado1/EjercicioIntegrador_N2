@@ -43,7 +43,7 @@ namespace Archi01
                 }
                 catch (Exception e)
                 {
-                    throw new JsonFileException("Ocurrio en error al intentar Leer el archivo",e);
+                    throw new JsonFileException($"Ocurrio en error al intentar Leer el archivo de {typeof(T).Name}", e);
                 }
                 
             }
@@ -67,7 +67,7 @@ namespace Archi01
                 }
                 catch (Exception e)
                 {
-                    throw new JsonFileException("Ocurrio en error al intentar Serializar el archivo", e);
+                    throw new JsonFileException($"Ocurrio un error al intentar Serializar el archivo de {typeof(T).Name}", e);
                 }
                
             }

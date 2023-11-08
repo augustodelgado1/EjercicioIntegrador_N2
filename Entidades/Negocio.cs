@@ -10,6 +10,7 @@ namespace Entidades
     public static class Negocio
     {
         public static List<Usuario> listaDeUsuarios;
+        public static List<Persona> listaDePersona;
         public static List<Cliente> listaDeCliente;
         public static List<Vehiculo> listaDeVehiculos;
         public static List<Diagnostico> listaDiagnostico;
@@ -25,6 +26,7 @@ namespace Entidades
                 listaDeVehiculos = new VehiculoDao().Leer();
                 listaDiagnostico = new DignosticoDao().Leer();
                 listaDeServicio = new ServicioDao().Leer();
+                new ServicioDao().LeerBaseDeDatosRelacionalServicio_Diagnostico();
             }
             catch (ConeccionBaseDeDatosException)
             {
@@ -33,7 +35,7 @@ namespace Entidades
 
             listaDeUsuarios = new List<Usuario>()
             {
-                  new Cliente("pepe", "pepe@gmail.com", "12345678", "12345678")
+                /*  new Cliente("pepe", "pepe@gmail.com", "12345678", "12345678")
                 , new Cliente("Mario","Mario@gmail.com", "89998552", "12345678")
                 , new Cliente("Pergoline", "Pergoline@gmail.com", "235211", "12345678")
                 , new Cliente("juan", "juan@gmail.com", "6351235", "12345678")
@@ -41,7 +43,7 @@ namespace Entidades
                 , new Cliente("macri", "macri@gmail.com", "269651552", "12345678")
                 , new Mecanico("Edu", "Edu@gmail.com", "12345678", "12345678")
                 , new Mecanico("Marty", "Marty@gmail.com", "12345678", "12345678")
-                , new Mecanico("marlyn", "marlyn@gmail.com", "269651552", "12345678")
+                , new Mecanico("marlyn", "marlyn@gmail.com", "269651552", "12345678")*/
             };
 
             listaDeVehiculos = new List<Vehiculo>()
@@ -57,7 +59,7 @@ namespace Entidades
 
 
         }
-        public static List<Cliente> ListaDeClientes { get => Usuario.ObtenerLista<Cliente>(listaDeUsuarios); }
+        public static List<Cliente> ListaDeClientes { get => Persona.ObtenerLista<Cliente>(listaDeUsuarios); }
         public static Cliente unClienteRandom {
 
             get { List<Cliente> listaDeClientes = ListaDeClientes;
@@ -75,8 +77,9 @@ namespace Entidades
                 return listaDeClientes.ElementAt(new Random().Next(0, listaDeClientes.Count));
             }
         }
-        public static List<Mecanico> ListaDeMecanicos { get => Usuario.ObtenerLista<Mecanico>(listaDeUsuarios); }
+        public static List<Mecanico> ListaDeMecanicos { get => Persona.ObtenerLista<Mecanico>(listaDeUsuarios); }
         public static List<Servicio> ListaDeServicio { get => listaDeServicio; set => listaDeServicio = value; }
+        public static Usuario UnUsuario { get => unUsuario; }
 
         public static void SetUser(Usuario obj)
         {

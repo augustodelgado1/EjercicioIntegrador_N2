@@ -9,7 +9,6 @@ namespace Entidades
     public abstract class Usuario
     {
         protected int id;
-        string user;
         string email;
         string clave;
         string path;
@@ -18,15 +17,14 @@ namespace Entidades
         {
             this.id = this.GetHashCode();
         }
-        internal Usuario(string user, string email, string clave, Roles rol,string path = null):this()
+        internal Usuario(string email, string clave, Roles rol,string path = null):this()
         {
-            this.User = user;
             this.Email = email;
             this.Clave = clave;
             this.path = path;
             this.rol = rol;
         }
-        public static bool ValidarContracenia(string contracenia)
+        private static bool ValidarContracenia(string contracenia)
         {
             return string.IsNullOrWhiteSpace(contracenia) == false && contracenia.Length >= 8
              && contracenia.Length <= 30;
@@ -53,21 +51,7 @@ namespace Entidades
             return listaDeUsuarios;
         }
 
-        public static bool ValidarUser(string user)
-        {
-            bool estado = false;
-            if(string.IsNullOrWhiteSpace(user) == false)
-            {
-                user = user.Trim();
-                user = user.ToLower();
-                estado = user.Length >= 3 && user.Length <= 25
-                 && user.EsAlphaNumerica() && user.Count(char.IsLetter) >= 3;
-            }
-           
-            return estado;
-        }
-
-        public static bool ValidarEmail(string email)
+        private static bool ValidarEmail(string email)
         {
             List<Char> listaDeCaracteres = new List<Char>()
             {
@@ -82,7 +66,8 @@ namespace Entidades
                 email = email.ToLower();
                 email = email.Trim();
                 estado = email.Length >= 3 && email.Length <= 25
-                 && email.VerificarCaracteres(listaDeCaracteres) == true;
+                 && email.VerificarCaracteres(listaDeCaracteres) == true 
+                 && email.Count(char.IsLetter) > 5 && email.Contains('@');
             }
 
             return estado;
@@ -106,7 +91,6 @@ namespace Entidades
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"User = {this.user}");
             stringBuilder.AppendLine($"Email = {this.Email}");
 
             return base.ToString();
@@ -117,9 +101,9 @@ namespace Entidades
             return base.GetHashCode();
         }
 
-        public static Usuario BuscarUnUsuarioPorUser(List<Usuario> listaDeUsuarios, string user)
+        public static Usuario BuscarUnUsuarioPorEmail(List<Usuario> listaDeUsuarios, string v)
         {
-            return listaDeUsuarios.Find(unUsuario => unUsuario is not null && unUsuario.user == user);
+            throw new NotImplementedException();
         }
 
         internal int Id { get => id; }
@@ -148,18 +132,6 @@ namespace Entidades
                 }
             }
         }
-        public string User
-        {
-            get => user;
-            set
-            {
-                if (ValidarUser(value))
-                {
-                    this.user = value;
-                }
-            }
-        }
-
         public string Path { get => path; set => path = value; }
         public Roles Rol { get => rol;  }
 

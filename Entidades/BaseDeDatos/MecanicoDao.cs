@@ -12,10 +12,11 @@ namespace Entidades.BaseDeDatos
             try
             {
                 comando.Parameters.Clear();
-                comando.Parameters.AddWithValue("@user", unElemento.User);
                 comando.Parameters.AddWithValue("@email", unElemento.Email);
                 comando.Parameters.AddWithValue("@clave", unElemento.Clave);
-                comando.Parameters.AddWithValue("@path", unElemento.Path);
+                comando.Parameters.AddWithValue("@Nombre", unElemento.Nombre);
+                comando.Parameters.AddWithValue("@FechaDeNacimiento", unElemento.FechaDeNacimiento);
+                comando.Parameters.AddWithValue("@dni", unElemento.Dni);
 
                 coneccionSql.Open();
                 comando.CommandText = "INSERT INTO Mecanico(user,email,clave,path) " +
@@ -76,8 +77,10 @@ namespace Entidades.BaseDeDatos
 
         public override Mecanico ObtenerUnElemento(SqlDataReader dataReader)
         {
-            return new Mecanico(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["user"]),
-                 Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]));
+            throw new ConeccionBaseDeDatosException("Ocurrio un problema al intentar obtener los archivos de la base de datos");
+
+            /*return new Mecanico(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["user"]),
+                 Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]));*/
         }
     }
 }

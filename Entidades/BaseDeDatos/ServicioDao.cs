@@ -102,8 +102,8 @@ namespace Entidades.BaseDeDatos
                 {
                     while (dataReader.Read())
                     {
-                        unDiagnostico = Diagnostico.BuscarPorId(Negocio.listaDiagnostico, Convert.ToInt32(dataReader["IDCliente"]));
-                        unServicio = Servicio.BuscarPorId(Negocio.ListaDeServicio, Convert.ToInt32(dataReader["IDServicio"]));
+                        unDiagnostico = Diagnostico.BuscarPorId(Negocio.listaDiagnostico, Convert.ToInt32(dataReader["idServicio"]));
+                        unServicio = Servicio.BuscarPorId(Negocio.ListaDeServicio, Convert.ToInt32(dataReader["idDiagnostico"]));
 
                         if (unServicio + unDiagnostico == false)
                         {

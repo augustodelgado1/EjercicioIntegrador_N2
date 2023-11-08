@@ -1,26 +1,40 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using static Entidades.Servicio;
 
 namespace Entidades
 {
-    public class Cliente:Usuario
+    public class Cliente: Persona
     {
-        string dni;
         List<Servicio> servicios;
         public event Action<Cliente,Servicio> SeAgregoUnServicio;
         public event Action<Cliente, Servicio> SeCanceloUnServicio;
 
-        internal Cliente(int id,string nombre, string email, string clave, string dni, string path = null)
-            : this(nombre, email, clave,path)
+        internal Cliente(int id, string nombre, string dni, DateTime fechaDeNacimiento, string email, string clave, string path = null)
+            : this(nombre, dni, fechaDeNacimiento, email, clave, path)
         {
             base.id = id;
         }
-        public Cliente(string nombre, string email, string clave, string dni, string path = null) :base(nombre, email, clave, Roles.Cliente, path)
+        public Cliente(string nombre, string dni, DateTime fechaDeNacimiento, string email, string clave, string path = null)
+           : base(nombre, dni, fechaDeNacimiento, email, clave,Roles.Cliente, path)
         {
-            this.Dni = dni;
             this.servicios = new List<Servicio>();
+        }
+
+        public float CalcularGastosTotales()
+        {
+            float gastosTotal = 0;  
+            if (this.Servicios is not null)
+            {
+                foreach (Servicio unServicio in this.Servicios)
+                {
+                    gastosTotal += unServicio.Cotizacion;
+                }
+            }
+
+            return gastosTotal;
         }
 
         public static Cliente BuscarPorId(List<Cliente> listaDeCliente, int id)
@@ -38,27 +52,19 @@ namespace Entidades
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"{base.ToString()}");
-            stringBuilder.AppendLine($"Dni = {this.dni.ToString()}");
+            stringBuilder.AppendLine($"Dni = {base.Dni}");
 
 
             return base.ToString();
         }
-        public override bool Equals(object? obj)
-        {
-            return base.Equals(obj) && obj is Cliente unCliente 
-                 && unCliente.dni == this.dni;
-        }
+       
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
 
-        public static bool ValidarDni(string dni)
-        {
-            return string.IsNullOrWhiteSpace(dni) == false
-                 && dni.EsNumerica() == true && dni.Length >= 6 && dni.Length <= 8;
-        }
+      
 
         private void OnSeAgregoUnServicio(Servicio unServicio)
         {
@@ -139,20 +145,12 @@ namespace Entidades
             return result;
         }
 
-        public string Dni { get => this.dni; 
-            
-            set {
-                if (ValidarDni(value))
-                {
-                    this.dni = value;
-                }  
-            } 
-        }
+       
         internal List<Servicio> Servicios { get => this.servicios; }
         public List<Servicio> ServiciosEnProcesos { get =>  Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.EnProceso); }
         public List<Servicio> ServiciosTerminados { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Terminado); }
         public List<Servicio> ServiciosCancelado { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Cancelado); }
-       
+        public float Gastos { get => CalcularGastosTotales(); }
     }
 
    

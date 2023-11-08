@@ -1,16 +1,17 @@
 ﻿namespace Entidades
 {
-    public class Mecanico:Usuario
+    public class Mecanico:Persona
     {
         List<Servicio> servicios;
         EstadoDelMecanico estado;
-
-        internal Mecanico(int id, string nombre, string email, string clave, string path = null) : 
-            this(nombre, email, clave, path)
+        internal Mecanico(int id, string nombre, string dni, DateTime fechaDeNacimiento, string email, string clave, string path = null)
+           : this(nombre, dni, fechaDeNacimiento, email, clave, path)
         {
             base.id = id;
+
         }
-        public Mecanico(string nombre, string email, string clave, string path = null) : base(nombre, email, clave, Roles.Personal, path)
+        public Mecanico(string nombre, string dni, DateTime fechaDeNacimiento, string email, string clave, string path = null)
+           : base(nombre, dni, fechaDeNacimiento, email, clave, Roles.Personal, path)
         {
             this.servicios = new List<Servicio>();
             this.estado = EstadoDelMecanico.Disponible;

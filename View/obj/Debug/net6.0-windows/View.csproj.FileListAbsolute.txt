@@ -33,3 +33,6 @@ C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\View\obj\Debug\net6.0
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\View\obj\Debug\net6.0-windows\View.csproj.CopyComplete
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\View\obj\Debug\net6.0-windows\View.FrmAltaDeCliente.resources
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\View\obj\Debug\net6.0-windows\Interfaz.FrmCrearUsuario2.resources
+C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\View\obj\Debug\net6.0-windows\View.FrmAltaDePersona.resources
+C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\View\obj\Debug\net6.0-windows\View.FrmAltaServicio.resources
+C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\View\obj\Debug\net6.0-windows\View.FrmCrearUsuario.resources

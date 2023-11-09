@@ -47,5 +47,10 @@ namespace TallerMecanico
         {
 
         }
+
+        private void configuracionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -30,14 +30,14 @@ namespace Entidades
             this.fechaDeEgreso = default;
         }
 
-        public Servicio(string descripcion, Vehiculo unVehiculo):this()
+        public Servicio(string descripcion, Vehiculo unVehiculo) : this()
         {
             this.UnVehiculo = unVehiculo;
             this.descripcion = descripcion;
         }
 
         internal Servicio(int id, string descripcion,
-            DateTime fechaDeIngreso, DateTime fechaDeEgreso, 
+            DateTime fechaDeIngreso, DateTime fechaDeEgreso,
             Vehiculo unVehiculo, Cliente unCliente, EstadoDelSevicio estado, Mecanico unMecanico = null) : this(descripcion, unVehiculo)
         {
             this.id = id;
@@ -63,7 +63,7 @@ namespace Entidades
             return costo;
         }
 
-        public static List<Servicio> BuscarPorEstado(List<Servicio> listaDeServicios,EstadoDelSevicio estado)
+        public static List<Servicio> BuscarPorEstado(List<Servicio> listaDeServicios, EstadoDelSevicio estado)
         {
             List<Servicio> result = null;
             if (listaDeServicios is not null)
@@ -72,9 +72,9 @@ namespace Entidades
             }
 
             return result;
-        } 
-        
-        public static Servicio BuscarPorId(List<Servicio> listaDeServicios,int id)
+        }
+
+        public static Servicio BuscarPorId(List<Servicio> listaDeServicios, int id)
         {
             Servicio result = null;
             if (listaDeServicios is not null)
@@ -84,7 +84,7 @@ namespace Entidades
 
             return result;
         }
-        public void Cancelar()
+        internal void Cancelar()
         {
             this.TerminarServicio();
             this.estado = EstadoDelSevicio.Cancelado;
@@ -154,7 +154,6 @@ namespace Entidades
 
             return result;
         }
-
         internal void TerminarServicio()
         {
             this.estado = EstadoDelSevicio.Terminado;

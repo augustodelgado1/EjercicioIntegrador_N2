@@ -24,10 +24,11 @@ namespace Entidades.BaseDeDatos
                 comando.Parameters.AddWithValue("@Nombre", unElemento.Nombre);
                 comando.Parameters.AddWithValue("@FechaDeNacimiento", unElemento.FechaDeNacimiento);
                 comando.Parameters.AddWithValue("@dni", unElemento.Dni);
+                comando.Parameters.AddWithValue("@path", unElemento.Path);
 
                 coneccionSql.Open();
-                comando.CommandText = "INSERT INTO Cliente(user,email,clave,dni) " +
-                    "Values(@user,@email,@clave,@dni)";
+                comando.CommandText = "INSERT INTO Cliente(nombre,email,clave,dni,path,fechaDeNacimiento) " +
+                    "Values(@Nombre,@email,@clave,@dni,@path,@FechaDeNacimiento)";
 
                 if (comando.ExecuteNonQuery() == 1)
                 {
@@ -84,12 +85,8 @@ namespace Entidades.BaseDeDatos
 
         public override Cliente ObtenerUnElemento(SqlDataReader dataReader)
         {
-
-
-            throw new ConeccionBaseDeDatosException("Ocurrio un problema al intentar obtener los archivos de la base de datos");
-            /* return new Cliente(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["user"]),
-                 Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]), 
-                 Convert.ToString(dataReader["dni"]),null);*/
+            return new Cliente(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["nombre"]), Convert.ToString(dataReader["dni"]),
+                Convert.ToDateTime("fechaDeNacimiento"),Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]));
         }
 
        

@@ -17,15 +17,17 @@ namespace Entidades.BaseDeDatos
                 comando.Parameters.AddWithValue("@Nombre", unElemento.Nombre);
                 comando.Parameters.AddWithValue("@FechaDeNacimiento", unElemento.FechaDeNacimiento);
                 comando.Parameters.AddWithValue("@dni", unElemento.Dni);
+                comando.Parameters.AddWithValue("@path", unElemento.Path);
 
                 coneccionSql.Open();
-                comando.CommandText = "INSERT INTO Mecanico(user,email,clave,path) " +
-                    "Values(@user,@email,@clave,@path)";
+                comando.CommandText = "INSERT INTO Mecanico(nombre,email,clave,dni,path,fechaDeNacimiento) " +
+                   "Values(@Nombre,@email,@clave,@dni,@path,@FechaDeNacimiento)";
 
-                if (comando.ExecuteNonQuery() == 1)
+                if (comando.ExecuteNonQuery() != 1)
                 {
-                    estado = true;
+                    throw new ConeccionBaseDeDatosException("Ocurrio un problema al intentar obtener los archivos de la base de datos");
                 }
+                estado = true;
             }
             catch (Exception e)
             {
@@ -48,6 +50,7 @@ namespace Entidades.BaseDeDatos
 
             try
             {
+
                 coneccionSql.Open();
                 comando.CommandText = $"Select * From Mecanico";
 
@@ -77,10 +80,8 @@ namespace Entidades.BaseDeDatos
 
         public override Mecanico ObtenerUnElemento(SqlDataReader dataReader)
         {
-            throw new ConeccionBaseDeDatosException("Ocurrio un problema al intentar obtener los archivos de la base de datos");
-
-            /*return new Mecanico(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["user"]),
-                 Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]));*/
+            return new Mecanico(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["nombre"]), Convert.ToString(dataReader["dni"]),
+               Convert.ToDateTime("fechaDeNacimiento"), Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]));
         }
     }
 }

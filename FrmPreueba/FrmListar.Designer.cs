@@ -1,6 +1,6 @@
 ﻿namespace TallerMecanico
 {
-    partial class FrmListar
+    abstract partial class FrmListar<T>
     {
         /// <summary>
         /// Required designer variable.
@@ -41,7 +41,7 @@
             // 
             // dgtvList
             // 
-            dgtvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dgtvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgtvList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgtvList.CellBorderStyle = DataGridViewCellBorderStyle.SunkenVertical;
             dgtvList.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
@@ -136,6 +136,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(842, 388);
+            this.Load += FrmListar_Load;
             Controls.Add(btnGuardarArchivo);
             Controls.Add(btnCargar);
             Controls.Add(btnInfo);
@@ -150,19 +151,20 @@
             ResumeLayout(false);
         }
 
+      
+
 
 
 
         #endregion
 
-        private DataGridView dgtvList;
-        private Button btnEliminar;
-        private Button btnModificar;
-        private Button btnAgregar;
-        private Button btnInfo;
-        private Button btnCargar;
-        private Button btnGuardarArchivo;
+        protected DataGridView dgtvList;
+        protected Button btnEliminar;
+        protected Button btnModificar;
+        protected Button btnAgregar;
+        protected Button btnInfo;
+        protected Button btnCargar;
+        protected Button btnGuardarArchivo;
 
-        protected DataGridView DgtvList { get => dgtvList; }
     }
 }

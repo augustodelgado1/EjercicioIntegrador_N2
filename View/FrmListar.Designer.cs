@@ -117,7 +117,7 @@
             btnCargar.Name = "btnCargar";
             btnCargar.Size = new Size(148, 29);
             btnCargar.TabIndex = 20;
-            btnCargar.Text = "Cargar Clientes";
+            btnCargar.Text = "Cargar Archivo";
             btnCargar.UseVisualStyleBackColor = true;
             btnCargar.Click += btnCargar_Click;
             // 

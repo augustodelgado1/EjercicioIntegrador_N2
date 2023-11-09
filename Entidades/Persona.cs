@@ -25,12 +25,28 @@ namespace Entidades
                  && unPersona.dni == this.dni;
         }
 
-        private static bool ValidarDni(string dni)
+        public static bool ValidarDni(string dni)
         {
             return string.IsNullOrWhiteSpace(dni) == false
                  && dni.EsNumerica() == true && dni.Length >= 6
                && dni.Length <= 8;
         }
+
+        public static bool ValidarFechaDeNacimiento(string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool ValidarFechaDeNacimiento(DateTime value)
+        {
+            return value.Year != DateTime.Now.Year;
+        }
+
+        public static bool ValidarNombre(string text)
+        {
+            return string.IsNullOrWhiteSpace(text) == false && text.isLetter() == true;
+        }
+
         public DateTime FechaDeNacimiento
         {
             get => fechaDeNacimiento;
@@ -38,7 +54,7 @@ namespace Entidades
             set
             {
                 this.fechaDeNacimiento = DateTime.MinValue;
-                if (value != DateTime.Now)
+                if (ValidarFechaDeNacimiento(value))
                 {
                     this.fechaDeNacimiento = value;
                 }
@@ -57,6 +73,15 @@ namespace Entidades
             }
         }
 
-        public string Nombre { get => nombre; set => nombre = value; }
+        public string Nombre { get => nombre;
+
+            set
+            {
+                if (ValidarNombre(value))
+                {
+                    this.nombre = value.ToLower();
+                }
+            }
+        }
     }
 }

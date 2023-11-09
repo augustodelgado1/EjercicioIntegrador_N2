@@ -15,8 +15,7 @@ namespace Interfaz
 {
     public partial class FrmLogin : Form
     {
-        private bool retornoDeUser;
-        private bool retornoDeClave;
+        private bool respuesta;
         public event Action<Usuario> loginUser;
         Usuario unUsuario;
         FrmMenuPrincipal frmMenuPrincipal;
@@ -32,7 +31,7 @@ namespace Interfaz
         }
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            if (retornoDeUser && retornoDeClave
+            if (respuesta == true
              && (unUsuario = Usuario.EncontarUsuario(Negocio.listaDeUsuarios, this.txtEmail.Text, this.txtClave.Text)) is not null)
             {
                 OnLoginUser(unUsuario);
@@ -58,30 +57,14 @@ namespace Interfaz
                 this.loginUser(unUsuario);
             }
         }
-
-        private void MostarErrorConLabel(string msgError, Label unLabel)
-        {
-            if (string.IsNullOrWhiteSpace(msgError) == true
-                && msgError.isLetter() == true && unLabel is not null)
-            {
-                unLabel.Visible = true;
-                unLabel.Text = msgError;
-            }
-        }
         private void txtUser_TextChanged_1(object sender, EventArgs e)
         {
-            if (retornoDeUser = (unUsuario.Email = this.txtEmail.Text) is not null)
-            {
-                this.MostarErrorConLabel("Ingrese un Usuario valido", this.lbl_fallas);
-            }
+            respuesta = lbl_fallas.ActivarControlError<string>("el Email Debe tener como minimo 8 caracteres", Persona.ValidarEmail, this.txtEmail.Text);
         }
 
         private void txtClave_TextChanged(object sender, EventArgs e)
         {
-            if (retornoDeClave = (unUsuario.Clave = this.txtClave.Text) is not null)
-            {
-                this.MostarErrorConLabel("Ingrese un Clave valida", this.lbl_fallas);
-            }
+            respuesta = lbl_fallas.ActivarControlError<string>("el Clave Debe tener como minimo 8 caracteres", Persona.ValidarContracenia, this.txtClave.Text);
         }
     }
 }

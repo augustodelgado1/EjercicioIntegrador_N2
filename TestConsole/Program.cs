@@ -28,9 +28,9 @@ namespace TestConsole
             Vehiculo veh;
             
             Servicio ser;
-            List<Vehiculo> listaDeVehiculos;
+            List<Cliente> listaDeVehiculos = Negocio.ListaDeClientes; ;
 
-
+            
                 do
                 {
                     Console.WriteLine("Menu"             +
@@ -65,6 +65,7 @@ namespace TestConsole
                                                 break;
 
                                             default:
+
                                                 break;
                                         }
                                     }

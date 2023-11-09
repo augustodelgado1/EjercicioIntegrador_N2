@@ -28,7 +28,7 @@ namespace Entidades
             this.path = path;
         }
 
-        private static bool ValidarPatente(string patente)
+        public static bool ValidarPatente(string patente)
         {
             bool result;
             result = false;
@@ -109,12 +109,17 @@ namespace Entidades
             
             set
             {
-                if (string.IsNullOrWhiteSpace(value) == false 
-                && value.EsAlphaNumerica() == true)
+                if (ValidarModelo(value))
                 {
                     this.modelo = value;
                 }
             }
+        }
+
+        public bool ValidarModelo(string modelo)
+        {
+            return string.IsNullOrWhiteSpace(modelo) == false
+                && modelo.EsAlphaNumerica() == true;
         }
 
         public TipoDeVehiculo Tipo { get => tipo; set => tipo = value; }

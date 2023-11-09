@@ -24,7 +24,7 @@ namespace Entidades
             this.path = path;
             this.rol = rol;
         }
-        private static bool ValidarContracenia(string contracenia)
+        public static bool ValidarContracenia(string contracenia)
         {
             return string.IsNullOrWhiteSpace(contracenia) == false && contracenia.Length >= 8
              && contracenia.Length <= 30;
@@ -51,7 +51,7 @@ namespace Entidades
             return listaDeUsuarios;
         }
 
-        private static bool ValidarEmail(string email)
+        public static bool ValidarEmail(string email)
         {
             List<Char> listaDeCaracteres = new List<Char>()
             {
@@ -100,12 +100,6 @@ namespace Entidades
         {
             return base.GetHashCode();
         }
-
-        public static Usuario BuscarUnUsuarioPorEmail(List<Usuario> listaDeUsuarios, string v)
-        {
-            throw new NotImplementedException();
-        }
-
         internal int Id { get => id; }
         public string Email
         {
@@ -121,7 +115,7 @@ namespace Entidades
             }
         }
 
-        public string Clave
+        internal string Clave
         {
             get => this.Clave;
             set

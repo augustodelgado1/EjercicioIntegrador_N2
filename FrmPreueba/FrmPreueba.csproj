@@ -13,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="FrmAltaDeCliente.cs" />
+    <Compile Update="FrmAltaDeCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FrmCrearUsuario - Copia.cs">
       <SubType>Form</SubType>
     </Compile>

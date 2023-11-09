@@ -13,8 +13,6 @@ namespace Archi01
         where T : class
     {
         static string extension;
-        public static event Action<T> SaveData;
-        public static event Action<T> ReadData;
         static JsonFile()
         {
             extension = ".Json";

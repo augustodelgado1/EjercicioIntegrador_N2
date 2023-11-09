@@ -20,6 +20,7 @@ namespace TallerMecanico
     {
         Cliente unCliente;
         List<Cliente> clienteList;
+        OpenFileDialog openFileDialog;
         SaveFileDialog saveFileDialog;
         public event Action<Cliente> SeRealizoAlta;
         public FrmListar()
@@ -41,7 +42,7 @@ namespace TallerMecanico
         }
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            FrmAltaDeCliente frmAltaDeCliente = new FrmAltaDeCliente(unCliente);
+            FrmAltaDePersona frmAltaDeCliente = new FrmAltaDePersona(Usuario.Roles.Cliente);
 
             if (frmAltaDeCliente.ShowDialog() == DialogResult.OK)
             {
@@ -65,12 +66,13 @@ namespace TallerMecanico
 
         private void btnCargar_Click(object sender, EventArgs e)
         {
-            if ((this.saveFileDialog = GuardarArchivo("Guardar archivo", "Archivo Json (*.Json)|*.Json",
+            if ((this.openFileDialog = AbrirArchivo("Cargar archivo", "Archivo Json (*.Json)|*.Json",
                Environment.GetFolderPath(Environment.SpecialFolder.Desktop))) is not null)
             {
                 try
                 {
-                    this.clienteList = JsonFile<Cliente>.LeerArchivoArray(this.saveFileDialog.FileName);
+                    this.clienteList = JsonFile<Cliente>.LeerArchivoArray(this.openFileDialog.FileName);
+
                 }
                 catch (Exception ex)
                 {
@@ -80,7 +82,7 @@ namespace TallerMecanico
             }
         }
 
-        private SaveFileDialog GuardarArchivo(string title, string filter, string initialDirectory)
+        public static SaveFileDialog GuardarArchivo(string title, string filter, string initialDirectory)
         {
             SaveFileDialog saveFileDialog = null;
             DialogResult result;
@@ -101,7 +103,7 @@ namespace TallerMecanico
             return saveFileDialog;
         }
 
-        private OpenFileDialog AbrirArchivo(string title, string filter, string initialDirectory)
+        public static OpenFileDialog AbrirArchivo(string title, string filter, string initialDirectory)
         {
             OpenFileDialog openFileDialog = default;
             DialogResult result;

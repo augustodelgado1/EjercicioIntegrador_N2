@@ -1,5 +1,6 @@
 ﻿using Archi01;
 using Entidades;
+using FrmPreueba;
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
@@ -12,28 +13,40 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using View;
 
 namespace TallerMecanico
 {
-    public partial class FrmListar : Form
+    public abstract partial class FrmListar<T> : Form,IAbm<T>
+        where T : class
     {
-        Cliente unCliente;
-        List<Cliente> clienteList;
+        int index;
+        protected List<T> listGeneric;
         SaveFileDialog saveFileDialog;
-        public event Action<Cliente> SeRealizoAlta;
-        public FrmListar()
+        public event Action<T> SeRealizoModificacion;
+        public event Action<T> SeRealizoBaja;
+        public event Action<string,string> InformarError;
+        public FrmListar(List<T> listGeneric)
         {
             InitializeComponent();
+            this.listGeneric = listGeneric;
         }
 
-        private bool OnSeRealizoAlta(Cliente unCliente)
+        private void FrmListar_Load(object sender, EventArgs e)
+        {
+            ActualizarDataGriedViewList();
+            this.ConfigurarDataGrid(this.dgtvList.Columns);
+        }
+
+        private bool OnInformar(string titulo, string mensaje)
         {
             bool estado;
+            
             estado = false;
-            if (SeRealizoAlta is not null)
+            if (this.InformarError is not null
+             && string.IsNullOrWhiteSpace(titulo) == false
+             && string.IsNullOrWhiteSpace(mensaje) == false)
             {
-                this.SeRealizoAlta.Invoke(unCliente);
+                this.InformarError(titulo,mensaje);
                 estado = true;
             }
 
@@ -41,26 +54,28 @@ namespace TallerMecanico
         }
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            FrmAltaDeCliente frmAltaDeCliente = new FrmAltaDeCliente(unCliente);
-
-            if (frmAltaDeCliente.ShowDialog() == DialogResult.OK)
-            {
-                OnSeRealizoAlta(unCliente);
-            }
+            this.Alta();
+            ActualizarDataGriedViewList();
         }
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            this.Baja(index);
+            ActualizarDataGriedViewList();
         }
 
         private void BtnModificar_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            this.Modificacion(index);
+            ActualizarDataGriedViewList();
+            
         }
 
         private void dgtvList_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            if (e is not null)
+            {
+                index = e.RowIndex;
+            }
         }
 
         private void btnCargar_Click(object sender, EventArgs e)
@@ -70,11 +85,13 @@ namespace TallerMecanico
             {
                 try
                 {
-                    this.clienteList = JsonFile<Cliente>.LeerArchivoArray(this.saveFileDialog.FileName);
+                    this.listGeneric = JsonFile<T>.LeerArchivoArray(this.saveFileDialog.FileName);
+                    ActualizarDataGriedViewList();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Abrir Archivo", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    InformarError.Invoke("Abrir Archivo", ex.Message);
+                   /* MessageBox.Show("Abrir Archivo", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);*/
                 }
 
             }
@@ -127,12 +144,13 @@ namespace TallerMecanico
             {
                 try
                 {
-                    JsonFile<Cliente>.GuardarArchivoArray(this.saveFileDialog.FileName, clienteList);
+                    JsonFile<T>.GuardarArchivoArray(this.saveFileDialog.FileName, listGeneric);
                     MessageBox.Show("los datos se Guardaron correctamente ", "Se guardaron Correctamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Guardar Archivo", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    InformarError.Invoke("Guardar archivo", ex.Message);
+                   /* MessageBox.Show("Guardar Archivo", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);*/
                 }
 
             }
@@ -140,7 +158,23 @@ namespace TallerMecanico
 
         private void btnInfo_Click(object sender, EventArgs e)
         {
-
+            this.Mostrar(index);
         }
+
+        public abstract T Alta();
+        public abstract bool Modificacion(int index);
+        public abstract bool Baja(int index);
+        public abstract void Mostrar(int index);
+        public abstract void Mostrar(List<T> list);
+        private void ActualizarDataGriedViewList()
+        {
+            if (this.dgtvList is not null)
+            {
+                this.dgtvList.DataSource = null;
+                this.dgtvList.DataSource = this.listGeneric;
+            }
+        }
+
+        protected abstract void ConfigurarDataGrid(DataGridViewColumnCollection columnas);
     }
 }

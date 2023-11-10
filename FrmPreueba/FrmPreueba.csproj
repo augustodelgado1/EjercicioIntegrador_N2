@@ -16,10 +16,19 @@
     <Compile Update="FrmAltaDeCliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FrmCrearUsuario - Copia.cs">
+    <Compile Update="FrmAltaServicio.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FrmListar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmMenuPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmMostrarcs.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

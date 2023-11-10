@@ -19,28 +19,39 @@ namespace TallerMecanico
     public abstract partial class FrmListar<T> : Form,IAbm<T>
         where T : class
     {
-        int index;
+        private int indexRow;
+        private int indexColumn;
         protected List<T> listGeneric;
         SaveFileDialog saveFileDialog;
-        public event Action<T> SeRealizoModificacion;
-        public event Action<T> SeRealizoBaja;
+        private OpenFileDialog openFileDialog;
+        public event Action<int> SeRealizoModificacion;
         public event Action<string,string> InformarError;
+        public event Action<string,string> Informar;
+        public event Func<string, List<T>> Buscador;
         public FrmListar(List<T> listGeneric)
         {
             InitializeComponent();
             this.listGeneric = listGeneric;
         }
-
+        private object this[int indexColumn, int indexRow]
+        {
+            set
+            {
+                if (indexColumn <= dgtvList.Columns.Count &&
+                 indexColumn >= 0 && indexRow >= 0 && indexRow <= dgtvList.RowCount)
+                {
+                    this.dgtvList[indexColumn, indexRow].Value = value;
+                }
+            }
+        }
         private void FrmListar_Load(object sender, EventArgs e)
         {
-            ActualizarDataGriedViewList();
-            this.ConfigurarDataGrid(this.dgtvList.Columns);
+            ActualizarDataGriedViewList(this.listGeneric);
         }
 
-        private bool OnInformar(string titulo, string mensaje)
+        private bool OnInformarError(string titulo, string mensaje)
         {
             bool estado;
-            
             estado = false;
             if (this.InformarError is not null
              && string.IsNullOrWhiteSpace(titulo) == false
@@ -52,52 +63,107 @@ namespace TallerMecanico
 
             return estado;
         }
+        private List<T> OnSeBuscador(string mensaje)
+        {
+            List<T> list = default;
+            if (Buscador is not null)
+            {
+                list = this.Buscador.Invoke(mensaje);
+            }
+
+            return list;
+        }
+        private bool OnSeRealizoModificacion(int index)
+        {
+            bool estado;
+            estado = false;
+            if (this.SeRealizoModificacion is not null)
+            {
+                this.SeRealizoModificacion(index);
+                estado = true;
+            }
+
+            return estado;
+        } 
+        
+        private bool OnInformar(string titulo, string mensaje)
+        {
+            bool estado;
+            
+            estado = false;
+            if (this.Informar is not null
+             && string.IsNullOrWhiteSpace(titulo) == false
+             && string.IsNullOrWhiteSpace(mensaje) == false)
+            {
+                this.Informar(titulo,mensaje);
+                estado = true;
+            }
+
+            return estado;
+        }
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            this.Alta();
-            ActualizarDataGriedViewList();
+            if (this.Alta())
+            {
+                ActualizarDataGriedViewList(this.listGeneric);
+                this.OnInformar("Alta", "Se realizo la Alta correctamente");
+            }
         }
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
-            this.Baja(index);
-            ActualizarDataGriedViewList();
+            if(this.Baja(indexRow))
+            {
+                ActualizarDataGriedViewList(this.listGeneric);
+                this.OnInformar("Baja", "Se realizo la Baja correctamente");
+            }
         }
 
         private void BtnModificar_Click(object sender, EventArgs e)
         {
-            this.Modificacion(index);
-            ActualizarDataGriedViewList();
-            
+            if (this.Modificacion(indexRow))
+            {
+                this[indexColumn, indexRow] = listGeneric[indexRow];
+                this.OnInformar("Modificacion", "Se realizo la modificacion correctamente");
+            }
+        }
+
+        private void TxtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            ActualizarDataGriedViewList(this.OnSeBuscador(this.txtBuscar.Text));
         }
 
         private void dgtvList_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e is not null)
             {
-                index = e.RowIndex;
+                indexRow = e.RowIndex;
+                indexColumn = e.ColumnIndex;
             }
         }
-
         private void btnCargar_Click(object sender, EventArgs e)
         {
-            if ((this.saveFileDialog = GuardarArchivo("Guardar archivo", "Archivo Json (*.Json)|*.Json",
-               Environment.GetFolderPath(Environment.SpecialFolder.Desktop))) is not null)
+            List<T> unLista;
+            if ((this.openFileDialog = AbrirArchivo("Cargar archivo", "Archivo Json (*.Json)|*.Json",
+              Environment.GetFolderPath(Environment.SpecialFolder.Desktop))) is not null)
             {
+                
                 try
                 {
-                    this.listGeneric = JsonFile<T>.LeerArchivoArray(this.saveFileDialog.FileName);
-                    ActualizarDataGriedViewList();
+                    if ((unLista = JsonFile<T>.LeerArchivoArray(this.openFileDialog.FileName)) is not null)
+                    {
+                        this.listGeneric = unLista;
+                        ActualizarDataGriedViewList(unLista);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    InformarError.Invoke("Abrir Archivo", ex.Message);
-                   /* MessageBox.Show("Abrir Archivo", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);*/
+                    OnInformarError("Abrir Archivo", ex.Message);
                 }
 
             }
         }
 
-        private SaveFileDialog GuardarArchivo(string title, string filter, string initialDirectory)
+        public static SaveFileDialog GuardarArchivo(string title, string filter, string initialDirectory)
         {
             SaveFileDialog saveFileDialog = null;
             DialogResult result;
@@ -118,7 +184,7 @@ namespace TallerMecanico
             return saveFileDialog;
         }
 
-        private OpenFileDialog AbrirArchivo(string title, string filter, string initialDirectory)
+        public static OpenFileDialog AbrirArchivo(string title, string filter, string initialDirectory)
         {
             OpenFileDialog openFileDialog = default;
             DialogResult result;
@@ -145,12 +211,11 @@ namespace TallerMecanico
                 try
                 {
                     JsonFile<T>.GuardarArchivoArray(this.saveFileDialog.FileName, listGeneric);
-                    MessageBox.Show("los datos se Guardaron correctamente ", "Se guardaron Correctamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    OnInformar("Guardar archivo", "los datos se Guardaron correctamente ");
                 }
                 catch (Exception ex)
                 {
-                    InformarError.Invoke("Guardar archivo", ex.Message);
-                   /* MessageBox.Show("Guardar Archivo", ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);*/
+                    OnInformarError("Guardar archivo", ex.Message);
                 }
 
             }
@@ -158,21 +223,18 @@ namespace TallerMecanico
 
         private void btnInfo_Click(object sender, EventArgs e)
         {
-            this.Mostrar(index);
+            /*this.Mostrar(index);*/
         }
 
-        public abstract T Alta();
+        public abstract bool Alta();
         public abstract bool Modificacion(int index);
         public abstract bool Baja(int index);
         public abstract void Mostrar(int index);
-        public abstract void Mostrar(List<T> list);
-        private void ActualizarDataGriedViewList()
+        private void ActualizarDataGriedViewList(List<T> unaLista)
         {
-            if (this.dgtvList is not null)
-            {
-                this.dgtvList.DataSource = null;
-                this.dgtvList.DataSource = this.listGeneric;
-            }
+            this.dgtvList.DataSource = null;
+            this.dgtvList.DataSource = unaLista;
+            this.ConfigurarDataGrid(this.dgtvList.Columns);
         }
 
         protected abstract void ConfigurarDataGrid(DataGridViewColumnCollection columnas);

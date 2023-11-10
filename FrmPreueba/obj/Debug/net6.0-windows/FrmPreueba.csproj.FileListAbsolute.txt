@@ -1,5 +1,4 @@
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.csproj.AssemblyReference.cache
-C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\Interfaz.FrmCrearUsuario2.resources
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\TallerMecanico.FrmListar.resources
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.csproj.GenerateResource.cache
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.GeneratedMSBuildEditorConfig.editorconfig
@@ -27,3 +26,7 @@ C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\ref\FrmPreueba.dll
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.FrmAltaDePersona.resources
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.FrmClientesList.resources
+C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\Interfaz.FrmLogin.resources
+C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\TallerMecanico.FrmMenuPrincipal.resources
+C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.FrmAltaServicio.resources
+C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\TallerMecanico.FrmMostrarcs.resources

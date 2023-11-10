@@ -18,10 +18,11 @@ namespace Entidades
         private static Usuario unUsuario;
         static Negocio()
         {
+            listaDeCliente = new List<Cliente>();
             listaDeUsuarios = new List<Usuario>();
             try
             {
-                listaDeUsuarios.AddRange(new ClienteDao().Leer());
+                listaDeCliente.AddRange(new ClienteDao().Leer());
                 listaDeUsuarios.AddRange(new MecanicoDao().Leer());
                 listaDeVehiculos = new VehiculoDao().Leer();
                 listaDiagnostico = new DignosticoDao().Leer();
@@ -30,7 +31,7 @@ namespace Entidades
             }
             catch (ConeccionBaseDeDatosException)
             {
-                throw;
+               
             }
 
             listaDeUsuarios = new List<Usuario>()

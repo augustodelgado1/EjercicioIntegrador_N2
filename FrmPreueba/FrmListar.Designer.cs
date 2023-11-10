@@ -34,6 +34,8 @@
             btnModificar = new Button();
             btnAgregar = new Button();
             btnInfo = new Button();
+            cmbFilter = new ComboBox();
+            txtBuscar = new TextBox();
             btnCargar = new Button();
             btnGuardarArchivo = new Button();
             ((System.ComponentModel.ISupportInitialize)dgtvList).BeginInit();
@@ -59,10 +61,10 @@
             dgtvList.Location = new Point(161, 33);
             dgtvList.MultiSelect = false;
             dgtvList.Name = "dgtvList";
-            dgtvList.ReadOnly = true;
+            dgtvList.ReadOnly = false;
             dgtvList.RowHeadersVisible = false;
             dgtvList.RowTemplate.Height = 25;
-            dgtvList.ScrollBars = ScrollBars.None;
+            dgtvList.ScrollBars = ScrollBars.Vertical;
             dgtvList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgtvList.Size = new Size(671, 341);
             dgtvList.TabIndex = 18;
@@ -77,6 +79,26 @@
             btnEliminar.Text = "Eliminar Cliente";
             btnEliminar.UseVisualStyleBackColor = true;
             btnEliminar.Click += BtnEliminar_Click;
+            // 
+            // cmbFilter
+            // 
+            cmbFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFilter.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            cmbFilter.FormattingEnabled = true;
+            cmbFilter.Location = new Point(692, 52);
+            cmbFilter.Name = "cmbFilter";
+            cmbFilter.Size = new Size(138, 25);
+            cmbFilter.TabIndex = 23;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            txtBuscar.Location = new Point(161, 12);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.PlaceholderText = "Buscar";
+            txtBuscar.Size = new Size(669, 29);
+            txtBuscar.TabIndex = 22;
+            txtBuscar.TextChanged += TxtBuscar_TextChanged; ;
             // 
             // btnModificar
             // 
@@ -151,7 +173,9 @@
             ResumeLayout(false);
         }
 
-      
+       
+
+
 
 
 
@@ -165,6 +189,7 @@
         protected Button btnInfo;
         protected Button btnCargar;
         protected Button btnGuardarArchivo;
-
+        protected TextBox txtBuscar;
+        protected ComboBox cmbFilter;
     }
 }

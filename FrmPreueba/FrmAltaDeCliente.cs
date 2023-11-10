@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,15 +16,26 @@ namespace FrmPreueba
 {
     public partial class FrmAltaDePersona : Form
     {
+        OpenFileDialog ofd;
         Persona unaPersona;
         Usuario.Roles unRol;
-        public event Action<Persona> seRealizoUnAlta;
+        public event Action<Persona> seIngesaronDatos;
         bool result;
+        string path;
 
         public FrmAltaDePersona(Usuario.Roles unRol)
         {
             InitializeComponent();
             this.unRol = unRol;
+            this.path = null;
+        }
+
+        private void OnSeIngesaronDatos(Persona unaPersona)
+        {
+            if (seIngesaronDatos is not null)
+            {
+                seIngesaronDatos(unaPersona);
+            }
         }
         public FrmAltaDePersona(Usuario.Roles unRol, Persona unaPersona) : this(unRol)
         {
@@ -40,6 +52,7 @@ namespace FrmPreueba
             this.txtEmail.Text = this.unaPersona.Email;
             this.txtNombre.Text = this.unaPersona.Nombre;
             this.txtDni.Text = this.unaPersona.Dni;
+            this.path = this.unaPersona.Path;
             this.DateFechaDeNacimiento.Value = this.unaPersona.FechaDeNacimiento;
         }
 
@@ -59,6 +72,7 @@ namespace FrmPreueba
                 unControl.Text = msgError;
                 if ((estado = predicate.Invoke(element)) == true)
                 {
+                    estado = true;
                     unControl.Visible = false;
                 }
             }
@@ -68,7 +82,7 @@ namespace FrmPreueba
 
         private void txtDni_TextChanged(object sender, EventArgs e)
         {
-            result = ActivarControlError<string>(lb_Fallas, "el Dni Debe tener como minimo 6 numeros y maximo 8 numeros", Persona.ValidarDni, this.txtDni.Text);
+            result = ActivarControlError<string>(lb_Fallas, "el dni debe tener como min 6 y max 8 numeros", Persona.ValidarDni, this.txtDni.Text);
         }
 
         private void DateFechaDeNacimiento_ValueChanged(object sender, EventArgs e)
@@ -81,7 +95,7 @@ namespace FrmPreueba
 
             if (this.unRol == Usuario.Roles.Cliente)
             {
-                unUsuario = new Cliente(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text);
+                unUsuario = new Cliente(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text, path);
             }
             else
             {
@@ -92,8 +106,11 @@ namespace FrmPreueba
         }
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            if (result == false)
+            result = ActivarControlError(lb_Fallas, "No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls);
+            if (result == true)
             {
+                this.unaPersona = (Persona)this.CrearUsuario();
+                OnSeIngesaronDatos(this.unaPersona);
                 this.DialogResult = DialogResult.OK;
             }
         }
@@ -109,7 +126,11 @@ namespace FrmPreueba
 
         private void btnImagen_Click(object sender, EventArgs e)
         {
-            /*  FrmListar<Cliente>.AbrirArchivo("Imagen de perfil", "Archivos de imagen|*.jpg;*.jpeg;*.png|Todos los archivos|*.*", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));*/
+            ofd = FrmListar<Cliente>.AbrirArchivo("Imagen de perfil", "Archivos de imagen|*.jpg;*.jpeg;*.png|Todos los archivos|*.*", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+            if (ofd is not null)
+            {
+                this.path = ofd.FileName;
+            }
         }
     }
 }

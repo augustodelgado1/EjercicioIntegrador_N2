@@ -33,11 +33,11 @@ namespace Entidades
         public static List<T> ObtenerLista<T>(List<Usuario> list)
             where T : Usuario
         {
-            List<T> listaDeUsuarios = default;
+            List<T> listaDeUsuarios = new List<T>();
 
             if (list is not null && list.Count > 0)
             {
-                listaDeUsuarios = new List<T>();
+               
                 foreach (Usuario UnUsuario in list)
                 {
                     if (UnUsuario is not null &&

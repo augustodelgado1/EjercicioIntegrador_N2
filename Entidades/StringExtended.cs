@@ -9,6 +9,19 @@ namespace Entidades
     public static class StringExtended
     {
        
+        public static string BorrarCaracteres(this string texto, char[] charsAremplazar)
+        {
+            string result = new string(texto);
+            if (charsAremplazar is not null && charsAremplazar.Length > 0)
+            {
+                foreach (char caracterDeLaLista in charsAremplazar)
+                {
+                    result.Remove(caracterDeLaLista);
+                }
+            }
+
+            return result;
+        }
         private static bool VerificarString(this string texto,Predicate<char> criterio)
         {
             bool result;

@@ -39,6 +39,7 @@ namespace FrmPreueba
             ClientSize = new Size(842, 388);
             Name = "FrmClientesList";
             StartPosition = FormStartPosition.CenterScreen;
+            this.Load += FrmClientesList_Load;
             Text = "FrmClientesList";
             ResumeLayout(false);
         }

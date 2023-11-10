@@ -152,7 +152,6 @@
             lblFallas.Size = new Size(62, 20);
             lblFallas.TabIndex = 10;
             lblFallas.Text = "lblFallas";
-            lblFallas.Click += lblFallas_Click;
             // 
             // FrmAltaServicio
             // 
@@ -175,6 +174,7 @@
             Name = "FrmAltaServicio";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmAltaServicio";
+            Load += FrmAltaServicio_Load;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static Entidades.Usuario;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Entidades
 {
@@ -27,24 +29,32 @@ namespace Entidades
 
         public static bool ValidarDni(string dni)
         {
-            return string.IsNullOrWhiteSpace(dni) == false
-                 && dni.EsNumerica() == true && dni.Length >= 6
+            bool estado;
+            estado = false;
+            if (!string.IsNullOrWhiteSpace(dni))
+            {
+                dni = dni.Replace(" ", "");
+                estado = dni.EsNumerica() == true && dni.Length >= 6
                && dni.Length <= 8;
+            }
+            return estado;
         }
-
-        public static bool ValidarFechaDeNacimiento(string text)
-        {
-            throw new NotImplementedException();
-        }
-
         public static bool ValidarFechaDeNacimiento(DateTime value)
         {
-            return value.Year != DateTime.Now.Year;
+            return value.Year < DateTime.Now.Year;
         }
 
         public static bool ValidarNombre(string text)
         {
-            return string.IsNullOrWhiteSpace(text) == false && text.isLetter() == true;
+            bool estado;
+            estado = false;
+            char[] separadores = { ' ' ,',','.', '_' , '-' };
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                text = text.BorrarCaracteres(separadores);
+                estado = text.isLetter() == true;
+            }
+            return estado;
         }
 
         public DateTime FechaDeNacimiento

@@ -23,6 +23,7 @@ namespace TallerMecanico
         OpenFileDialog openFileDialog;
         SaveFileDialog saveFileDialog;
         public event Action<Cliente> SeRealizoAlta;
+        public event Action<string> Buscador;
         public FrmListar()
         {
             InitializeComponent();
@@ -35,6 +36,19 @@ namespace TallerMecanico
             if (SeRealizoAlta is not null)
             {
                 this.SeRealizoAlta.Invoke(unCliente);
+                estado = true;
+            }
+
+            return estado;
+        }
+
+        private bool OnSeBuscador(string mensaje)
+        {
+            bool estado;
+            estado = false;
+            if (Buscador is not null)
+            {
+                this.Buscador.Invoke(mensaje);
                 estado = true;
             }
 
@@ -143,6 +157,11 @@ namespace TallerMecanico
         private void btnInfo_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }

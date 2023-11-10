@@ -116,7 +116,7 @@ namespace Entidades
             }
         }
 
-        public bool ValidarModelo(string modelo)
+        public static bool ValidarModelo(string modelo)
         {
             return string.IsNullOrWhiteSpace(modelo) == false
                 && modelo.EsAlphaNumerica() == true;

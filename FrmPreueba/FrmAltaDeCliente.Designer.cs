@@ -92,7 +92,7 @@
             lb_Fallas.AutoSize = true;
             lb_Fallas.Font = new Font("Arial", 11F, FontStyle.Regular, GraphicsUnit.Point);
             lb_Fallas.ForeColor = Color.Red;
-            lb_Fallas.Location = new Point(3, 250);
+            lb_Fallas.Location = new Point(12, 239);
             lb_Fallas.Name = "lb_Fallas";
             lb_Fallas.Size = new Size(46, 17);
             lb_Fallas.TabIndex = 8;

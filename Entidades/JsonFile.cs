@@ -15,19 +15,18 @@ namespace Archi01
         static string extension;
         static JsonFile()
         {
-            extension = ".Json";
+            extension = ".json";
         }
 
         private static bool ValidarPath(string path)
         {
             return string.IsNullOrWhiteSpace(path) == false 
-             && Path.GetExtension(path) == extension
+             && String.Compare(Path.GetExtension(path),extension,true) == 0
              && File.Exists(path);
         }
         public static List<T> LeerArchivoArray(string path)
         {
             List<T> listaDeClientes = default;
-
             
             if (ValidarPath(path) == true)
             {

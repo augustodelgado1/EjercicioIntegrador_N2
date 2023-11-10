@@ -16,9 +16,6 @@
     <Compile Update="FrmListar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FrmListarGeneric.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>

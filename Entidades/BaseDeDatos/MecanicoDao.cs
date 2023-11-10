@@ -81,7 +81,7 @@ namespace Entidades.BaseDeDatos
         public override Mecanico ObtenerUnElemento(SqlDataReader dataReader)
         {
             return new Mecanico(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["nombre"]), Convert.ToString(dataReader["dni"]),
-               Convert.ToDateTime("fechaDeNacimiento"), Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]));
+               Convert.ToDateTime(dataReader["fechaDeNacimiento"]), Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]));
         }
     }
 }

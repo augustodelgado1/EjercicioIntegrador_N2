@@ -32,7 +32,7 @@ namespace Interfaz
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             if (respuesta == true
-             && (unUsuario = Usuario.EncontarUsuario(Negocio.listaDeUsuarios, this.txtEmail.Text, this.txtClave.Text)) is not null)
+             && (unUsuario = Usuario.EncontarUsuario(Negocio.ListaDeUsuarios, this.txtEmail.Text, this.txtClave.Text)) is not null)
             {
                 OnLoginUser(unUsuario);
                 frmMenuPrincipal = new FrmMenuPrincipal(unUsuario);

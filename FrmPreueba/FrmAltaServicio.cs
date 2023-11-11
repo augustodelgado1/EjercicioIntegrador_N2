@@ -16,16 +16,18 @@ namespace FrmPreueba
     public partial class FrmAltaServicio : Form
     {
         OpenFileDialog ofd;
-        Servicio unaServicio;
+        Servicio unServicio;
+        Vehiculo unVehiculo;
         Usuario.Roles unRol;
-        public event Action<Servicio> seIngesaronDatos;
+        public event Action<Servicio,Vehiculo> seIngesaronDatos;
+        public event Action<string> noSePudoDarDeAlta;
         bool result;
         string path;
         public FrmAltaServicio()
         {
             InitializeComponent();
         }
-        
+
         public FrmAltaServicio(Servicio unServicio)
         {
             InitializeComponent();
@@ -34,32 +36,34 @@ namespace FrmPreueba
 
         private void SetServicio(Servicio unServicio)
         {
-            
+
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
             result = lblFallas.ActivarControlError("No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls);
-            
-            if (result == true && string.IsNullOrWhiteSpace(rtbTextDescripcion.Text) == false && 
+
+            if (result == true && string.IsNullOrWhiteSpace(rtbTextDescripcion.Text) == false &&
              Enum.TryParse(typeof(Vehiculo.TipoDeVehiculo), this.cmbMarcaDeVehiculo.Text, out object tipoDeVehiculo) &&
              Enum.TryParse(typeof(Vehiculo.MarcaDelVehiculo), this.cmbMarcaDeVehiculo.Text, out object marcaDelVehiculo)
              && tipoDeVehiculo is Vehiculo.TipoDeVehiculo unTipoDeVehiculo && marcaDelVehiculo is Vehiculo.MarcaDelVehiculo
-             unaMarcaDelVehiculo)    
+             unaMarcaDelVehiculo)
             {
-                this.unaServicio = new Servicio(rtbTextDescripcion.Text, new Vehiculo(txtPatente.Text, unaMarcaDelVehiculo, unTipoDeVehiculo, this.txtModelo.Text, this.path));
-                OnSeIngesaronDatos(this.unaServicio);
+                this.unVehiculo = new Vehiculo(txtPatente.Text, unaMarcaDelVehiculo, unTipoDeVehiculo, this.txtModelo.Text, this.path);
+                this.unServicio = new Servicio(rtbTextDescripcion.Text, this.unVehiculo);
+                OnSeIngesaronDatos(this.unServicio, this.unVehiculo);
                 this.DialogResult = DialogResult.OK;
             }
         }
 
-        private void OnSeIngesaronDatos(Servicio unServicio)
+        private void OnSeIngesaronDatos(Servicio unServicio,Vehiculo unVehiculo)
         {
-            if(seIngesaronDatos is not null)
+            if (seIngesaronDatos is not null)
             {
-                seIngesaronDatos.Invoke(unServicio);
+                seIngesaronDatos.Invoke(unServicio, unVehiculo);
             }
-        }
+        } 
+       
 
         private void btnImagen_Click(object sender, EventArgs e)
         {

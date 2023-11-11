@@ -205,12 +205,29 @@ namespace Entidades
         }
 
         internal List<Diagnostico> Diagnosticos { get => diagnosticos;  }
+        
         public Mecanico UnMecanico { get => unMecanico;
 
-            internal set
+            set
             {
                this.unMecanico = value;
                
+            }
+        }
+
+        public string MecanicoAsignado
+        {
+            get
+            {
+                string respuesta;
+                respuesta = "No Asignado";
+                
+                if (this.unMecanico is not null)
+                {
+                    respuesta = this.unMecanico.Nombre;
+                }
+
+                return respuesta;
             }
         }
 

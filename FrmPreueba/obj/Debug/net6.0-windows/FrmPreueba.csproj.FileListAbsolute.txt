@@ -30,3 +30,5 @@ C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\TallerMecanico.FrmMenuPrincipal.resources
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.FrmAltaServicio.resources
 C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\TallerMecanico.FrmMostrarcs.resources
+C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.FrmSevicios.resources
+C:\Users\PC\Desktop\ejeMecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.Properties.Resources.resources

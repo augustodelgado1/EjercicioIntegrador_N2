@@ -31,9 +31,10 @@ namespace Entidades
         {
             bool estado;
             estado = false;
+            char[] separadores = { ' ', ',', '.', '_', '-' };
             if (!string.IsNullOrWhiteSpace(dni))
             {
-                dni = dni.Replace(" ", "");
+                dni = dni.BorrarCaracteres(separadores);
                 estado = dni.EsNumerica() == true && dni.Length >= 6
                && dni.Length <= 8;
             }

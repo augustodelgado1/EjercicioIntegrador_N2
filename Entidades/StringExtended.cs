@@ -16,7 +16,10 @@ namespace Entidades
             {
                 foreach (char caracterDeLaLista in charsAremplazar)
                 {
-                    result.Remove(caracterDeLaLista);
+                    if (texto.Contains(caracterDeLaLista) == true)
+                    {
+                        result = texto.Replace(caracterDeLaLista.ToString(), "");
+                    }
                 }
             }
 

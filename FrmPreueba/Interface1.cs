@@ -8,8 +8,8 @@ namespace FrmPreueba
 {
     internal interface IAbm<T> where T : class
     {
-        public bool Alta();
-        public bool Modificacion(int index);
+        public T Alta();
+        public T Modificacion(int index);
         public bool Baja(int index);
         public void Mostrar(int index);
     }

@@ -21,9 +21,9 @@ namespace FrmPreueba
             InitializeComponent();
            
         }
-
         private void FrmClientesList_Load(object? sender, EventArgs e)
         {
+            base.cmbFilter.Visible = false; 
             base.btnAgregar.Text = "Agregar un Cliente";
             base.btnModificar.Text = "Modificar un Cliente";
             base.btnCargar.Text = "Cargar Archivo";
@@ -35,9 +35,15 @@ namespace FrmPreueba
             base.Buscador += FrmClientesList_Buscador; 
         }
 
-        private List<Cliente> FrmClientesList_Buscador(string text)
+        private List<Cliente> FrmClientesList_Buscador(string text, List<Cliente> listaDeClientes)
         {
-            return listGeneric.FindAll(unCliente => unCliente is not null && unCliente.Nombre == text);
+            List<Cliente> result = default;
+            if (listaDeClientes is not null && string.IsNullOrWhiteSpace(text) == false)
+            {
+                text = text.ToLower();
+                result = listaDeClientes.FindAll(unCliente => unCliente is not null && unCliente.Nombre.Contains(text) );
+            }
+            return result;
         }
         private void FrmClientesList_InformarError(string titulo, string mensajeDeError)
         {
@@ -49,30 +55,37 @@ namespace FrmPreueba
             MessageBox.Show(mensajeDeError, titulo, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        public override bool Alta()
+        public override Cliente Alta()
         {
             FrmAltaDePersona frmAltaDeCliente = new FrmAltaDePersona(Usuario.Roles.Cliente);
             bool estado;
             frmAltaDeCliente.seIngesaronDatos += FrmAltaDeCliente_seRealizoUnAlta;
-            if(estado = frmAltaDeCliente.ShowDialog() == DialogResult.OK)
+            if(estado = frmAltaDeCliente.ShowDialog() != DialogResult.OK)
             {
-                listGeneric.Add(unCliente);
+                unCliente = null;
             }
-            return estado;
+            return unCliente;
         }
 
-        protected override void ConfigurarDataGrid(DataGridViewColumnCollection columnas)
+        protected override void ActualizarDataGried(DataGridView dgtv, List<Cliente> lista)
         {
-            foreach (DataGridViewColumn col in columnas)
+            string textoCot;
+            if (dgtv is not null && lista is not null)
             {
-                col.SortMode = DataGridViewColumnSortMode.NotSortable;
-                if (col is not null && (string.Compare(col.Name, "rol", true) == 0
-                    || string.Compare(col.Name, "path", true) == 0 
-                    || string.Compare(col.Name, "gastos", true) == 0))
+                dgtv.Rows.Clear();
+                foreach (Cliente unCliente in lista)
                 {
-                    col.Visible = false;
+                    dgtv.Rows.Add(unCliente.Nombre, unCliente.Email, unCliente.FechaDeNacimiento, unCliente.Gastos);
                 }
             }
+        }
+
+        protected override void AgregarColumnasDataGried(DataGridView dgtvList, List<Cliente> listGeneric)
+        {
+            dgtvList.Columns.Add("colClienteName", "Nombre");
+            dgtvList.Columns.Add("colEmailName", "Email");
+            dgtvList.Columns.Add("colFechaDeNacimiento", "FechaDeNacimiento");
+            dgtvList.Columns.Add("colGastos", "Gastos");
         }
 
         private void FrmAltaDeCliente_seRealizoUnAlta(Persona obj)
@@ -85,32 +98,21 @@ namespace FrmPreueba
 
         public override bool Baja(int index)
         {
-            bool estado = false;
-            if (listGeneric.Count  > 0 && index >= 0 && index <= listGeneric.Count)
-            {
-                listGeneric.Remove(listGeneric[index]);
-                estado = true;
-            }
-
-            return estado;
+            return true;
         }
 
-        public override bool Modificacion(int index)
+        public override Cliente Modificacion(int index)
         {
             bool estado = false;
             FrmAltaDePersona frmAltaDeCliente;
-            if (listGeneric.Count > 0 && index >= 0 && index <= listGeneric.Count)
+            frmAltaDeCliente = new FrmAltaDePersona(Usuario.Roles.Cliente, base[index]);
+            frmAltaDeCliente.seIngesaronDatos += FrmAltaDeCliente_seRealizoUnAlta;
+            estado = true;
+            if(frmAltaDeCliente.ShowDialog() != DialogResult.OK)
             {
-                frmAltaDeCliente = new FrmAltaDePersona(Usuario.Roles.Cliente, listGeneric[index]);
-                frmAltaDeCliente.seIngesaronDatos += FrmAltaDeCliente_seRealizoUnAlta;
-                estado = true;
-                if(frmAltaDeCliente.ShowDialog() == DialogResult.OK)
-                {
-                    listGeneric[index] = unCliente;
-                }
+                unCliente = null;
             }
-
-            return estado;
+            return unCliente;
         }
         public override void Mostrar(int index)
         {

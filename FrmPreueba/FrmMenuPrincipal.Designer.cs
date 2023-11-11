@@ -28,79 +28,153 @@
         /// </summary>
         private void InitializeComponent()
         {
-            menuStrip1 = new MenuStrip();
-            principalToolStripMenuItem = new ToolStripMenuItem();
-            clientesToolStripMenuItem = new ToolStripMenuItem();
-            serviciosToolStripMenuItem = new ToolStripMenuItem();
-            vehiculosToolStripMenuItem = new ToolStripMenuItem();
-            configuracionToolStripMenuItem = new ToolStripMenuItem();
-            menuStrip1.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            lblTitulo = new Label();
+            btnInicio = new Button();
+            btnClientes = new Button();
+            btnCofig = new Button();
+            btnServicio = new Button();
+            btnVehiculos = new Button();
+            panelContenedor = new Panel();
+            panel1 = new Panel();
+            btnSalir = new Button();
+            timer1 = new System.Windows.Forms.Timer(components);
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // menuStrip1
+            // lblTitulo
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { principalToolStripMenuItem, clientesToolStripMenuItem, serviciosToolStripMenuItem, vehiculosToolStripMenuItem, configuracionToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 24);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
-            menuStrip1.ItemClicked += menuStrip1_ItemClicked;
+            lblTitulo.AutoSize = true;
+            lblTitulo.Font = new Font("Arial", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            lblTitulo.Location = new Point(320, 11);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(147, 23);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "Taller Mecanico";
             // 
-            // principalToolStripMenuItem
+            // btnInicio
             // 
-            principalToolStripMenuItem.Name = "principalToolStripMenuItem";
-            principalToolStripMenuItem.Size = new Size(68, 20);
-            principalToolStripMenuItem.Text = " Principal";
+            btnInicio.FlatStyle = FlatStyle.System;
+            btnInicio.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            btnInicio.Location = new Point(51, 44);
+            btnInicio.Name = "btnInicio";
+            btnInicio.Size = new Size(119, 30);
+            btnInicio.TabIndex = 4;
+            btnInicio.Text = "Inicio";
+            btnInicio.UseVisualStyleBackColor = true;
+            btnInicio.Click += btnInicio_Click;
             // 
-            // clientesToolStripMenuItem
+            // btnClientes
             // 
-            clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
-            clientesToolStripMenuItem.Size = new Size(61, 20);
-            clientesToolStripMenuItem.Text = "Clientes";
-            clientesToolStripMenuItem.Click += clientesToolStripMenuItem_Click;
+            btnClientes.FlatStyle = FlatStyle.System;
+            btnClientes.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            btnClientes.Location = new Point(176, 44);
+            btnClientes.Name = "btnClientes";
+            btnClientes.Size = new Size(122, 30);
+            btnClientes.TabIndex = 0;
+            btnClientes.Text = "Clientes";
+            btnClientes.UseVisualStyleBackColor = true;
+            btnClientes.Click += btnClientes_Click;
             // 
-            // serviciosToolStripMenuItem
+            // btnCofig
             // 
-            serviciosToolStripMenuItem.Name = "serviciosToolStripMenuItem";
-            serviciosToolStripMenuItem.Size = new Size(65, 20);
-            serviciosToolStripMenuItem.Text = "Servicios";
+            btnCofig.FlatStyle = FlatStyle.System;
+            btnCofig.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            btnCofig.Location = new Point(534, 44);
+            btnCofig.Name = "btnCofig";
+            btnCofig.Size = new Size(109, 30);
+            btnCofig.TabIndex = 3;
+            btnCofig.Text = "Configuracion";
+            btnCofig.UseVisualStyleBackColor = true;
+            btnCofig.Click += btnCofig_Click;
             // 
-            // vehiculosToolStripMenuItem
+            // btnServicio
             // 
-            vehiculosToolStripMenuItem.Name = "vehiculosToolStripMenuItem";
-            vehiculosToolStripMenuItem.Size = new Size(69, 20);
-            vehiculosToolStripMenuItem.Text = "Vehiculos";
+            btnServicio.FlatStyle = FlatStyle.System;
+            btnServicio.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            btnServicio.Location = new Point(304, 44);
+            btnServicio.Name = "btnServicio";
+            btnServicio.Size = new Size(105, 30);
+            btnServicio.TabIndex = 1;
+            btnServicio.Text = "Servicio";
+            btnServicio.UseVisualStyleBackColor = true;
+            btnServicio.Click += btnServicio_Click;
             // 
-            // configuracionToolStripMenuItem
+            // btnVehiculos
             // 
-            configuracionToolStripMenuItem.Name = "configuracionToolStripMenuItem";
-            configuracionToolStripMenuItem.Size = new Size(95, 20);
-            configuracionToolStripMenuItem.Text = "Configuracion";
-            configuracionToolStripMenuItem.Click += configuracionToolStripMenuItem_Click;
+            btnVehiculos.FlatStyle = FlatStyle.System;
+            btnVehiculos.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            btnVehiculos.Location = new Point(415, 44);
+            btnVehiculos.Name = "btnVehiculos";
+            btnVehiculos.Size = new Size(113, 30);
+            btnVehiculos.TabIndex = 2;
+            btnVehiculos.Text = "Vehiculos";
+            btnVehiculos.UseVisualStyleBackColor = true;
+            btnVehiculos.Click += btnVehiculos_Click;
+            // 
+            // panelContenedor
+            // 
+            panelContenedor.Dock = DockStyle.Fill;
+            panelContenedor.Location = new Point(0, 0);
+            panelContenedor.Name = "panelContenedor";
+            panelContenedor.Size = new Size(800, 450);
+            panelContenedor.TabIndex = 2;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.SteelBlue;
+            panel1.Controls.Add(btnSalir);
+            panel1.Controls.Add(btnCofig);
+            panel1.Controls.Add(btnClientes);
+            panel1.Controls.Add(btnVehiculos);
+            panel1.Controls.Add(btnServicio);
+            panel1.Controls.Add(btnInicio);
+            panel1.Controls.Add(lblTitulo);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(800, 77);
+            panel1.TabIndex = 2;
+            // 
+            // btnSalir
+            // 
+            btnSalir.FlatStyle = FlatStyle.System;
+            btnSalir.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            btnSalir.Location = new Point(649, 44);
+            btnSalir.Name = "btnSalir";
+            btnSalir.Size = new Size(105, 30);
+            btnSalir.TabIndex = 5;
+            btnSalir.Text = "Salir";
+            btnSalir.UseVisualStyleBackColor = true;
+            btnSalir.Click += btnSalir_Click;
             // 
             // FrmMenuPrincipal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(menuStrip1);
-            MainMenuStrip = menuStrip1;
+            Controls.Add(panel1);
+            Controls.Add(panelContenedor);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FrmMenuPrincipal";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmMenuPrincipal";
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem principalToolStripMenuItem;
-        private ToolStripMenuItem clientesToolStripMenuItem;
-        private ToolStripMenuItem serviciosToolStripMenuItem;
-        private ToolStripMenuItem configuracionToolStripMenuItem;
-        private ToolStripMenuItem vehiculosToolStripMenuItem;
+        private Label lblTitulo;
+        private Button btnCofig;
+        private Button btnVehiculos;
+        private Button btnServicio;
+        private Button btnClientes;
+        private Button btnInicio;
+        private Panel panelContenedor;
+        private Panel panel1;
+        private System.Windows.Forms.Timer timer1;
+        private Button btnSalir;
     }
 }

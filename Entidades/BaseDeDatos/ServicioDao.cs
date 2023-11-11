@@ -102,7 +102,7 @@ namespace Entidades.BaseDeDatos
                 {
                     while (dataReader.Read())
                     {
-                        unDiagnostico = Diagnostico.BuscarPorId(Negocio.listaDiagnostico, Convert.ToInt32(dataReader["idServicio"]));
+                        unDiagnostico = Diagnostico.BuscarPorId(Negocio.ListaDiagnostico, Convert.ToInt32(dataReader["idServicio"]));
                         unServicio = Servicio.BuscarPorId(Negocio.ListaDeServicio, Convert.ToInt32(dataReader["idDiagnostico"]));
 
                         if (unServicio + unDiagnostico == false)
@@ -185,7 +185,7 @@ namespace Entidades.BaseDeDatos
         public override Servicio ObtenerUnElemento(SqlDataReader dataReader)
         {
             return new Servicio(Convert.ToInt32(dataReader["id"]),
-                Convert.ToString(dataReader["descripcion"]), Convert.ToDateTime(dataReader["fechaDeIngreso"]), Convert.ToDateTime(dataReader["fechaDeEgreso"]), Vehiculo.BuscarPorId(Negocio.listaDeVehiculos,Convert.ToInt32(dataReader["idDeVehiculo"]))
+                Convert.ToString(dataReader["descripcion"]), Convert.ToDateTime(dataReader["fechaDeIngreso"]), Convert.ToDateTime(dataReader["fechaDeEgreso"]), Vehiculo.BuscarPorId(Negocio.ListaDeVehiculos,Convert.ToInt32(dataReader["idDeVehiculo"]))
                 , Cliente.BuscarPorId(Negocio.ListaDeClientes, Convert.ToInt32(dataReader["idCliente"])), (Servicio.EstadoDelSevicio)Convert.ToInt32(dataReader["estado"]));
         }
     }

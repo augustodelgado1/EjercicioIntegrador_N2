@@ -1,4 +1,5 @@
 using Entidades;
+using TallerMecanico;
 
 namespace FrmPreueba
 {
@@ -13,7 +14,7 @@ namespace FrmPreueba
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new FrmClientesList(Negocio.listaDeCliente));
+            Application.Run(new FrmMenuPrincipal(Negocio.unClienteRandom));
         }
     }
 }

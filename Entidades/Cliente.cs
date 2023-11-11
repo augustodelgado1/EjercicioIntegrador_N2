@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using static Entidades.Servicio;
 
 namespace Entidades
@@ -144,13 +145,35 @@ namespace Entidades
 
             return result;
         }
+        public List<Servicio> Servicios { get => this.servicios; }
+        public int CantidadDeServicios { get => this.servicios.Count; }
 
-       
-        internal List<Servicio> Servicios { get => this.servicios; }
+        [JsonIgnore]
         public List<Servicio> ServiciosEnProcesos { get =>  Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.EnProceso); }
+
+        [JsonIgnore]
         public List<Servicio> ServiciosTerminados { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Terminado); }
+
+        [JsonIgnore]
         public List<Servicio> ServiciosCancelado { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Cancelado); }
-        public float Gastos { get => CalcularGastosTotales(); }
+
+        [JsonIgnore]
+        public string Gastos { 
+            get 
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("No se realizo gastos");
+                float gastos = this.CalcularGastosTotales();
+                if (gastos > 0)
+                {
+                    stringBuilder.Clear();
+                    stringBuilder.Append(gastos.ToString());
+                }
+
+                return stringBuilder.ToString();
+            } 
+        
+        }
     }
 
    

@@ -32,10 +32,11 @@ namespace Entidades
         {
             bool result;
             result = false;
+            char[] separadores = { ' ', ',', '.', '_', '-' };
             if (string.IsNullOrWhiteSpace(patente) == false)
             {
+                patente = patente.BorrarCaracteres(separadores);
                 patente = patente.ToUpper();
-                patente = patente.Replace(" ", "");
                 result = patente.EsAlphaNumerica()
                     && patente.Length >= 6 && patente.Length <= 7;
             }
@@ -92,7 +93,7 @@ namespace Entidades
             } 
         }
 
-        public Servicio Servicio { get => servicio;
+        public Servicio Servicio { get => this.servicio;
 
             set
             {

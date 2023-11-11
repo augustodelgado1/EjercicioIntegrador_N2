@@ -44,7 +44,7 @@
             // txtPatente
             // 
             txtPatente.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtPatente.Location = new Point(13, 9);
+            txtPatente.Location = new Point(47, 9);
             txtPatente.Name = "txtPatente";
             txtPatente.PlaceholderText = "Patente";
             txtPatente.Size = new Size(243, 29);
@@ -53,7 +53,7 @@
             // 
             // rtbTextDescripcion
             // 
-            rtbTextDescripcion.Location = new Point(13, 215);
+            rtbTextDescripcion.Location = new Point(45, 211);
             rtbTextDescripcion.Name = "rtbTextDescripcion";
             rtbTextDescripcion.Size = new Size(243, 86);
             rtbTextDescripcion.TabIndex = 1;
@@ -63,7 +63,7 @@
             // txtModelo
             // 
             txtModelo.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtModelo.Location = new Point(13, 44);
+            txtModelo.Location = new Point(47, 44);
             txtModelo.Name = "txtModelo";
             txtModelo.PlaceholderText = "Modelo";
             txtModelo.Size = new Size(243, 29);
@@ -75,7 +75,7 @@
             cmbTipoDeVehiculo.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTipoDeVehiculo.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
             cmbTipoDeVehiculo.FormattingEnabled = true;
-            cmbTipoDeVehiculo.Location = new Point(12, 99);
+            cmbTipoDeVehiculo.Location = new Point(46, 99);
             cmbTipoDeVehiculo.Name = "cmbTipoDeVehiculo";
             cmbTipoDeVehiculo.Size = new Size(243, 28);
             cmbTipoDeVehiculo.TabIndex = 3;
@@ -85,7 +85,7 @@
             cmbMarcaDeVehiculo.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMarcaDeVehiculo.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
             cmbMarcaDeVehiculo.FormattingEnabled = true;
-            cmbMarcaDeVehiculo.Location = new Point(13, 154);
+            cmbMarcaDeVehiculo.Location = new Point(47, 154);
             cmbMarcaDeVehiculo.Name = "cmbMarcaDeVehiculo";
             cmbMarcaDeVehiculo.Size = new Size(243, 28);
             cmbMarcaDeVehiculo.TabIndex = 4;
@@ -95,7 +95,7 @@
             // 
             lblTipoDeVehiculo.AutoSize = true;
             lblTipoDeVehiculo.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            lblTipoDeVehiculo.Location = new Point(12, 76);
+            lblTipoDeVehiculo.Location = new Point(46, 76);
             lblTipoDeVehiculo.Name = "lblTipoDeVehiculo";
             lblTipoDeVehiculo.Size = new Size(122, 20);
             lblTipoDeVehiculo.TabIndex = 5;
@@ -105,7 +105,7 @@
             // 
             lblMarcaDelVehiculo.AutoSize = true;
             lblMarcaDelVehiculo.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            lblMarcaDelVehiculo.Location = new Point(13, 131);
+            lblMarcaDelVehiculo.Location = new Point(47, 131);
             lblMarcaDelVehiculo.Name = "lblMarcaDelVehiculo";
             lblMarcaDelVehiculo.Size = new Size(137, 20);
             lblMarcaDelVehiculo.TabIndex = 6;
@@ -115,7 +115,7 @@
             // 
             lblDescripcion.AutoSize = true;
             lblDescripcion.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            lblDescripcion.Location = new Point(12, 192);
+            lblDescripcion.Location = new Point(44, 188);
             lblDescripcion.Name = "lblDescripcion";
             lblDescripcion.Size = new Size(182, 20);
             lblDescripcion.TabIndex = 7;
@@ -124,7 +124,7 @@
             // btnIngresar
             // 
             btnIngresar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            btnIngresar.Location = new Point(85, 392);
+            btnIngresar.Location = new Point(110, 411);
             btnIngresar.Name = "btnIngresar";
             btnIngresar.Size = new Size(109, 36);
             btnIngresar.TabIndex = 8;
@@ -135,7 +135,7 @@
             // btnImagen
             // 
             btnImagen.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            btnImagen.Location = new Point(12, 307);
+            btnImagen.Location = new Point(44, 303);
             btnImagen.Name = "btnImagen";
             btnImagen.Size = new Size(246, 39);
             btnImagen.TabIndex = 9;
@@ -146,10 +146,11 @@
             // lblFallas
             // 
             lblFallas.AutoSize = true;
-            lblFallas.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            lblFallas.Location = new Point(12, 358);
+            lblFallas.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            lblFallas.ForeColor = Color.Red;
+            lblFallas.Location = new Point(-1, 360);
             lblFallas.Name = "lblFallas";
-            lblFallas.Size = new Size(62, 20);
+            lblFallas.Size = new Size(66, 18);
             lblFallas.TabIndex = 10;
             lblFallas.Text = "lblFallas";
             // 
@@ -157,7 +158,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(272, 440);
+            ClientSize = new Size(322, 459);
             Controls.Add(lblFallas);
             Controls.Add(btnImagen);
             Controls.Add(btnIngresar);

@@ -9,12 +9,12 @@ namespace Entidades
 {
     public static class Negocio
     {
-        public static List<Usuario> listaDeUsuarios;
+        private static List<Usuario> listaDeUsuarios;
         public static List<Persona> listaDePersona;
         public static List<Cliente> listaDeCliente;
-        public static List<Vehiculo> listaDeVehiculos;
-        public static List<Diagnostico> listaDiagnostico;
-        public static List<Servicio> listaDeServicio;
+        private static List<Vehiculo> listaDeVehiculos;
+        private static List<Diagnostico> listaDiagnostico;
+        private static List<Servicio> listaDeServicio;
         private static Usuario unUsuario;
         static Negocio()
         {
@@ -63,10 +63,13 @@ namespace Entidades
         public static List<Cliente> ListaDeClientes { get => Persona.ObtenerLista<Cliente>(listaDeUsuarios); }
         public static Cliente unClienteRandom {
 
-            get { List<Cliente> listaDeClientes = ListaDeClientes;
-
-
-                return listaDeClientes.ElementAt(new Random().Next(0, listaDeClientes.Count));
+            get { ;
+                Cliente unCliente = default;
+                if(listaDeCliente is not null && listaDeCliente.Count > 0)
+                {
+                    unCliente = listaDeCliente.ElementAt(new Random().Next(0, listaDeCliente.Count));
+                }
+                return unCliente;
             }
         }
         
@@ -81,6 +84,9 @@ namespace Entidades
         public static List<Mecanico> ListaDeMecanicos { get => Persona.ObtenerLista<Mecanico>(listaDeUsuarios); }
         public static List<Servicio> ListaDeServicio { get => listaDeServicio; set => listaDeServicio = value; }
         public static Usuario UnUsuario { get => unUsuario; }
+        public static List<Diagnostico> ListaDiagnostico { get => listaDiagnostico; set => listaDiagnostico = value; }
+        public static List<Usuario> ListaDeUsuarios { get => listaDeUsuarios; set => listaDeUsuarios = value; }
+        public static List<Vehiculo> ListaDeVehiculos { get => listaDeVehiculos; set => listaDeVehiculos = value; }
 
         public static void SetUser(Usuario obj)
         {

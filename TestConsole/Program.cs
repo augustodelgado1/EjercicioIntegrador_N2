@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using System.Threading.Channels;
 using Entidades;
@@ -28,7 +29,22 @@ namespace TestConsole
             Vehiculo veh;
             
             Servicio ser;
-            List<Cliente> listaDeVehiculos = Negocio.ListaDeClientes; ;
+            List<Cliente> listaDeVehiculos = Negocio.Clientes; ;
+
+
+            Type type = typeof(Cliente);
+            PropertyInfo[] props = type.GetProperties();
+            
+            foreach (PropertyInfo unaProperty in props)
+            {
+                var methodinfo =  unaProperty.GetGetMethod();
+
+                if(methodinfo is not null)
+                {
+                    methodinfo.Invoke(type, null);
+                }
+            }
+
 
             
                 do
@@ -109,13 +125,7 @@ namespace TestConsole
                                                 break;
 
                                             case 2:
-                                                foreach (Servicio unServicio in ((Cliente)unUsuario).ServiciosEnProcesos)
-                                                {
-                                                    if (unServicio is not null)
-                                                    {
-                                                        Console.WriteLine(unServicio.ToString());
-                                                    }
-                                                }
+                                              
 
                                                 Console.WriteLine("Ingresa el indice ");
                                                 index = int.Parse(Console.ReadLine());
@@ -179,9 +189,9 @@ namespace TestConsole
 
                             case 4:
 
-                                if (Negocio.ListaDeClientes.Count > 0)
+                                if (Negocio.Clientes.Count > 0)
                                 {
-                                    foreach (Cliente unCliente in Negocio.ListaDeClientes)
+                                    foreach (Cliente unCliente in Negocio.Clientes)
                                     {
                                         if (unCliente is not null)
                                         {

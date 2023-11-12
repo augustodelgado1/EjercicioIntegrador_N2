@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public static class Negocio
+    public class Negocio
     {
         private static List<Usuario> listaDeUsuarios;
-        public static List<Persona> listaDePersona;
-        public static List<Cliente> listaDeCliente;
+        private static List<Persona> listaDePersona;
+        private static List<Cliente> listaDeCliente;
         private static List<Vehiculo> listaDeVehiculos;
         private static List<Diagnostico> listaDiagnostico;
         private static List<Servicio> listaDeServicio;
-        private static Usuario unUsuario;
         static Negocio()
         {
             listaDeCliente = new List<Cliente>();
@@ -60,7 +59,7 @@ namespace Entidades
 
 
         }
-        public static List<Cliente> ListaDeClientes { get => Persona.ObtenerLista<Cliente>(listaDeUsuarios); }
+        public static List<Cliente> Clientes { get => listaDeCliente; }
         public static Cliente unClienteRandom {
 
             get { ;
@@ -83,17 +82,9 @@ namespace Entidades
         }
         public static List<Mecanico> ListaDeMecanicos { get => Persona.ObtenerLista<Mecanico>(listaDeUsuarios); }
         public static List<Servicio> ListaDeServicio { get => listaDeServicio; set => listaDeServicio = value; }
-        public static Usuario UnUsuario { get => unUsuario; }
         public static List<Diagnostico> ListaDiagnostico { get => listaDiagnostico; set => listaDiagnostico = value; }
         public static List<Usuario> ListaDeUsuarios { get => listaDeUsuarios; set => listaDeUsuarios = value; }
         public static List<Vehiculo> ListaDeVehiculos { get => listaDeVehiculos; set => listaDeVehiculos = value; }
 
-        public static void SetUser(Usuario obj)
-        {
-            if(obj is not null)
-            {
-                unUsuario = obj;
-            }
-        }
     }
 }

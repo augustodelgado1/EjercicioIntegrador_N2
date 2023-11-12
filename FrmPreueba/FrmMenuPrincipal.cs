@@ -40,8 +40,12 @@ namespace TallerMecanico
 
         private void FrmMenuPrincipal_FormClosing(object? sender, FormClosingEventArgs e)
         {
-            e.Cancel = ConfirmarSalida("¿Esta seguro que quiere salir?", "Salir");
-            OnSeCierraElForm();
+            if(Confirmar("¿Esta seguro que quiere salir?", "Salir") == false)
+            {
+                e.Cancel = true;
+                OnSeCierraElForm();
+            }
+            
         }
 
         public void SetUser(Usuario unUsuario)
@@ -64,12 +68,12 @@ namespace TallerMecanico
         /// <param name="mensaje">un Mesaje que se va a mostrar</param>
         /// <param name="titulo">el titulo del mensaje</param>
         /// <returns>(si == true)</returns>
-        private bool ConfirmarSalida(string mensaje, string titulo)
+        public static bool Confirmar(string mensaje, string titulo)
         {
             bool resultado = false;
 
             if (string.IsNullOrWhiteSpace(mensaje) == false && string.IsNullOrWhiteSpace(titulo) == false
-             && MessageBox.Show(mensaje, titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+             && MessageBox.Show(mensaje, titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 resultado = true;
             }
@@ -94,13 +98,13 @@ namespace TallerMecanico
 
         private void btnClientes_Click(object sender, EventArgs e)
         {
-            frmClientes = new FrmClientesList(Negocio.listaDeCliente);
+            frmClientes = new FrmClientesList(Negocio.Clientes);
             AbrirPanel(frmClientes);
         }
 
         private void btnServicio_Click(object sender, EventArgs e)
         {
-            frmSevicios = new FrmSevicios(Negocio.ListaDeServicio);
+            /*frmSevicios = new FrmSevicios(Negocio.unClienteRandom);*/
             AbrirPanel(frmSevicios);
         }
 

@@ -127,7 +127,7 @@
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(148, 31);
             btnEliminar.TabIndex = 27;
-            btnEliminar.Text = "Eliminar Cliente";
+            btnEliminar.Text = $"Eliminar un {typeof(T).Name}";
             btnEliminar.UseVisualStyleBackColor = true;
             btnEliminar.Click += BtnEliminar_Click;
             // 
@@ -140,9 +140,9 @@
             btnModificar.Name = "btnModificar";
             btnModificar.Size = new Size(148, 31);
             btnModificar.TabIndex = 26;
-            btnModificar.Text = "Modificar Cliente";
             btnModificar.UseVisualStyleBackColor = false;
             btnModificar.Click += BtnModificar_Click;
+            btnModificar.Text = $"Modificar un {typeof(T).Name}";
             // 
             // btnAgregar
             // 
@@ -150,7 +150,7 @@
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(148, 31);
             btnAgregar.TabIndex = 25;
-            btnAgregar.Text = "Agregar Cliente";
+            btnAgregar.Text = $"Agregar un {typeof(T).Name}";
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             // 
@@ -185,7 +185,7 @@
         protected Button btnGuardarArchivo;
         protected Button btnCargar;
         protected Button btnInfo;
-        protected DataGridView dgtvList;
+        private DataGridView dgtvList;
         protected Button btnEliminar;
         protected Button btnModificar;
         protected Button btnAgregar;

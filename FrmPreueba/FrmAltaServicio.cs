@@ -18,52 +18,55 @@ namespace FrmPreueba
         OpenFileDialog ofd;
         Servicio unServicio;
         Vehiculo unVehiculo;
-        Usuario.Roles unRol;
-        public event Action<Servicio,Vehiculo> seIngesaronDatos;
+        public event Action<Servicio, Vehiculo> seIngesaronDatos;
         public event Action<string> noSePudoDarDeAlta;
+        Array arrayMarcaDelVehiculo;
+        Array arrayTipoDeVehiculo;
         bool result;
         string path;
         public FrmAltaServicio()
         {
             InitializeComponent();
         }
-
-        public FrmAltaServicio(Servicio unServicio)
+        public FrmAltaServicio(Servicio unServicio):this()
         {
-            InitializeComponent();
+            this.unServicio = unServicio;
             this.SetServicio(unServicio);
         }
 
         private void SetServicio(Servicio unServicio)
         {
-
+            if (unServicio is not null)
+            {
+                rtbTextDescripcion.Text = unServicio.Descripcion;
+                txtPatente.Text = unServicio.UnVehiculo.Patente;
+                this.txtModelo.Text = unServicio.UnVehiculo.Modelo;
+                this.cmbTipoDeVehiculo.SelectedValue = unServicio.UnVehiculo.Tipo;
+                this.cmbMarcaDeVehiculo.SelectedValue = unServicio.UnVehiculo.Marca;
+            }
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
             result = lblFallas.ActivarControlError("No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls);
 
-            if (result == true && string.IsNullOrWhiteSpace(rtbTextDescripcion.Text) == false &&
-             Enum.TryParse(typeof(Vehiculo.TipoDeVehiculo), this.cmbMarcaDeVehiculo.Text, out object tipoDeVehiculo) &&
-             Enum.TryParse(typeof(Vehiculo.MarcaDelVehiculo), this.cmbMarcaDeVehiculo.Text, out object marcaDelVehiculo)
-             && tipoDeVehiculo is Vehiculo.TipoDeVehiculo unTipoDeVehiculo && marcaDelVehiculo is Vehiculo.MarcaDelVehiculo
-             unaMarcaDelVehiculo)
+            if (result == true &&! string.IsNullOrWhiteSpace(rtbTextDescripcion.Text))
             {
-                this.unVehiculo = new Vehiculo(txtPatente.Text, unaMarcaDelVehiculo, unTipoDeVehiculo, this.txtModelo.Text, this.path);
+                this.unVehiculo = new Vehiculo(txtPatente.Text, (Vehiculo.MarcaDelVehiculo)arrayMarcaDelVehiculo.GetValue(this.cmbMarcaDeVehiculo.SelectedIndex), (Vehiculo.TipoDeVehiculo)arrayTipoDeVehiculo.GetValue(cmbTipoDeVehiculo.SelectedIndex), this.txtModelo.Text, this.path);
                 this.unServicio = new Servicio(rtbTextDescripcion.Text, this.unVehiculo);
                 OnSeIngesaronDatos(this.unServicio, this.unVehiculo);
                 this.DialogResult = DialogResult.OK;
             }
         }
 
-        private void OnSeIngesaronDatos(Servicio unServicio,Vehiculo unVehiculo)
+        private void OnSeIngesaronDatos(Servicio unServicio, Vehiculo unVehiculo)
         {
             if (seIngesaronDatos is not null)
             {
                 seIngesaronDatos.Invoke(unServicio, unVehiculo);
             }
-        } 
-       
+        }
+
 
         private void btnImagen_Click(object sender, EventArgs e)
         {
@@ -76,17 +79,12 @@ namespace FrmPreueba
 
         private void txtPatente_TextChanged(object sender, EventArgs e)
         {
-            this.lblFallas.ActivarControlError<string>("la patente debe tener minimo 6  y maximo 8 caracteres", Vehiculo.ValidarPatente, this.txtPatente.Text);
+            this.lblFallas.ActivarControlError<string>("la patente debe tener min 6 y max 8 caracteres", Vehiculo.ValidarPatente, this.txtPatente.Text);
         }
 
         private void txtModelo_TextChanged(object sender, EventArgs e)
         {
             this.lblFallas.ActivarControlError<string>("el Modelo debe se alphanumerico", Vehiculo.ValidarModelo, this.txtModelo.Text);
-        }
-
-        private void lblFallas_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -102,8 +100,10 @@ namespace FrmPreueba
         private void FrmAltaServicio_Load(object sender, EventArgs e)
         {
             this.lblFallas.Visible = false;
-            this.cmbMarcaDeVehiculo.DataSource = Enum.GetValues(typeof(Vehiculo.MarcaDelVehiculo));
-            this.cmbTipoDeVehiculo.DataSource = Enum.GetValues(typeof(Vehiculo.TipoDeVehiculo));
+            arrayMarcaDelVehiculo = Enum.GetValues(typeof(Vehiculo.MarcaDelVehiculo));
+            arrayTipoDeVehiculo = Enum.GetValues(typeof(Vehiculo.TipoDeVehiculo));
+            this.cmbMarcaDeVehiculo.DataSource = arrayMarcaDelVehiculo;
+            this.cmbTipoDeVehiculo.DataSource = arrayTipoDeVehiculo;
         }
     }
 }

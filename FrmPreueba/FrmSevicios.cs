@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,57 +15,61 @@ namespace FrmPreueba
 {
     public partial class FrmSevicios : FrmListar<Servicio>
     {
+        Cliente unaCliente;
         Servicio unServicio;
-        public FrmSevicios(List<Servicio> listaDeServicio):base(listaDeServicio)
+        bool estado;
+        public FrmSevicios(Cliente unCliente):base(unCliente.Servicios)
         {
             InitializeComponent();
+            this.unaCliente = unCliente;
         }
 
         private void FrmSeviciosList_Load(object? sender, EventArgs e)
         {
             base.cmbFilter.Visible = true;
-            base.btnAgregar.Text = "Agregar un Cliente";
-            base.btnModificar.Text = "Modificar un Cliente";
-            base.btnCargar.Text = "Cargar Archivo";
-            base.btnGuardarArchivo.Text = "Guardar Archivo";
-            base.btnInfo.Text = "Mostrar Informacion Mas Ampliada";
-            base.btnEliminar.Text = "Eliminar un Cliente";
+            base.cmbFilter.DataSource = Enum.GetValues(typeof(Servicio.EstadoDelSevicio));
+            base.Filtrar += FrmSevicios_Filtrar;
             base.Informar += FrmSevicios_Informar;
             base.InformarError += FrmSevicios_InformarError;
             base.Buscador += FrmSevicios_Buscador;
         }
 
-        private void FrmClientesList_InformarError(string titulo, string mensajeDeError)
+        private List<Servicio> FrmSevicios_Filtrar(List<Servicio> unaLista,string criterio)
+        {
+            List<Servicio> result = default;
+            if (string.IsNullOrWhiteSpace(criterio) == false && unaLista is not null)
+            {
+                result = unaLista.FindAll(unServicio => unServicio.Estado.ToString() == criterio);
+            }
+            return result;
+        }
+
+        private List<Servicio> FrmSevicios_Buscador(string patente, List<Servicio> unaLista)
+        {
+            List<Servicio> result = default;
+            if (string.IsNullOrWhiteSpace(patente) == false && unaLista is not null)
+            {
+                result = unaLista.FindAll(unServicio => unServicio.UnVehiculo.Patente.Contains(patente.ToLower()) == true);
+            }
+            return result;
+        }
+
+        private void FrmSevicios_InformarError(string titulo, string mensajeDeError)
         {
             MessageBox.Show(mensajeDeError, titulo, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void FrmClientesList_Informar(string titulo, string mensajeDeError)
+        private void FrmSevicios_Informar(string titulo, string mensaje)
         {
-            MessageBox.Show(mensajeDeError, titulo, MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-
-        private List<Servicio> FrmSevicios_Buscador(string arg,List<Servicio> unaLista)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void FrmSevicios_InformarError(string arg1, string arg2)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void FrmSevicios_Informar(string arg1, string arg2)
-        {
-            throw new NotImplementedException();
+            MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public override Servicio Alta()
         {
             FrmAltaServicio frmAltaSevicio = new FrmAltaServicio();
             frmAltaSevicio.seIngesaronDatos += FrmAltaSevicio_seIngesaronDatos;
-            if (frmAltaSevicio.ShowDialog() != DialogResult.OK)
+            
+            if (unaCliente + unServicio && frmAltaSevicio.ShowDialog() != DialogResult.OK)
             {
                 this.unServicio = null;
             }
@@ -76,31 +81,64 @@ namespace FrmPreueba
             this.unServicio = unServicio;
         }
 
-        public override bool Baja(int index)
+        public override bool Baja(Servicio unServicio)
         {
+            estado = false;
+            FrmMostrar<Servicio> frmMostrar;
            
-
-            return true;
-        }
-
-        public override Servicio Modificacion(int index)
-        {
-            FrmAltaServicio frmSevicios;
-            this.unServicio = base[index];
-            frmSevicios = new FrmAltaServicio(this.unServicio);
-            frmSevicios.seIngesaronDatos += FrmAltaSevicio_seIngesaronDatos;
-            if (frmSevicios.ShowDialog() != DialogResult.OK)
+            if (unServicio is not null && unaCliente - unServicio)
             {
-                this.unServicio = null;
+                frmMostrar = new FrmMostrar<Servicio>(unServicio, unPropertyInfoPredicate, unServicio.UnVehiculo.Path, "Vehiculo");
+                frmMostrar.Activated += FrmMostrar_Shown;
+                frmMostrar.Show();
             }
 
-            return this.unServicio;
+            return estado;
         }
 
-        public override void Mostrar(int index)
+        public override bool Modificacion(Servicio unServicioEdit)
+        {
+            bool estado;
+            estado = true;
+            FrmAltaServicio frmSevicios;
+            frmSevicios = new FrmAltaServicio(unServicioEdit);
+            frmSevicios.seIngesaronDatos += FrmAltaSevicio_seIngesaronDatos;
+            if (frmSevicios.ShowDialog() == DialogResult.OK)
+            {
+                unServicioEdit = this.unServicio;
+            }
+
+            return estado;
+        }
+        public override bool Mostrar(Servicio unServicio)
+        {
+            bool estado = false;
+            FrmMostrar<Servicio> frmMostrar;
+
+            if (unServicio is not null)
+            {
+                frmMostrar = new FrmMostrar<Servicio>(unServicio, unPropertyInfoPredicate, unServicio.UnVehiculo.Path, "Un Cliente");
+                estado = true;
+            }
+
+            return estado;
+        }
+
+        private bool unPropertyInfoPredicate(PropertyInfo obj)
         {
             throw new NotImplementedException();
         }
+
+        
+        private void FrmMostrar_Shown(object? sender, EventArgs e)
+        {
+            if (sender is FrmMostrar<Servicio>)
+            {
+                estado = FrmMenuPrincipal.Confirmar("¿Esta seguro que desea eliminar ese Cliente", "Eliminar");
+                ((FrmMostrar<Servicio>)sender).Close();
+            }
+        }
+
         protected override void ActualizarDataGried(DataGridView dgtv, List<Servicio> lista)
         {
             string textoCot;

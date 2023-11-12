@@ -115,10 +115,10 @@ namespace Entidades
             }
         }
 
-        internal string Clave
+        public string Clave
         {
             get => this.Clave;
-            set
+            internal set
             {
                 if (ValidarContracenia(value))
                 {

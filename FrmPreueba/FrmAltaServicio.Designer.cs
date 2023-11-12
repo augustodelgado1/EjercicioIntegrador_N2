@@ -124,7 +124,7 @@
             // btnIngresar
             // 
             btnIngresar.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            btnIngresar.Location = new Point(110, 411);
+            btnIngresar.Location = new Point(117, 433);
             btnIngresar.Name = "btnIngresar";
             btnIngresar.Size = new Size(109, 36);
             btnIngresar.TabIndex = 8;
@@ -146,11 +146,11 @@
             // lblFallas
             // 
             lblFallas.AutoSize = true;
-            lblFallas.Font = new Font("Arial", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            lblFallas.Font = new Font("Arial", 10.25F, FontStyle.Bold, GraphicsUnit.Point);
             lblFallas.ForeColor = Color.Red;
-            lblFallas.Location = new Point(-1, 360);
+            lblFallas.Location = new Point(0, 376);
             lblFallas.Name = "lblFallas";
-            lblFallas.Size = new Size(66, 18);
+            lblFallas.Size = new Size(65, 16);
             lblFallas.TabIndex = 10;
             lblFallas.Text = "lblFallas";
             // 
@@ -158,7 +158,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(322, 459);
+            ClientSize = new Size(339, 501);
             Controls.Add(lblFallas);
             Controls.Add(btnImagen);
             Controls.Add(btnIngresar);

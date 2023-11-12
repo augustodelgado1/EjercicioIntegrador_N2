@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using FrmPreueba;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,8 +18,9 @@ namespace Interfaz
         private bool respuesta;
         public event Action<Usuario> loginUser;
         Usuario unUsuario;
+        Negocio unNegocio;
         FrmMenuPrincipal frmMenuPrincipal;
-
+        Cliente unCliente;
         public FrmLogin()
         {
             InitializeComponent();
@@ -41,7 +43,24 @@ namespace Interfaz
         }
         private void btnRegistrarse_Click(object sender, EventArgs e)
         {
+            FrmAltaDePersona frmAltaDePersona = new FrmAltaDePersona(Usuario.Roles.Cliente);
+            frmAltaDePersona.seIngesaronDatos += FrmAltaDePersona_seIngesaronDatos;
 
+            if(frmAltaDePersona.DialogResult == DialogResult.OK)
+            {
+                OnLoginUser(unUsuario);
+                frmAltaDePersona.Show();
+                this.Hide();
+            }
+        }
+       
+        private void FrmAltaDePersona_seIngesaronDatos(Persona obj)
+        {
+            if(obj is Cliente unClienteAlta)
+            {
+                unCliente = unClienteAlta;
+            }
+            
         }
 
         private void OnLoginUser(Usuario unUsuario)

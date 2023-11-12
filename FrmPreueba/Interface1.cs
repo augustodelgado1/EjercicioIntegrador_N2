@@ -9,8 +9,8 @@ namespace FrmPreueba
     internal interface IAbm<T> where T : class
     {
         public T Alta();
-        public T Modificacion(int index);
-        public bool Baja(int index);
-        public void Mostrar(int index);
+        public bool Modificacion(T element);
+        public bool Baja(T element);
+        public bool Mostrar(T element);
     }
 }

@@ -10,8 +10,6 @@ namespace Entidades
     public class Cliente: Persona
     {
         List<Servicio> servicios;
-        public event Action<Cliente,Servicio> SeAgregoUnServicio;
-        public event Action<Cliente, Servicio> SeCanceloUnServicio;
 
         internal Cliente(int id, string nombre, string dni, DateTime fechaDeNacimiento, string email, string clave, string path = null)
             : this(nombre, dni, fechaDeNacimiento, email, clave, path)
@@ -58,29 +56,9 @@ namespace Entidades
 
             return base.ToString();
         }
-       
-
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
-
-      
-
-        private void OnSeAgregoUnServicio(Servicio unServicio)
-        {
-            if (this.SeAgregoUnServicio is not null)
-            {
-                this.SeAgregoUnServicio(this, unServicio);
-            }
-        }
-        
-        private void OnSeCanceloUnServicio(Servicio unServicio)
-        {
-            if (this.SeCanceloUnServicio is not null)
-            {
-                this.SeCanceloUnServicio(this,unServicio);
-            }
         }
 
         public static bool operator +(Cliente unCliente, Servicio unServicio)
@@ -91,7 +69,6 @@ namespace Entidades
               && unCliente.servicios.Contains(unServicio) == false)
             {
                 unCliente.servicios.Add(unServicio);
-                unCliente.OnSeAgregoUnServicio(unServicio);
                 result = true;
             }
 
@@ -107,7 +84,6 @@ namespace Entidades
             if (unCliente is not null && unServicio is not null 
               && unCliente.servicios.Contains(unServicio) == true)
             {
-                unCliente.OnSeCanceloUnServicio(unServicio);
                 unServicio.Cancelar();
                 result = true;
             }
@@ -148,7 +124,7 @@ namespace Entidades
         public List<Servicio> Servicios { get => this.servicios; }
         public int CantidadDeServicios { get => this.servicios.Count; }
 
-        [JsonIgnore]
+/*        [JsonIgnore]
         public List<Servicio> ServiciosEnProcesos { get =>  Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.EnProceso); }
 
         [JsonIgnore]
@@ -156,7 +132,7 @@ namespace Entidades
 
         [JsonIgnore]
         public List<Servicio> ServiciosCancelado { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Cancelado); }
-
+*/
         [JsonIgnore]
         public string Gastos { 
             get 

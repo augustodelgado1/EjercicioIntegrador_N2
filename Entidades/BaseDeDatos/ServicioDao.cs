@@ -63,7 +63,7 @@ namespace Entidades.BaseDeDatos
             try
             {
                 coneccionSql.Open();
-                comando.CommandText = $"Select * From Servicio";
+                comando.CommandText = $"Select * From Servicio AS S INNER JOIN Cliente AS C ON S.idCliente = C.ID";
 
                 using (SqlDataReader dataReader = comando.ExecuteReader())
                 {
@@ -186,7 +186,7 @@ namespace Entidades.BaseDeDatos
         {
             return new Servicio(Convert.ToInt32(dataReader["id"]),
                 Convert.ToString(dataReader["descripcion"]), Convert.ToDateTime(dataReader["fechaDeIngreso"]), Convert.ToDateTime(dataReader["fechaDeEgreso"]), Vehiculo.BuscarPorId(Negocio.ListaDeVehiculos,Convert.ToInt32(dataReader["idDeVehiculo"]))
-                , Cliente.BuscarPorId(Negocio.ListaDeClientes, Convert.ToInt32(dataReader["idCliente"])), (Servicio.EstadoDelSevicio)Convert.ToInt32(dataReader["estado"]));
+                , Cliente.BuscarPorId(Negocio.Clientes, Convert.ToInt32(dataReader["idCliente"])), (Servicio.EstadoDelSevicio)Convert.ToInt32(dataReader["estado"]));
         }
     }
 }

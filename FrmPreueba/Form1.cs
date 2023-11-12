@@ -3,6 +3,7 @@ using Entidades;
 using FrmPreueba;
 using Microsoft.VisualBasic.FileIO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,6 +28,7 @@ namespace TallerMecanico
         public event Action<string, string> InformarError;
         public event Action<string, string> Informar;
         public event Func<string, List<T>, List<T>> Buscador;
+        public event Func<List<T>, string, List<T>> Filtrar;
         public FrmListar(List<T> listGeneric)
         {
             InitializeComponent();
@@ -56,16 +58,11 @@ namespace TallerMecanico
             AgregarColumnasDataGried(this.dgtvList, this.listGeneric);
             ActualizarDataGried(this.dgtvList, this.listGeneric);
         }
-
-        
-
         private bool OnInformarError(string titulo, string mensaje)
         {
             bool estado;
             estado = false;
-            if (this.InformarError is not null
-             && string.IsNullOrWhiteSpace(titulo) == false
-             && string.IsNullOrWhiteSpace(mensaje) == false)
+            if (this.InformarError is not null)
             {
                 this.InformarError(titulo, mensaje);
                 estado = true;
@@ -89,15 +86,25 @@ namespace TallerMecanico
             bool estado;
 
             estado = false;
-            if (this.Informar is not null
-             && string.IsNullOrWhiteSpace(titulo) == false
-             && string.IsNullOrWhiteSpace(mensaje) == false)
+            if (this.Informar is not null)
             {
                 this.Informar(titulo, mensaje);
                 estado = true;
             }
 
             return estado;
+        }
+        
+        private List<T> OnFiltrar(List<T> lista,string nombreDelFiltro)
+        {
+            List<T> result;
+            result = default;
+            if (this.Filtrar is not null)
+            {
+                result = this.Filtrar.Invoke(lista, nombreDelFiltro);
+            }
+
+            return result;
         }
         private void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -112,8 +119,7 @@ namespace TallerMecanico
         }
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
-            if (this[indexRow] is not null
-             && this.Baja(indexRow))
+            if (this.Baja(this[indexRow]) == true)
             {
                 this.listGeneric.RemoveAt(indexRow);
                 ActualizarDataGried(this.dgtvList, this.listGeneric);
@@ -123,11 +129,9 @@ namespace TallerMecanico
 
         private void BtnModificar_Click(object sender, EventArgs e)
         {
-            T element;
             if (this[indexRow] is not null 
-             && (element = this.Modificacion(indexRow)) is not null)
+             && Modificacion(this[indexRow]) == true)
             {
-                listGeneric[indexRow] = element;
                 ActualizarDataGried(this.dgtvList, this.listGeneric);
                 this.OnInformar("Modificacion", "Se realizo la modificacion correctamente");
             }
@@ -162,20 +166,20 @@ namespace TallerMecanico
             List<T> unLista;
             if ((this.openFileDialog = AbrirArchivo("Cargar archivo", "Archivo Json (*.Json)|*.Json",
               Environment.GetFolderPath(Environment.SpecialFolder.Desktop))) is not null)
-            {
+            {  
                 try
                 {
                     if ((unLista = JsonFile<T>.LeerArchivoArray(this.openFileDialog.FileName)) is not null)
                     {
                         this.listGeneric = unLista;
                         ActualizarDataGried(dgtvList, unLista);
+                        this.OnInformar("Abrir Archivo", "Se cargo el archivo correctamente");
                     }
                 }
                 catch (Exception ex)
                 {
                     OnInformarError("Abrir Archivo", ex.Message);
                 }
-
             }
         }
 
@@ -221,12 +225,18 @@ namespace TallerMecanico
 
         private void CmbFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (sender is ComboBox unComboBox)
+            {
+                this.ActualizarDataGried(this.dgtvList, OnFiltrar(this.listGeneric, unComboBox.Text));
+            }
         }
 
         private void BtnInfo_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if(this.Mostrar(this[indexRow]) == false)
+            {
+                this.OnInformarError("Error Al Mostrar",$"No Se pudo mostar el {typeof(T).Name}");
+            }
         }
         private void BtnGuardarArchivo_Click(object sender, EventArgs e)
         {
@@ -249,8 +259,8 @@ namespace TallerMecanico
         public abstract T Alta();
         protected abstract void ActualizarDataGried(DataGridView dgtv, List<T> lista);
         protected abstract void AgregarColumnasDataGried(DataGridView dgtvList, List<T> listGeneric);
-        public abstract T Modificacion(int index);
-        public abstract bool Baja(int index);
-        public abstract void Mostrar(int index);
+        public abstract bool Baja(T element);
+        public abstract bool Mostrar(T element);
+        public abstract bool Modificacion(T element);
     }
 }

@@ -16,6 +16,8 @@ namespace FrmPreueba
     public partial class FrmClientesList : FrmListar<Cliente>
     {
         Cliente unCliente;
+        bool estado;
+        private Predicate<PropertyInfo> unPropertyInfoPredicate;
         public FrmClientesList(List<Cliente> listaDeClientes) : base(listaDeClientes)
         {
             InitializeComponent();
@@ -23,16 +25,19 @@ namespace FrmPreueba
         }
         private void FrmClientesList_Load(object? sender, EventArgs e)
         {
-            base.cmbFilter.Visible = false; 
-            base.btnAgregar.Text = "Agregar un Cliente";
-            base.btnModificar.Text = "Modificar un Cliente";
-            base.btnCargar.Text = "Cargar Archivo";
-            base.btnGuardarArchivo.Text = "Guardar Archivo";
-            base.btnInfo.Text = "Mostrar Informacion Mas Ampliada";
-            base.btnEliminar.Text = "Eliminar un Cliente";
+            base.cmbFilter.Visible = false;
             base.Informar += FrmClientesList_Informar;
             base.InformarError += FrmClientesList_InformarError; 
-            base.Buscador += FrmClientesList_Buscador; 
+            base.Buscador += FrmClientesList_Buscador;
+            unPropertyInfoPredicate = unaPrpiedad =>
+            {
+                return string.Compare(unaPrpiedad.Name, "Nombre", true) == 0
+                || string.Compare(unaPrpiedad.Name, "Dni", true) == 0
+                || string.Compare(unaPrpiedad.Name, "FechaDeNacimiento", true) == 0 ||
+                string.Compare(unaPrpiedad.Name, "Gastos", true) == 0 ||
+                string.Compare(unaPrpiedad.Name, "CantidadDeServicios", true) == 0;
+
+            };
         }
 
         private List<Cliente> FrmClientesList_Buscador(string text, List<Cliente> listaDeClientes)
@@ -96,29 +101,60 @@ namespace FrmPreueba
             }
         }
 
-        public override bool Baja(int index)
+        public override bool Baja(Cliente unCliente)
         {
-            return true;
+            estado = false;
+            FrmMostrar<Cliente> frmMostrar;
+
+            if (unCliente is not null)
+            {
+                frmMostrar = new FrmMostrar<Cliente>(unCliente, unPropertyInfoPredicate, unCliente.Path, "Un Cliente");
+                frmMostrar.Activated += FrmMostrar_Shown;
+                frmMostrar.Show();
+            }
+
+            return estado;
         }
 
-        public override Cliente Modificacion(int index)
+        private void FrmMostrar_Shown(object? sender, EventArgs e)
+        {
+            if (sender is FrmMostrar<Cliente>)
+            {
+                estado = FrmMenuPrincipal.Confirmar("¿Esta seguro que desea eliminar ese Cliente", "Eliminar");
+                ((FrmMostrar<Cliente>)sender).Close();
+            }
+        }
+
+        public override bool Modificacion(Cliente unClienteEdit)
         {
             bool estado = false;
             FrmAltaDePersona frmAltaDeCliente;
-            frmAltaDeCliente = new FrmAltaDePersona(Usuario.Roles.Cliente, base[index]);
-            frmAltaDeCliente.seIngesaronDatos += FrmAltaDeCliente_seRealizoUnAlta;
-            estado = true;
-            if(frmAltaDeCliente.ShowDialog() != DialogResult.OK)
+            if (unClienteEdit is not null)
             {
-                unCliente = null;
+                frmAltaDeCliente = new FrmAltaDePersona(Usuario.Roles.Cliente, unClienteEdit);
+                frmAltaDeCliente.seIngesaronDatos += FrmAltaDeCliente_seRealizoUnAlta;
+                if (frmAltaDeCliente.ShowDialog() == DialogResult.OK)
+                {
+                    unClienteEdit = this.unCliente;
+                    estado = true;
+                }
             }
-            return unCliente;
+            return estado;
         }
-        public override void Mostrar(int index)
+
+       
+        public override bool Mostrar(Cliente unCliente)
         {
-            
+            bool estado = false;
+            FrmMostrar<Cliente> frmMostrar;
 
+            if (unCliente is not null)
+            {
+                frmMostrar = new FrmMostrar<Cliente>(unCliente, unPropertyInfoPredicate, unCliente.Path,"Un Cliente");
+                estado = true;
+            }
 
+            return estado;
         }
 
         

@@ -53,6 +53,8 @@ namespace FrmPreueba
             this.txtNombre.Text = this.unaPersona.Nombre;
             this.txtDni.Text = this.unaPersona.Dni;
             this.path = this.unaPersona.Path;
+            this.txtClave.Visible = false;
+            this.txtClave.Text = this.unaPersona.Clave;
             this.DateFechaDeNacimiento.Value = this.unaPersona.FechaDeNacimiento;
         }
 

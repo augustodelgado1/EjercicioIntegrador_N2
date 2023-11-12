@@ -17,12 +17,6 @@ namespace Entidades
         List<Diagnostico> diagnosticos;
         EstadoDelSevicio estado;
 
-        public event Action<Diagnostico> seAgregoUnDiagnostico;
-        public event Action<Vehiculo> seAgregoUnVehiculo;
-        public event Action<Vehiculo> seEliminoUnVehiculo;
-        public event Action<Servicio> CambioDeEstadoDeServicio;
-        public event Action<Diagnostico> seEliminoUnDiagnostico;
-
         private Servicio()
         {
             this.id = this.GetHashCode();

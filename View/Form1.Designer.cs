@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             button1 = new Button();
             cmbFilter = new ComboBox();
             txtBuscar = new TextBox();
@@ -44,7 +44,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(12, 138);
+            button1.Location = new Point(687, 138);
             button1.Name = "button1";
             button1.Size = new Size(148, 29);
             button1.TabIndex = 34;
@@ -56,15 +56,15 @@
             cmbFilter.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFilter.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             cmbFilter.FormattingEnabled = true;
-            cmbFilter.Location = new Point(674, 37);
+            cmbFilter.Location = new Point(687, 68);
             cmbFilter.Name = "cmbFilter";
-            cmbFilter.Size = new Size(161, 25);
+            cmbFilter.Size = new Size(148, 25);
             cmbFilter.TabIndex = 33;
             // 
             // txtBuscar
             // 
             txtBuscar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtBuscar.Location = new Point(166, 2);
+            txtBuscar.Location = new Point(12, 33);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Buscar";
             txtBuscar.Size = new Size(669, 29);
@@ -72,7 +72,7 @@
             // 
             // btnGuardarArchivo
             // 
-            btnGuardarArchivo.Location = new Point(12, 208);
+            btnGuardarArchivo.Location = new Point(687, 208);
             btnGuardarArchivo.Name = "btnGuardarArchivo";
             btnGuardarArchivo.Size = new Size(148, 28);
             btnGuardarArchivo.TabIndex = 31;
@@ -81,7 +81,7 @@
             // 
             // btnCargar
             // 
-            btnCargar.Location = new Point(12, 173);
+            btnCargar.Location = new Point(687, 173);
             btnCargar.Name = "btnCargar";
             btnCargar.Size = new Size(148, 29);
             btnCargar.TabIndex = 30;
@@ -90,7 +90,7 @@
             // 
             // btnInfo
             // 
-            btnInfo.Location = new Point(12, 352);
+            btnInfo.Location = new Point(687, 352);
             btnInfo.Name = "btnInfo";
             btnInfo.Size = new Size(148, 31);
             btnInfo.TabIndex = 29;
@@ -104,17 +104,17 @@
             dgtvList.CellBorderStyle = DataGridViewCellBorderStyle.SunkenVertical;
             dgtvList.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText;
             dgtvList.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.ActiveCaption;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.ButtonShadow;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgtvList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.ActiveCaption;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.ButtonShadow;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgtvList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgtvList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgtvList.ImeMode = ImeMode.NoControl;
-            dgtvList.Location = new Point(166, 68);
+            dgtvList.Location = new Point(12, 68);
             dgtvList.MultiSelect = false;
             dgtvList.Name = "dgtvList";
             dgtvList.ReadOnly = true;
@@ -128,7 +128,7 @@
             // 
             // btnEliminar
             // 
-            btnEliminar.Location = new Point(12, 315);
+            btnEliminar.Location = new Point(687, 315);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(148, 31);
             btnEliminar.TabIndex = 27;
@@ -140,7 +140,7 @@
             btnModificar.AutoEllipsis = true;
             btnModificar.BackColor = SystemColors.ActiveCaption;
             btnModificar.FlatStyle = FlatStyle.System;
-            btnModificar.Location = new Point(12, 278);
+            btnModificar.Location = new Point(687, 278);
             btnModificar.Name = "btnModificar";
             btnModificar.Size = new Size(148, 31);
             btnModificar.TabIndex = 26;
@@ -149,7 +149,7 @@
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(12, 241);
+            btnAgregar.Location = new Point(687, 241);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(148, 31);
             btnAgregar.TabIndex = 25;
@@ -160,7 +160,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(844, 395);
+            ClientSize = new Size(844, 388);
             Controls.Add(button1);
             Controls.Add(cmbFilter);
             Controls.Add(txtBuscar);

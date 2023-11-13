@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Entidades
 {
+    [JsonSerializable(typeof(Persona))][JsonSerializable(typeof(Mecanico))]
+    [JsonSerializable(typeof(Cliente))]
     public abstract class Usuario
     {
         protected int id;
@@ -117,7 +121,7 @@ namespace Entidades
 
         public string Clave
         {
-            get => this.Clave;
+            get => this.clave;
             internal set
             {
                 if (ValidarContracenia(value))

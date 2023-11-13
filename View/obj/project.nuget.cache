@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3tUoRRIjVQj4BD5sodGOt6iNWIlrtOrHsC+CBZKkZ/wr1LCT1pNiPK68L/kpROW4eVZnoeVvdjRq/HMTaKFYfw==",
+  "dgSpecHash": "gEO4jygCOsQFtJEgJoSUPJ+ijHDPljNJbaWWiNto6YpQ6icRy8kUN6OHeJSw1y1WTes0GpL7dAC+4NNxxj4Jtg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\View\\View.csproj",
+  "projectFilePath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\View\\View.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",

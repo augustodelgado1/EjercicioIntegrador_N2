@@ -75,8 +75,6 @@ namespace Entidades
 
             return result;
         }  
-
-       
         public static bool operator -(Cliente unCliente, Servicio unServicio)
         {
             bool result = false;
@@ -124,15 +122,15 @@ namespace Entidades
         public List<Servicio> Servicios { get => this.servicios; }
         public int CantidadDeServicios { get => this.servicios.Count; }
 
-/*        [JsonIgnore]
-        public List<Servicio> ServiciosEnProcesos { get =>  Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.EnProceso); }
+        [JsonIgnore]
+        public List<Servicio> ServiciosEnProcesos { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.EnProceso); }
 
         [JsonIgnore]
         public List<Servicio> ServiciosTerminados { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Terminado); }
 
         [JsonIgnore]
         public List<Servicio> ServiciosCancelado { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Cancelado); }
-*/
+
         [JsonIgnore]
         public string Gastos { 
             get 

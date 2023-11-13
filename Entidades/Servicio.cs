@@ -104,8 +104,6 @@ namespace Entidades
 
             return stringBuilder.ToString();
         }
-       
-
         public static bool operator +(Servicio servicio, Diagnostico unDiagnostico)
         {
             bool result = false;
@@ -169,7 +167,22 @@ namespace Entidades
         }
 
         internal int Id { get => id; }
-        public float Cotizacion { get => CalcularCosto(); }
+        internal float Cotizacion { get => CalcularCosto(); }
+        public string CotizacionStr { 
+            
+            get 
+            { 
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine($"Costo {this.Cotizacion}");
+                if (this.Cotizacion == 0)
+                {
+                    stringBuilder.Clear();
+                    stringBuilder.AppendLine("No Determinada");
+                }
+            
+                return stringBuilder.ToString();
+            }
+        }
         public EstadoDelSevicio Estado { get => estado; }
         public DateTime FechaDeIngreso { get => fechaDeIngreso; private set => this.fechaDeIngreso = value; }
         public DateTime FechaDeEgreso { get => fechaDeEgreso; private set => this.fechaDeEgreso = value; }

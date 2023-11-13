@@ -28,28 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            lbl_fallas = new Label();
             btnAceptar = new Button();
             btnRegistrarse = new Button();
             txtEmail = new TextBox();
             txtClave = new TextBox();
             lbl_Titulo = new Label();
+            lblError = new Label();
             SuspendLayout();
-            // 
-            // lbl_fallas
-            // 
-            lbl_fallas.AutoSize = true;
-            lbl_fallas.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            lbl_fallas.ForeColor = Color.Red;
-            lbl_fallas.Location = new Point(29, 166);
-            lbl_fallas.Name = "lbl_fallas";
-            lbl_fallas.Size = new Size(0, 21);
-            lbl_fallas.TabIndex = 12;
-            lbl_fallas.Visible = false;
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(24, 179);
+            btnAceptar.Location = new Point(24, 198);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(98, 32);
             btnAceptar.TabIndex = 6;
@@ -59,7 +48,7 @@
             // 
             // btnRegistrarse
             // 
-            btnRegistrarse.Location = new Point(302, 179);
+            btnRegistrarse.Location = new Point(302, 198);
             btnRegistrarse.Name = "btnRegistrarse";
             btnRegistrarse.Size = new Size(98, 32);
             btnRegistrarse.TabIndex = 7;
@@ -98,12 +87,23 @@
             lbl_Titulo.TabIndex = 11;
             lbl_Titulo.Text = "Iniciar Secion";
             // 
+            // lblError
+            // 
+            lblError.AutoSize = true;
+            lblError.Font = new Font("Arial Narrow", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            lblError.ForeColor = Color.Red;
+            lblError.Location = new Point(24, 166);
+            lblError.Name = "lblError";
+            lblError.Size = new Size(57, 20);
+            lblError.TabIndex = 13;
+            lblError.Text = "lblError";
+            // 
             // FrmLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(440, 239);
-            Controls.Add(lbl_fallas);
+            ClientSize = new Size(432, 242);
+            Controls.Add(lblError);
             Controls.Add(lbl_Titulo);
             Controls.Add(txtClave);
             Controls.Add(txtEmail);
@@ -118,11 +118,11 @@
         }
 
         #endregion
-        private Label lbl_fallas;
         private Button btnAceptar;
         private Button btnRegistrarse;
         private TextBox txtEmail;
         private TextBox txtClave;
         private Label lbl_Titulo;
+        private Label lblError;
     }
 }

@@ -493,11 +493,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\FrmPreueba.csproj",
+      "projectUniqueName": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\FrmPreueba.csproj",
       "projectName": "FrmPreueba",
-      "projectPath": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\FrmPreueba.csproj",
+      "projectPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\FrmPreueba.csproj",
       "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\obj\\",
+      "outputPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -514,8 +514,8 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "projectReferences": {
-            "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj": {
-              "projectPath": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj"
+            "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj": {
+              "projectPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj"
             }
           }
         }

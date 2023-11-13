@@ -19,16 +19,15 @@ namespace TallerMecanico
         T element;
         List<PropertyInfo> propertiesGets;
         Predicate<PropertyInfo> predicate;
-        public FrmMostrar(T element)
+        public FrmMostrar(T element,string path = null)
         {
             InitializeComponent();
             this.unTipo = typeof(T);
             this.element = element;
-
-        }
-        public FrmMostrar(T element, Predicate<PropertyInfo> predicate, string path, string titulo) : this(element)
-        {
             this.path = path;
+        }
+        public FrmMostrar(T element, Predicate<PropertyInfo> predicate, string path = null, string titulo = "Perfil") : this(element, path)
+        {
             this.Titulo = titulo;
             this.predicate = predicate;
         }
@@ -40,7 +39,6 @@ namespace TallerMecanico
                 if (predicate is not null)
                 {
                     this.propertiesGets = ObtenerPropiedades(this.propertiesGets.ToArray(), predicate);
-
                 }
                 CrearControles(this.flowLayoutPanel1.Controls, this.propertiesGets, CrearUnControl);
             }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\TestConsole\\TestConsole.csproj": {}
+    "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\TestConsole\\TestConsole.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj": {
+    "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj",
+        "projectUniqueName": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj",
         "projectName": "Entidades",
-        "projectPath": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj",
+        "projectPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj",
         "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\obj\\",
+        "outputPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -65,14 +65,14 @@
         }
       }
     },
-    "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\TestConsole\\TestConsole.csproj": {
+    "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\TestConsole\\TestConsole.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\TestConsole\\TestConsole.csproj",
+        "projectUniqueName": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\TestConsole\\TestConsole.csproj",
         "projectName": "TestConsole",
-        "projectPath": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\TestConsole\\TestConsole.csproj",
+        "projectPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\TestConsole\\TestConsole.csproj",
         "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\TestConsole\\obj\\",
+        "outputPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\TestConsole\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -89,8 +89,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj": {
-                "projectPath": "C:\\Users\\PC\\Desktop\\ejeMecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj"
+              "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj": {
+                "projectPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\Entidades\\Entidades.csproj"
               }
             }
           }

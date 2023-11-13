@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entidades
@@ -15,6 +16,13 @@ namespace Entidades
         private static List<Vehiculo> listaDeVehiculos;
         private static List<Diagnostico> listaDiagnostico;
         private static List<Servicio> listaDeServicio;
+        private Task hiloDeServicio;
+        CancellationTokenSource cancellationToken;
+
+        public Negocio()
+        {
+            cancellationToken = new CancellationTokenSource();
+        }
         static Negocio()
         {
             listaDeCliente = new List<Cliente>();
@@ -59,6 +67,151 @@ namespace Entidades
 
 
         }
+
+        public static bool operator +(Negocio unNegocio, Cliente unCliente)
+        {
+            bool result = false;
+
+            if (unCliente is not null && unNegocio is not null  
+             && Negocio.listaDeCliente.Contains(unCliente) == false)
+            {
+                Negocio.listaDeCliente.Add(unCliente);
+                result = true;
+            }
+
+
+            return result;
+        }
+
+        public static bool operator -(Negocio unNegocio, Cliente unCliente)
+        {
+            bool result = false;
+
+            if (unNegocio is not null && listaDeCliente.Contains(unCliente) == true)
+            {
+                listaDeCliente.Remove(unCliente);
+                result = true;
+            }
+
+
+            return result;
+        }
+
+        public static bool operator +(Negocio unNegocio, Servicio unServicio)
+        {
+            bool result = false;
+
+            if (unNegocio is not null && unServicio is not null
+              && Negocio.listaDeServicio.Contains(unServicio) == false)
+            {
+                Negocio.listaDeServicio.Add(unServicio);
+                result = true;
+            }
+
+
+            return result;
+        }
+
+
+        public static bool operator -(Negocio unNegocio, Servicio unServicio)
+        {
+            bool result = false;
+
+            if (unNegocio is not null && unServicio is not null
+              && Negocio.listaDeServicio.Contains(unServicio) == true)
+            {
+                unServicio.TerminarServicio();
+                result = true;
+            }
+
+
+            return result;
+        }
+        private bool GuardarBaseDeDatos()
+        {
+            bool estado;
+            estado = false;
+            try
+            {
+                new ClienteDao().Agregar(listaDeCliente);
+                new ServicioDao().Agregar(listaDeServicio);
+                new DignosticoDao().Agregar(listaDiagnostico);
+                new VehiculoDao().Agregar(listaDeVehiculos);
+             /*   new MecanicoDao().Agregar(lis);*/
+                estado = true;
+            }
+            catch (ConeccionBaseDeDatosException)
+            {
+               
+            }
+
+            return estado;
+        } 
+        
+        private bool CargarBaseDeDatos()
+        {
+            bool estado;
+            estado = false;
+            try
+            {
+                listaDeCliente = new ClienteDao().Leer();
+                listaDeUsuarios.AddRange(new MecanicoDao().Leer());
+                listaDeVehiculos = new VehiculoDao().Leer();
+                listaDiagnostico = new DignosticoDao().Leer();
+                listaDeServicio = new ServicioDao().Leer();
+                new ServicioDao().LeerBaseDeDatosRelacionalServicio_Diagnostico();
+            }
+            catch (ConeccionBaseDeDatosException)
+            {
+
+            }
+
+            return estado;
+        }
+        public bool CancelarPartida()
+        {
+            bool estado = false;
+
+            if (this.hiloDeServicio is not null && this.cancellationToken is not null 
+                && this.hiloDeServicio.IsCanceled == false)
+            {
+                this.cancellationToken.Cancel();
+                estado = true;
+            }
+            return estado;
+        }
+        private async void SimularAtencionDeServicios()
+        {
+            Servicio unServicio;
+            Diagnostico unDiagnostico;
+            List<Servicio> servicios = ServiciosEnProcesos;
+            if (servicios is not null && servicios.Count > 0)
+            {
+                while (this.hiloDeServicio.IsCanceled == false && servicios.Count > 0)
+                {
+                    unServicio = servicios.ElementAt(new Random().Next(0, servicios.Count));
+                    unDiagnostico = listaDiagnostico.ElementAt(new Random().Next(0, listaDiagnostico.Count));
+                    await Task.Delay(3000);
+
+                    if (unServicio + unDiagnostico)
+                    {
+
+                    }
+                }
+            }
+        }
+        public bool AtenderServicios()
+        {
+            bool estado;
+            estado = false;
+            if (this.hiloDeServicio is not null && this.hiloDeServicio.IsCanceled == false)
+            {
+                this.cancellationToken = new CancellationTokenSource();
+                this.hiloDeServicio = Task.Run(SimularAtencionDeServicios, this.cancellationToken.Token);
+                estado = true;
+            }
+            return estado;
+        }
         public static List<Cliente> Clientes { get => listaDeCliente; }
         public static Cliente unClienteRandom {
 
@@ -71,17 +224,18 @@ namespace Entidades
                 return unCliente;
             }
         }
-        
-        public static Mecanico unMecanicoRandom {
-
-            get { List<Mecanico> listaDeClientes = ListaDeMecanicos;
-
-
-                return listaDeClientes.ElementAt(new Random().Next(0, listaDeClientes.Count));
-            }
-        }
-        public static List<Mecanico> ListaDeMecanicos { get => Persona.ObtenerLista<Mecanico>(listaDeUsuarios); }
+       
         public static List<Servicio> ListaDeServicio { get => listaDeServicio; set => listaDeServicio = value; }
+       
+        [JsonIgnore]
+        public List<Servicio> ServiciosEnProcesos { get => Servicio.BuscarPorEstado(listaDeServicio, Servicio.EstadoDelSevicio.EnProceso); }
+
+        [JsonIgnore]
+        public List<Servicio> ServiciosTerminados { get => Servicio.BuscarPorEstado(listaDeServicio, Servicio.EstadoDelSevicio.Terminado); }
+
+        [JsonIgnore]
+        public List<Servicio> ServiciosCancelado { get => Servicio.BuscarPorEstado(listaDeServicio, Servicio.EstadoDelSevicio.Cancelado); }
+
         public static List<Diagnostico> ListaDiagnostico { get => listaDiagnostico; set => listaDiagnostico = value; }
         public static List<Usuario> ListaDeUsuarios { get => listaDeUsuarios; set => listaDeUsuarios = value; }
         public static List<Vehiculo> ListaDeVehiculos { get => listaDeVehiculos; set => listaDeVehiculos = value; }

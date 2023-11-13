@@ -15,13 +15,18 @@ namespace FrmPreueba
 {
     public partial class FrmSevicios : FrmListar<Servicio>
     {
-        Cliente unaCliente;
+        Persona unaPersona;
         Servicio unServicio;
         bool estado;
-        public FrmSevicios(Cliente unCliente):base(unCliente.Servicios)
+        public FrmSevicios(Persona unaPersona,List<Servicio> listaDeServicio) :base(listaDeServicio)
         {
             InitializeComponent();
-            this.unaCliente = unCliente;
+            this.unaPersona = unaPersona;
+        }
+        
+        public FrmSevicios(Cliente unCliente) :this(unCliente, unCliente.Servicios)
+        {
+
         }
 
         private void FrmSeviciosList_Load(object? sender, EventArgs e)
@@ -69,9 +74,11 @@ namespace FrmPreueba
             FrmAltaServicio frmAltaSevicio = new FrmAltaServicio();
             frmAltaSevicio.seIngesaronDatos += FrmAltaSevicio_seIngesaronDatos;
             
-            if (unaCliente + unServicio && frmAltaSevicio.ShowDialog() != DialogResult.OK)
+            if (unaPersona is Cliente unCliente 
+               && frmAltaSevicio.ShowDialog() == DialogResult.OK
+               && unCliente + unServicio)
             {
-                this.unServicio = null;
+
             }
             return this.unServicio;
         }
@@ -86,11 +93,16 @@ namespace FrmPreueba
             estado = false;
             FrmMostrar<Servicio> frmMostrar;
            
-            if (unServicio is not null && unaCliente - unServicio)
+            if (unaPersona is Cliente unCliente && unServicio is not null)
             {
                 frmMostrar = new FrmMostrar<Servicio>(unServicio, unPropertyInfoPredicate, unServicio.UnVehiculo.Path, "Vehiculo");
                 frmMostrar.Activated += FrmMostrar_Shown;
                 frmMostrar.Show();
+
+                if(estado == true && unCliente - unServicio == false)
+                {
+                    estado = false;
+                }
             }
 
             return estado;
@@ -118,15 +130,20 @@ namespace FrmPreueba
             if (unServicio is not null)
             {
                 frmMostrar = new FrmMostrar<Servicio>(unServicio, unPropertyInfoPredicate, unServicio.UnVehiculo.Path, "Un Cliente");
+                frmMostrar.Show();
                 estado = true;
             }
-
             return estado;
         }
 
-        private bool unPropertyInfoPredicate(PropertyInfo obj)
+        private bool unPropertyInfoPredicate(PropertyInfo unaPrpiedad)
         {
-            throw new NotImplementedException();
+            return string.Compare(unaPrpiedad.Name, "Descripcion", true) == 0
+                || string.Compare(unaPrpiedad.Name, "MecanicoAsignado", true) == 0
+                || string.Compare(unaPrpiedad.Name, "Patente", true) == 0 ||
+                   string.Compare(unaPrpiedad.Name, "CotizacionStr", true) == 0 ||
+                   string.Compare(unaPrpiedad.Name, "UnCliente", true) == 0 ||
+                   string.Compare(unaPrpiedad.Name, "Estado", true) == 0;
         }
 
         
@@ -147,12 +164,7 @@ namespace FrmPreueba
                 dgtv.Rows.Clear();
                 foreach (Servicio unServicio in lista)
                 {
-                    textoCot = unServicio.Cotizacion.ToString();
-                    if(unServicio.Cotizacion == 0)
-                    {
-                        textoCot = "No Determinado";
-                    }
-                    dgtv.Rows.Add(unServicio.UnCliente.Nombre, unServicio.MecanicoAsignado, unServicio.Descripcion, unServicio.UnVehiculo.Patente, textoCot);
+                    dgtv.Rows.Add(unServicio.UnCliente.Nombre, unServicio.MecanicoAsignado, unServicio.Descripcion, unServicio.UnVehiculo.Patente, unServicio.CotizacionStr);
                 }
             }
         }

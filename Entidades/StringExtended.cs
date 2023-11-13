@@ -9,12 +9,12 @@ namespace Entidades
     public static class StringExtended
     {
        
-        public static string BorrarCaracteres(this string texto, char[] charsAremplazar)
+        public static string BorrarCaracteres(this string texto, char[] charsABorrar)
         {
             string result = new string(texto);
-            if (charsAremplazar is not null && charsAremplazar.Length > 0)
+            if (charsABorrar is not null && charsABorrar.Length > 0)
             {
-                foreach (char caracterDeLaLista in charsAremplazar)
+                foreach (char caracterDeLaLista in charsABorrar)
                 {
                     if (texto.Contains(caracterDeLaLista) == true)
                     {

@@ -46,50 +46,32 @@ namespace FrmPreueba
         {
             this.lb_Fallas.Visible = false;
         }
-
         private void SetPersona()
         {
-            this.txtEmail.Text = this.unaPersona.Email;
-            this.txtNombre.Text = this.unaPersona.Nombre;
-            this.txtDni.Text = this.unaPersona.Dni;
-            this.path = this.unaPersona.Path;
-            this.txtClave.Visible = false;
-            this.txtClave.Text = this.unaPersona.Clave;
-            this.DateFechaDeNacimiento.Value = this.unaPersona.FechaDeNacimiento;
+            if (this.unaPersona is not null)
+            {
+                this.txtEmail.Text = this.unaPersona.Email;
+                this.txtNombre.Text = this.unaPersona.Nombre;
+                this.txtDni.Text = this.unaPersona.Dni;
+                this.path = this.unaPersona.Path;
+                this.txtClave.Visible = false;
+                this.txtClave.Text = this.unaPersona.Clave;
+                this.DateFechaDeNacimiento.Value = this.unaPersona.FechaDeNacimiento;
+            }
         }
 
         private void txtNombre_TextChanged(object sender, EventArgs e)
         {
-            result = ActivarControlError<string>(lb_Fallas, "el Nombre Debe Contener solo letras", Persona.ValidarNombre, this.txtNombre.Text);
+            result = lb_Fallas.ActivarControlError<string>("el Nombre Debe Contener solo letras", Persona.ValidarNombre, this.txtNombre.Text);
         }
-
-        private static bool ActivarControlError<T>(Control unControl, string msgError, Predicate<T> predicate, T element)
-        {
-            bool estado;
-            estado = false;
-
-            if (unControl is not null && predicate is not null)
-            {
-                unControl.Visible = true;
-                unControl.Text = msgError;
-                if ((estado = predicate.Invoke(element)) == true)
-                {
-                    estado = true;
-                    unControl.Visible = false;
-                }
-            }
-
-            return estado;
-        }
-
         private void txtDni_TextChanged(object sender, EventArgs e)
         {
-            result = ActivarControlError<string>(lb_Fallas, "el dni debe tener como min 6 y max 8 numeros", Persona.ValidarDni, this.txtDni.Text);
+            result = lb_Fallas.ActivarControlError<string>("el dni debe tener como min 6 y max 8 numeros", Persona.ValidarDni, this.txtDni.Text);
         }
 
         private void DateFechaDeNacimiento_ValueChanged(object sender, EventArgs e)
         {
-            result = ActivarControlError<DateTime>(lb_Fallas, "La fecha no es valida", Persona.ValidarFechaDeNacimiento, this.DateFechaDeNacimiento.Value);
+            result = lb_Fallas.ActivarControlError<DateTime>("La fecha no es valida", Persona.ValidarFechaDeNacimiento, this.DateFechaDeNacimiento.Value);
         }
         private Usuario CrearUsuario()
         {
@@ -108,7 +90,9 @@ namespace FrmPreueba
         }
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            result = ActivarControlError(lb_Fallas, "No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls);
+            result = lb_Fallas.ActivarControlError( "No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls) == true &&
+                lb_Fallas.ActivarControlError( "La fecha no es valida", Persona.ValidarFechaDeNacimiento, this.DateFechaDeNacimiento.Value) == true;
+            
             if (result == true)
             {
                 this.unaPersona = (Persona)this.CrearUsuario();
@@ -118,12 +102,12 @@ namespace FrmPreueba
         }
         private void txtClave_TextChanged(object sender, EventArgs e)
         {
-            result = ActivarControlError<string>(lb_Fallas, "el Clave Debe tener como minimo 8 caracteres", Persona.ValidarContracenia, this.txtClave.Text);
+            result = lb_Fallas.ActivarControlError<string>( "el Clave Debe tener como min 8 caracteres", Persona.ValidarContracenia, this.txtClave.Text);
         }
 
         private void txtEmail_TextChanged(object sender, EventArgs e)
         {
-            result = ActivarControlError<string>(lb_Fallas, "el Email Debe tener como minimo 8 caracteres", Persona.ValidarEmail, this.txtEmail.Text);
+            result = lb_Fallas.ActivarControlError<string>("el Email Debe tener como min 8 caracteres", Persona.ValidarEmail, this.txtEmail.Text);
         }
 
         private void btnImagen_Click(object sender, EventArgs e)

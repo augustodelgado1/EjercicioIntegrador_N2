@@ -22,7 +22,7 @@ namespace TallerMecanico
         where T : class
     {
         private int indexRow;
-        private List<T> listGeneric;
+        protected List<T> listGeneric;
         SaveFileDialog saveFileDialog;
         private OpenFileDialog openFileDialog;
         public event Action<string, string> InformarError;
@@ -108,20 +108,17 @@ namespace TallerMecanico
         }
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            T element;
-            element = this.Alta();
-            if (element is not null)
+            if (this.Alta() is not null)
             {
-                listGeneric.Add(element);
                 ActualizarDataGried(this.dgtvList, this.listGeneric);
                 this.OnInformar("Alta", "Se realizo la Alta correctamente");
             }
         }
         private void BtnEliminar_Click(object sender, EventArgs e)
         {
-            if (this.Baja(this[indexRow]) == true)
+            if (this[indexRow] is not null 
+             && this.Baja(this[indexRow]) == true)
             {
-                this.listGeneric.RemoveAt(indexRow);
                 ActualizarDataGried(this.dgtvList, this.listGeneric);
                 this.OnInformar("Baja", "Se realizo la Baja correctamente");
             }
@@ -171,7 +168,6 @@ namespace TallerMecanico
                 {
                     if ((unLista = JsonFile<T>.LeerArchivoArray(this.openFileDialog.FileName)) is not null)
                     {
-                        this.listGeneric = unLista;
                         ActualizarDataGried(dgtvList, unLista);
                         this.OnInformar("Abrir Archivo", "Se cargo el archivo correctamente");
                     }
@@ -252,7 +248,6 @@ namespace TallerMecanico
                 {
                     OnInformarError("Guardar archivo", ex.Message);
                 }
-
             }
         }
 

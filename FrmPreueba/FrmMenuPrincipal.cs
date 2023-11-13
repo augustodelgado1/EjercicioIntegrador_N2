@@ -40,12 +40,12 @@ namespace TallerMecanico
 
         private void FrmMenuPrincipal_FormClosing(object? sender, FormClosingEventArgs e)
         {
-            if(Confirmar("¿Esta seguro que quiere salir?", "Salir") == false)
+            if (Confirmar("¿Esta seguro que quiere salir?", "Salir") == false)
             {
                 e.Cancel = true;
                 OnSeCierraElForm();
             }
-            
+
         }
 
         public void SetUser(Usuario unUsuario)
@@ -104,8 +104,11 @@ namespace TallerMecanico
 
         private void btnServicio_Click(object sender, EventArgs e)
         {
-            /*frmSevicios = new FrmSevicios(Negocio.unClienteRandom);*/
-            AbrirPanel(frmSevicios);
+            if (unUsuario is Cliente unCliente)
+            {
+                frmSevicios = new FrmSevicios(unCliente);
+                AbrirPanel(frmSevicios);
+            }
         }
 
         private void btnVehiculos_Click(object sender, EventArgs e)
@@ -115,6 +118,11 @@ namespace TallerMecanico
 
         private void btnCofig_Click(object sender, EventArgs e)
         {
+            if (unUsuario is Persona unaPersona)
+            {
+                FrmMostrar<Persona> frmMostrar = new FrmMostrar<Persona>(unaPersona, unaPersona.Path);
+                AbrirPanel(frmMostrar);
+            }
 
         }
 

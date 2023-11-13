@@ -21,7 +21,6 @@ namespace FrmPreueba
         public FrmClientesList(List<Cliente> listaDeClientes) : base(listaDeClientes)
         {
             InitializeComponent();
-           
         }
         private void FrmClientesList_Load(object? sender, EventArgs e)
         {
@@ -65,9 +64,9 @@ namespace FrmPreueba
             FrmAltaDePersona frmAltaDeCliente = new FrmAltaDePersona(Usuario.Roles.Cliente);
             bool estado;
             frmAltaDeCliente.seIngesaronDatos += FrmAltaDeCliente_seRealizoUnAlta;
-            if(estado = frmAltaDeCliente.ShowDialog() != DialogResult.OK)
+            if(estado = frmAltaDeCliente.ShowDialog() == DialogResult.OK)
             {
-                unCliente = null;
+                this.listGeneric.Add(unCliente);
             }
             return unCliente;
         }
@@ -84,7 +83,6 @@ namespace FrmPreueba
                 }
             }
         }
-
         protected override void AgregarColumnasDataGried(DataGridView dgtvList, List<Cliente> listGeneric)
         {
             dgtvList.Columns.Add("colClienteName", "Nombre");
@@ -92,7 +90,6 @@ namespace FrmPreueba
             dgtvList.Columns.Add("colFechaDeNacimiento", "FechaDeNacimiento");
             dgtvList.Columns.Add("colGastos", "Gastos");
         }
-
         private void FrmAltaDeCliente_seRealizoUnAlta(Persona obj)
         {
             if (obj is Cliente clienteAlta)
@@ -111,6 +108,10 @@ namespace FrmPreueba
                 frmMostrar = new FrmMostrar<Cliente>(unCliente, unPropertyInfoPredicate, unCliente.Path, "Un Cliente");
                 frmMostrar.Activated += FrmMostrar_Shown;
                 frmMostrar.Show();
+                if (estado == true)
+                {
+                    estado = this.listGeneric.Remove(unCliente);
+                }
             }
 
             return estado;
@@ -141,8 +142,6 @@ namespace FrmPreueba
             }
             return estado;
         }
-
-       
         public override bool Mostrar(Cliente unCliente)
         {
             bool estado = false;
@@ -150,7 +149,8 @@ namespace FrmPreueba
 
             if (unCliente is not null)
             {
-                frmMostrar = new FrmMostrar<Cliente>(unCliente, unPropertyInfoPredicate, unCliente.Path,"Un Cliente");
+                frmMostrar = new FrmMostrar<Cliente>(unCliente, unPropertyInfoPredicate, unCliente.Path);
+                frmMostrar.Show();
                 estado = true;
             }
 

@@ -138,7 +138,7 @@ namespace Entidades
         { 
             VolgVagen,Ford,
             Golf,Scort,Nissan,
-            Toyota
+            Toyota,Honda,Pontiac
         }
 
         public enum EstadoDeVehiculo

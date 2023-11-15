@@ -36,17 +36,6 @@ namespace Entidades
             return gastosTotal;
         }
 
-        public static Cliente BuscarPorId(List<Cliente> listaDeCliente, int id)
-        {
-            Cliente result = null;
-            if (listaDeCliente is not null)
-            {
-                result = listaDeCliente.Find(unCliente => unCliente is not null && unCliente.id == id);
-            }
-
-            return result;
-        }
-
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -60,36 +49,14 @@ namespace Entidades
         {
             return base.GetHashCode();
         }
-
-        public static bool operator +(Cliente unCliente, Servicio unServicio)
+        public static bool operator ==(Cliente unCliente, Servicio unServicio)
         {
-            bool result = false;
-
-            if (unCliente is not null && unServicio is not null
-              && unCliente.servicios.Contains(unServicio) == false)
-            {
-                unCliente.servicios.Add(unServicio);
-                result = true;
-            }
-
-
-            return result;
-        }  
-        public static bool operator -(Cliente unCliente, Servicio unServicio)
-        {
-            bool result = false;
-
-            if (unCliente is not null && unServicio is not null 
-              && unCliente.servicios.Contains(unServicio) == true)
-            {
-                unServicio.Cancelar();
-                result = true;
-            }
-
-
-            return result;
+            return unCliente.servicios.Contains(unServicio);
         }
-
+        public static bool operator !=(Cliente unCliente, Servicio unServicio)
+        {
+            return !(unCliente == unServicio);
+        }
         public static bool operator +(List<Cliente> listaDeCliente, Cliente unCliente)
         {
             bool result = false;

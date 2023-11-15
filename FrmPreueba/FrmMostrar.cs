@@ -19,16 +19,16 @@ namespace TallerMecanico
         T element;
         List<PropertyInfo> propertiesGets;
         Predicate<PropertyInfo> predicate;
-        public FrmMostrar(T element,string path = null)
+        public FrmMostrar(T element,string path = null, string titulo = "Perfil")
         {
             InitializeComponent();
             this.unTipo = typeof(T);
             this.element = element;
             this.path = path;
-        }
-        public FrmMostrar(T element, Predicate<PropertyInfo> predicate, string path = null, string titulo = "Perfil") : this(element, path)
-        {
             this.Titulo = titulo;
+        }
+        public FrmMostrar(T element, Predicate<PropertyInfo> predicate, string path = null, string titulo = "Perfil") : this(element, path, titulo)
+        {
             this.predicate = predicate;
         }
         private void FrmMostrar_Load(object? sender, EventArgs e)

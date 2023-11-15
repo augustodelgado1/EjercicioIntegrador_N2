@@ -96,7 +96,7 @@
 
         #endregion
         private PictureBox pBxImagen;
-        private Button btnAceptar;
+        internal Button btnAceptar;
         private FlowLayoutPanel flowLayoutPanel1;
         private Label lblTitulo;
     }

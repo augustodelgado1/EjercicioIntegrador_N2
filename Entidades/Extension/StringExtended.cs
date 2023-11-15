@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades
+namespace Entidades.Extension
 {
     public static class StringExtended
     {
-       
         public static string BorrarCaracteres(this string texto, char[] charsABorrar)
         {
             string result = new string(texto);
@@ -25,7 +24,7 @@ namespace Entidades
 
             return result;
         }
-        private static bool VerificarString(this string texto,Predicate<char> criterio)
+        private static bool VerificarString(this string texto, Predicate<char> criterio)
         {
             bool result;
             result = false;
@@ -44,26 +43,25 @@ namespace Entidades
             }
 
             return result;
-        } 
-        
+        }
         public static bool EsAlphaNumerica(this string texto)
         {
-            return VerificarString(texto, char.IsLetterOrDigit);
-        } 
-        
+            return texto.VerificarString(char.IsLetterOrDigit);
+        }
+
         public static bool isLetter(this string texto)
         {
-            return VerificarString(texto, char.IsLetter);
-        } 
-        
+            return texto.VerificarString(char.IsLetter);
+        }
+
         public static bool EsNumerica(this string texto)
         {
-            return VerificarString(texto, char.IsDigit);
-        } 
-        public static bool VerificarCaracteres(this string cadena, List<Char> listaDeCaracteres)
-        {
-            return cadena.VerificarString(listaDeCaracteres.Contains); 
+            return texto.VerificarString(char.IsDigit);
         }
-        
+        public static bool VerificarCaracteres(this string cadena, List<char> listaDeCaracteres)
+        {
+            return cadena.VerificarString(listaDeCaracteres.Contains);
+        }
+
     }
 }

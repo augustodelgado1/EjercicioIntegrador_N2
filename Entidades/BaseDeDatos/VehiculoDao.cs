@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using Entidades.Exepciones;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace Entidades.BaseDeDatos
@@ -50,7 +51,7 @@ namespace Entidades.BaseDeDatos
             try
             {
                 coneccionSql.Open();
-                comando.CommandText = $"Select * From Vehiculo";
+                comando.CommandText = $"Select * From Vehiculo AS V INNER JOIN Servicio AS S ON V.idDeServicio = S.ID";
 
                 using (SqlDataReader dataReader = comando.ExecuteReader())
                 {
@@ -79,7 +80,7 @@ namespace Entidades.BaseDeDatos
         public override Vehiculo ObtenerUnElemento(SqlDataReader dataReader)
         {
             return new Vehiculo(Convert.ToInt32(dataReader["id"]), Convert.ToString(dataReader["patente"]), (Vehiculo.MarcaDelVehiculo)Convert.ToInt32(dataReader["marca"]), (Vehiculo.TipoDeVehiculo)Convert.ToInt32(dataReader["tipo"]),
-                Convert.ToString(dataReader["modelo"]),Servicio.BuscarPorId(Negocio.ListaDeServicio, Convert.ToInt32(dataReader["idDeServicio"])));
+                Convert.ToString(dataReader["modelo"]),new ServicioDao().ObtenerUnElemento(dataReader));
         }
     }
 }

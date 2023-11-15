@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FrmPreueba
+namespace Entidades.Interfaces
 {
-    internal interface IAbm<T> where T : class
+    public interface IAbm<T> where T : class
     {
         public T Alta();
         public bool Modificacion(T element);

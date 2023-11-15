@@ -5,11 +5,13 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Entidades.Extension;
 
 namespace Entidades
 {
-    [JsonSerializable(typeof(Persona))][JsonSerializable(typeof(Mecanico))]
-    [JsonSerializable(typeof(Cliente))]
+    [JsonSerializable(typeof(Persona))] 
+    [JsonSerializable(typeof(Cliente))] 
+    [JsonSerializable(typeof(Mecanico))]
     public abstract class Usuario
     {
         protected int id;
@@ -63,12 +65,12 @@ namespace Entidades
                 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','0',
                 '1', '2', '3', '4', '5', '6', '7', '8', '9'
             };
-            
+             char[] separadores = { ' ', ','};
             bool estado = false;
             if (!string.IsNullOrWhiteSpace(email))
             {
                 email = email.ToLower();
-                email = email.Trim();
+                email = email.BorrarCaracteres(separadores);
                 estado = email.Length >= 3 && email.Length <= 25
                  && email.VerificarCaracteres(listaDeCaracteres) == true 
                  && email.Count(char.IsLetter) > 5 && email.Contains('@');
@@ -108,8 +110,6 @@ namespace Entidades
         public string Email
         {
             get { return this.email; }
-
-
             set
             {
                 if (ValidarEmail(value))

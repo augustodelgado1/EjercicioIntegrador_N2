@@ -47,7 +47,6 @@
             txtNombre.PlaceholderText = "Nombre";
             txtNombre.Size = new Size(163, 27);
             txtNombre.TabIndex = 2;
-            txtNombre.TextChanged += txtNombre_TextChanged;
             // 
             // txtDni
             // 
@@ -57,7 +56,6 @@
             txtDni.PlaceholderText = "Dni";
             txtDni.Size = new Size(163, 27);
             txtDni.TabIndex = 4;
-            txtDni.TextChanged += txtDni_TextChanged;
             // 
             // DateFechaDeNacimiento
             // 
@@ -66,7 +64,6 @@
             DateFechaDeNacimiento.Name = "DateFechaDeNacimiento";
             DateFechaDeNacimiento.Size = new Size(163, 25);
             DateFechaDeNacimiento.TabIndex = 5;
-            DateFechaDeNacimiento.ValueChanged += DateFechaDeNacimiento_ValueChanged;
             // 
             // lbltxtFechaDeNacimiento
             // 
@@ -108,7 +105,6 @@
             txtClave.PlaceholderText = "Clave";
             txtClave.Size = new Size(163, 27);
             txtClave.TabIndex = 21;
-            txtClave.TextChanged += txtClave_TextChanged;
             // 
             // txtEmail
             // 

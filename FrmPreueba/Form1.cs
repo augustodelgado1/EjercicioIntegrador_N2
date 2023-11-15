@@ -1,5 +1,4 @@
-﻿using Archi01;
-using Entidades;
+﻿using Entidades;
 using FrmPreueba;
 using Microsoft.VisualBasic.FileIO;
 using System;
@@ -14,7 +13,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
+using Entidades.Interfaces;
+using Entidades.Archivo;
 
 namespace TallerMecanico
 {
@@ -166,7 +166,7 @@ namespace TallerMecanico
             {  
                 try
                 {
-                    if ((unLista = JsonFile<T>.LeerArchivoArray(this.openFileDialog.FileName)) is not null)
+                    if ((unLista = JsonFile<T>.LeerArchivo(this.openFileDialog.FileName)) is not null)
                     {
                         ActualizarDataGried(dgtvList, unLista);
                         this.OnInformar("Abrir Archivo", "Se cargo el archivo correctamente");
@@ -241,7 +241,7 @@ namespace TallerMecanico
             {
                 try
                 {
-                    JsonFile<T>.GuardarArchivoArray(this.saveFileDialog.FileName, listGeneric);
+                    JsonFile<T>.GuardarArchivo(this.saveFileDialog.FileName, listGeneric);
                     OnInformar("Guardar archivo", "los datos se Guardaron correctamente ");
                 }
                 catch (Exception ex)

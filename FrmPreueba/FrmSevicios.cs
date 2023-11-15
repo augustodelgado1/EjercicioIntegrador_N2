@@ -18,18 +18,40 @@ namespace FrmPreueba
         Persona unaPersona;
         Servicio unServicio;
         bool estado;
-        public FrmSevicios(Persona unaPersona,List<Servicio> listaDeServicio) :base(listaDeServicio)
+        public FrmSevicios(List<Servicio> listaDeServicio) :base(listaDeServicio)
         {
             InitializeComponent();
-            this.unaPersona = unaPersona;
+            this.Load += FrmSevicios_Load;
         }
-        
-        public FrmSevicios(Cliente unCliente) :this(unCliente, unCliente.Servicios)
+
+        public FrmSevicios(Persona unaPersona, List<Servicio> listaDeServicio) :this(listaDeServicio)
         {
-
+            this.unaPersona = unaPersona;
+            this.ConfigurarForm(unaPersona);
         }
 
-        private void FrmSeviciosList_Load(object? sender, EventArgs e)
+        private void ConfigurarForm(Persona unaPersona)
+        {
+            if (unaPersona is Cliente)
+            {
+                this.btnTerminarServicio.Visible = false;
+                this.btnTerminarServicio.Enabled = false;
+            }
+            else
+            {
+                if(unaPersona is Mecanico)
+                {
+                    this.btnAgregar.Visible = false;
+                    this.btnAgregar.Enabled = false;
+                    this.btnEliminar.Visible = false;
+                    this.btnEliminar.Enabled = false;
+                    this.btnModificar.Visible = false;
+                    this.btnModificar.Enabled = false;
+                }
+            }
+        }
+
+        private void FrmSevicios_Load(object? sender, EventArgs e)
         {
             base.cmbFilter.Visible = true;
             base.cmbFilter.DataSource = Enum.GetValues(typeof(Servicio.EstadoDelSevicio));
@@ -37,6 +59,24 @@ namespace FrmPreueba
             base.Informar += FrmSevicios_Informar;
             base.InformarError += FrmSevicios_InformarError;
             base.Buscador += FrmSevicios_Buscador;
+        }
+
+        private void BtnTerminarServicio_Click(object sender, EventArgs e)
+        {
+            FrmDiagnosticar frmDiagnosticar = new FrmDiagnosticar(this.unServicio);
+        
+            if(frmDiagnosticar.ShowDialog() == DialogResult.OK
+                && unaPersona is Mecanico unMecanico)
+            {
+                if(unMecanico + this.unServicio)
+                {
+                  /*  FrmSevicios_Informar();*/
+                }
+                else
+                {
+                    /*FrmSevicios_InformarError();*/
+                }
+            }
         }
 
         private List<Servicio> FrmSevicios_Filtrar(List<Servicio> unaLista,string criterio)
@@ -76,7 +116,7 @@ namespace FrmPreueba
             
             if (unaPersona is Cliente unCliente 
                && frmAltaSevicio.ShowDialog() == DialogResult.OK
-               && unCliente + unServicio)
+               && unServicio + unCliente)
             {
 
             }
@@ -99,7 +139,7 @@ namespace FrmPreueba
                 frmMostrar.Activated += FrmMostrar_Shown;
                 frmMostrar.Show();
 
-                if(estado == true && unCliente - unServicio == false)
+                if(estado == true && unServicio - unCliente == false)
                 {
                     estado = false;
                 }
@@ -164,7 +204,7 @@ namespace FrmPreueba
                 dgtv.Rows.Clear();
                 foreach (Servicio unServicio in lista)
                 {
-                    dgtv.Rows.Add(unServicio.UnCliente.Nombre, unServicio.MecanicoAsignado, unServicio.Descripcion, unServicio.UnVehiculo.Patente, unServicio.CotizacionStr);
+                    dgtv.Rows.Add(unServicio.UnCliente.Nombre, unServicio.MecanicoAsignado, unServicio.Problema, unServicio.UnVehiculo.Patente, unServicio.CotizacionStr);
                 }
             }
         }

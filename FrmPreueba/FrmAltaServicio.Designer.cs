@@ -49,7 +49,6 @@
             txtPatente.PlaceholderText = "Patente";
             txtPatente.Size = new Size(243, 29);
             txtPatente.TabIndex = 0;
-            txtPatente.TextChanged += txtPatente_TextChanged;
             // 
             // rtbTextDescripcion
             // 
@@ -68,7 +67,6 @@
             txtModelo.PlaceholderText = "Modelo";
             txtModelo.Size = new Size(243, 29);
             txtModelo.TabIndex = 2;
-            txtModelo.TextChanged += txtModelo_TextChanged;
             // 
             // cmbTipoDeVehiculo
             // 

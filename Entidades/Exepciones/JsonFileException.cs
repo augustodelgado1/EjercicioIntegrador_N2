@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Entidades
+namespace Entidades.Exepciones
 {
     public class JsonFileException : Exception
     {

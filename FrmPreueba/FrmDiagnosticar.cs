@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace FrmPreueba
 {
-    public partial class FrmInicio : Form
+    public partial class FrmDiagnosticar : Form
     {
-        public FrmInicio()
+        public FrmDiagnosticar(Entidades.Servicio unServicio)
         {
             InitializeComponent();
+        }
+
+        private void btnIngresar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

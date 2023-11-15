@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using Entidades.Interfaces;
 using Entidades;
 using System.Collections.Generic;
+using Entidades.Exepciones;
 
 namespace Entidades.BaseDeDatos
 {

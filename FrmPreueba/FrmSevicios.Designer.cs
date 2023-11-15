@@ -29,6 +29,15 @@
         private void InitializeComponent()
         {
             SuspendLayout();
+            btnTerminarServicio = new Button();
+            btnTerminarServicio.Location = new Point(606, 138);
+            btnTerminarServicio.Name = "btnTerminarServicio";
+            btnTerminarServicio.Size = new Size(148, 29);
+            btnTerminarServicio.TabIndex = 34;
+            btnTerminarServicio.Text = "Terminar Servicio";
+            btnTerminarServicio.Click += BtnTerminarServicio_Click;
+            btnTerminarServicio.UseVisualStyleBackColor = true;
+
             // 
             // FrmSevicios
             // 
@@ -38,9 +47,16 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "FrmSevicios";
             Text = "FrmSevicios";
+            this.Controls.Add(btnTerminarServicio);
             ResumeLayout(false);
+
+
+            
         }
 
+        
+
+        private Button btnTerminarServicio;
         #endregion
     }
 }

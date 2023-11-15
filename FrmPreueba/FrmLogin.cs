@@ -73,6 +73,7 @@ namespace Interfaz
             if (obj is not null)
             {
                 this.unUsuario = obj;
+                Negocio.ListaDeUsuarios.Add(this.unUsuario);
             }
         }
 

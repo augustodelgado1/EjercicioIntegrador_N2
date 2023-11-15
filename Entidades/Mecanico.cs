@@ -63,5 +63,16 @@
         {
             Disponible,NoDisponible
         }
+
+        internal static Mecanico BuscarPorId(List<Mecanico> mecanicos, int id)
+        {
+            Mecanico result = default;
+            if (mecanicos is not null)
+            {
+                result = mecanicos.Find(unMecanico => unMecanico.Id == id);
+            }
+
+            return  result;
+        }
     }
 }

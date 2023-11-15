@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using Entidades.Extension;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,7 +39,7 @@ namespace FrmPreueba
         {
             if (unServicio is not null)
             {
-                rtbTextDescripcion.Text = unServicio.Descripcion;
+                rtbTextDescripcion.Text = unServicio.Problema;
                 txtPatente.Text = unServicio.UnVehiculo.Patente;
                 this.txtModelo.Text = unServicio.UnVehiculo.Modelo;
                 this.cmbTipoDeVehiculo.SelectedValue = unServicio.UnVehiculo.Tipo;
@@ -48,9 +49,11 @@ namespace FrmPreueba
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            result = lblFallas.ActivarControlError("No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls);
+            result = lblFallas.ActivarControlError("No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls)
+             && this.lblFallas.ActivarControlError<string>("la patente debe tener min 6 y max 8 caracteres", Vehiculo.ValidarPatente, this.txtPatente.Text)
+             && this.lblFallas.ActivarControlError<string>("el Modelo debe se alphanumerico", Vehiculo.ValidarModelo, this.txtModelo.Text);
 
-            if (result == true &&! string.IsNullOrWhiteSpace(rtbTextDescripcion.Text))
+            if (result == true)
             {
                 this.unVehiculo = new Vehiculo(txtPatente.Text, (Vehiculo.MarcaDelVehiculo)arrayMarcaDelVehiculo.GetValue(this.cmbMarcaDeVehiculo.SelectedIndex), (Vehiculo.TipoDeVehiculo)arrayTipoDeVehiculo.GetValue(cmbTipoDeVehiculo.SelectedIndex), this.txtModelo.Text, this.path);
                 this.unServicio = new Servicio(rtbTextDescripcion.Text, this.unVehiculo);
@@ -77,16 +80,6 @@ namespace FrmPreueba
             }
         }
 
-        private void txtPatente_TextChanged(object sender, EventArgs e)
-        {
-            this.lblFallas.ActivarControlError<string>("la patente debe tener min 6 y max 8 caracteres", Vehiculo.ValidarPatente, this.txtPatente.Text);
-        }
-
-        private void txtModelo_TextChanged(object sender, EventArgs e)
-        {
-            this.lblFallas.ActivarControlError<string>("el Modelo debe se alphanumerico", Vehiculo.ValidarModelo, this.txtModelo.Text);
-        }
-
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -94,7 +87,7 @@ namespace FrmPreueba
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-
+            this.lblFallas.ActivarControlError<string>("Debe Dar una Descripsion mas coherente", texto => string.IsNullOrWhiteSpace(texto) == false && texto.isLetter(), this.rtbTextDescripcion.Text); ;
         }
 
         private void FrmAltaServicio_Load(object sender, EventArgs e)

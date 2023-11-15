@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using System.Data;
+using Entidades.Exepciones;
 
 namespace Entidades.BaseDeDatos
 {

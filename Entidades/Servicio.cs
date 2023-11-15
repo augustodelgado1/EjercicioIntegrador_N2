@@ -9,54 +9,37 @@ namespace Entidades
     {
         int id;
         Cliente unCliente;
-        Mecanico unMecanico;
         Vehiculo unVehiculo;
+        Mecanico unMecanico;
         DateTime fechaDeIngreso;
         DateTime fechaDeEgreso;
-        string descripcion;
-        List<Diagnostico> diagnosticos;
+        string descripcionDelProblema;
+        Dictionary<Diagnostico,float> diagnosaciones;
         EstadoDelSevicio estado;
 
         private Servicio()
         {
-            this.id = this.GetHashCode();
-            this.diagnosticos = new List<Diagnostico>();
             this.fechaDeEgreso = default;
+            this.diagnosaciones = new Dictionary<Diagnostico, float>();
         }
 
         public Servicio(string descripcion, Vehiculo unVehiculo) : this()
         {
             this.UnVehiculo = unVehiculo;
-            this.descripcion = descripcion;
+            this.descripcionDelProblema = descripcion;
         }
 
         internal Servicio(int id, string descripcion,
             DateTime fechaDeIngreso, DateTime fechaDeEgreso,
-            Vehiculo unVehiculo, Cliente unCliente, EstadoDelSevicio estado, Mecanico unMecanico = null) : this(descripcion, unVehiculo)
+            Vehiculo unVehiculo, Cliente unCliente, EstadoDelSevicio estado,Mecanico unMecanico) : this(descripcion, unVehiculo)
         {
             this.id = id;
             this.FechaDeIngreso = fechaDeIngreso;
             this.FechaDeEgreso = fechaDeEgreso;
             this.UnCliente = unCliente;
-            this.estado = estado;
             this.UnMecanico = unMecanico;
-
+            this.estado = estado;
         }
-
-        private float CalcularCosto()
-        {
-            float costo = 0;
-            if (this.diagnosticos is not null && this.diagnosticos.Count > 0)
-            {
-                foreach (Diagnostico unDiagnostico in this.diagnosticos)
-                {
-                    costo += unDiagnostico.Costo;
-                }
-            }
-
-            return costo;
-        }
-
         public static List<Servicio> BuscarPorEstado(List<Servicio> listaDeServicios, EstadoDelSevicio estado)
         {
             List<Servicio> result = null;
@@ -78,58 +61,11 @@ namespace Entidades
 
             return result;
         }
-        internal void Cancelar()
-        {
-            this.TerminarServicio();
-            this.estado = EstadoDelSevicio.Cancelado;
-        }
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
         public override bool Equals(object? obj)
         {
             return obj is Servicio servicio &&
                    this.id == servicio.id
                    && this.unVehiculo.Equals(servicio.unVehiculo);
-        }
-        public override string ToString()
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"fechaDeIngreso = {this.fechaDeIngreso}");
-            stringBuilder.AppendLine($"fechaDeEgreso = {this.fechaDeEgreso}");
-            stringBuilder.AppendLine($"descripcion = {this.descripcion}");
-            stringBuilder.AppendLine($"estado = {this.estado}");
-
-            return stringBuilder.ToString();
-        }
-        public static bool operator +(Servicio servicio, Diagnostico unDiagnostico)
-        {
-            bool result = false;
-
-            if (servicio is not null && servicio.diagnosticos.Contains(unDiagnostico) == false)
-            {
-                servicio.diagnosticos.Add(unDiagnostico);
-                result = true;
-            }
-
-
-            return result;
-        } 
-        
-        public static bool operator -(Servicio servicio, Diagnostico unDiagnostico)
-        {
-            bool result = false;
-
-            if (servicio is not null && servicio.diagnosticos.Contains(unDiagnostico) == true)
-            {
-                servicio.diagnosticos.Remove(unDiagnostico);
-                result = true;
-            }
-
-
-            return result;
         }
         public static bool operator +(Servicio servicio, Vehiculo unVehiculo)
         {
@@ -156,9 +92,25 @@ namespace Entidades
             bool result = false;
 
             if (unCliente is not null && servicio is not null
-            && servicio.unCliente + servicio)
+            && unCliente != servicio && servicio.estado == EstadoDelSevicio.EnProceso)
             {
+                unCliente.Servicios.Add(servicio);
                 servicio.unCliente = unCliente;
+                result = true;
+            }
+
+
+            return result;
+        } 
+        public static bool operator -(Servicio servicio, Cliente unCliente)
+        {
+            bool result = false;
+
+            if (unCliente is not null && servicio is not null
+            && unCliente == servicio)
+            {
+                servicio.TerminarServicio();
+                servicio.estado = EstadoDelSevicio.Cancelado;
                 result = true;
             }
 
@@ -167,7 +119,7 @@ namespace Entidades
         }
 
         internal int Id { get => id; }
-        internal float Cotizacion { get => CalcularCosto(); }
+        internal float Cotizacion { get => this.CalcularCostos(); }
         public string CotizacionStr { 
             
             get 
@@ -182,6 +134,20 @@ namespace Entidades
             
                 return stringBuilder.ToString();
             }
+        }
+
+        private float CalcularCostos()
+        {
+            float result = 0;
+            if (this.diagnosaciones is not null)
+            {
+                foreach (KeyValuePair<Diagnostico, float> unDiagnostico in this.diagnosaciones)
+                {
+                    result += unDiagnostico.Value;
+                }
+            }
+
+            return result;
         }
         public EstadoDelSevicio Estado { get => estado; }
         public DateTime FechaDeIngreso { get => fechaDeIngreso; private set => this.fechaDeIngreso = value; }
@@ -199,7 +165,7 @@ namespace Entidades
         
         }
 
-        public string Descripcion { get => descripcion; set => descripcion = value; }
+        public string Problema { get => descripcionDelProblema; set => descripcionDelProblema = value; }
         public Cliente UnCliente { get => unCliente;
 
             internal set
@@ -210,39 +176,36 @@ namespace Entidades
                 }
             }
         }
-
-        internal List<Diagnostico> Diagnosticos { get => diagnosticos;  }
-        
-        public Mecanico UnMecanico { get => unMecanico;
-
-            set
-            {
-               this.unMecanico = value;
-               
-            }
-        }
-
-        public string MecanicoAsignado
-        {
+        public object MecanicoAsignado {
             get
             {
-                string respuesta;
-                respuesta = "No Asignado";
-                
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine("No Determinado");
+
                 if (this.unMecanico is not null)
                 {
-                    respuesta = this.unMecanico.Nombre;
+                    stringBuilder.Clear();
+                    stringBuilder.AppendLine($"{this.unMecanico.Nombre}");
                 }
 
-                return respuesta;
+                return stringBuilder.ToString();
             }
         }
+        public Mecanico UnMecanico { get => unMecanico; set => unMecanico = value; }
 
         public enum EstadoDelSevicio
         {
             EnProceso,
             Cancelado,
             Terminado
+        }
+
+        public enum Diagnostico
+        {
+            CambioDeRuedas,
+            CambioDeFrenos,
+            Suspension,
+            ReparacionDeMotor,
         }
     }
 }

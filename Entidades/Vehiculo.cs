@@ -1,4 +1,5 @@
-﻿using static Entidades.Servicio;
+﻿using Entidades.Extension;
+using static Entidades.Servicio;
 
 namespace Entidades
 {

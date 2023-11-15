@@ -28,17 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             lblTitulo = new Label();
             btnInicio = new Button();
             btnClientes = new Button();
-            btnCofig = new Button();
             btnServicio = new Button();
             btnVehiculos = new Button();
             panelContenedor = new Panel();
             panel1 = new Panel();
             btnSalir = new Button();
-            timer1 = new System.Windows.Forms.Timer(components);
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -56,7 +53,7 @@
             // 
             btnInicio.FlatStyle = FlatStyle.System;
             btnInicio.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnInicio.Location = new Point(51, 44);
+            btnInicio.Location = new Point(27, 44);
             btnInicio.Name = "btnInicio";
             btnInicio.Size = new Size(119, 30);
             btnInicio.TabIndex = 4;
@@ -68,33 +65,21 @@
             // 
             btnClientes.FlatStyle = FlatStyle.System;
             btnClientes.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnClientes.Location = new Point(176, 44);
+            btnClientes.Location = new Point(180, 44);
             btnClientes.Name = "btnClientes";
-            btnClientes.Size = new Size(122, 30);
+            btnClientes.Size = new Size(125, 30);
             btnClientes.TabIndex = 0;
             btnClientes.Text = "Clientes";
             btnClientes.UseVisualStyleBackColor = true;
             btnClientes.Click += btnClientes_Click;
             // 
-            // btnCofig
-            // 
-            btnCofig.FlatStyle = FlatStyle.System;
-            btnCofig.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnCofig.Location = new Point(534, 44);
-            btnCofig.Name = "btnCofig";
-            btnCofig.Size = new Size(109, 30);
-            btnCofig.TabIndex = 3;
-            btnCofig.Text = "Configuracion";
-            btnCofig.UseVisualStyleBackColor = true;
-            btnCofig.Click += btnCofig_Click;
-            // 
             // btnServicio
             // 
             btnServicio.FlatStyle = FlatStyle.System;
             btnServicio.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnServicio.Location = new Point(304, 44);
+            btnServicio.Location = new Point(340, 44);
             btnServicio.Name = "btnServicio";
-            btnServicio.Size = new Size(105, 30);
+            btnServicio.Size = new Size(118, 30);
             btnServicio.TabIndex = 1;
             btnServicio.Text = "Servicio";
             btnServicio.UseVisualStyleBackColor = true;
@@ -104,9 +89,9 @@
             // 
             btnVehiculos.FlatStyle = FlatStyle.System;
             btnVehiculos.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnVehiculos.Location = new Point(415, 44);
+            btnVehiculos.Location = new Point(491, 44);
             btnVehiculos.Name = "btnVehiculos";
-            btnVehiculos.Size = new Size(113, 30);
+            btnVehiculos.Size = new Size(117, 30);
             btnVehiculos.TabIndex = 2;
             btnVehiculos.Text = "Vehiculos";
             btnVehiculos.UseVisualStyleBackColor = true;
@@ -115,16 +100,15 @@
             // panelContenedor
             // 
             panelContenedor.Dock = DockStyle.Fill;
-            panelContenedor.Location = new Point(0, 0);
+            panelContenedor.Location = new Point(0, 77);
             panelContenedor.Name = "panelContenedor";
-            panelContenedor.Size = new Size(800, 450);
+            panelContenedor.Size = new Size(800, 373);
             panelContenedor.TabIndex = 2;
             // 
             // panel1
             // 
             panel1.BackColor = Color.SteelBlue;
             panel1.Controls.Add(btnSalir);
-            panel1.Controls.Add(btnCofig);
             panel1.Controls.Add(btnClientes);
             panel1.Controls.Add(btnVehiculos);
             panel1.Controls.Add(btnServicio);
@@ -140,9 +124,9 @@
             // 
             btnSalir.FlatStyle = FlatStyle.System;
             btnSalir.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnSalir.Location = new Point(649, 44);
+            btnSalir.Location = new Point(643, 44);
             btnSalir.Name = "btnSalir";
-            btnSalir.Size = new Size(105, 30);
+            btnSalir.Size = new Size(118, 30);
             btnSalir.TabIndex = 5;
             btnSalir.Text = "Salir";
             btnSalir.UseVisualStyleBackColor = true;
@@ -153,8 +137,8 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(panel1);
             Controls.Add(panelContenedor);
+            Controls.Add(panel1);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FrmMenuPrincipal";
@@ -167,14 +151,12 @@
 
         #endregion
         private Label lblTitulo;
-        private Button btnCofig;
         private Button btnVehiculos;
         private Button btnServicio;
         private Button btnClientes;
         private Button btnInicio;
         private Panel panelContenedor;
         private Panel panel1;
-        private System.Windows.Forms.Timer timer1;
         private Button btnSalir;
     }
 }

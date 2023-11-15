@@ -114,14 +114,7 @@ namespace TestConsole
                                                 new Servicio("Anda mal el aire", new Vehiculo("6966666", Vehiculo.MarcaDelVehiculo.Golf, Vehiculo.TipoDeVehiculo.Auto, "6652")),
                                             };
 
-                                            foreach (Servicio unServicio in lista)
-                                            {
-                                                if(((Cliente)unUsuario) + unServicio == false)
-                                                {
-                                                    Console.WriteLine("No se pudo cargar");
-                                                    break;
-                                                }
-                                            }
+                                          
                                                 break;
 
                                             case 2:
@@ -222,7 +215,7 @@ namespace TestConsole
                                             break;
 
                                         case 2:
-                                            unUsuario = Negocio.unMecanicoRandom;
+                                          
                                             break;
 
                                         case 3:

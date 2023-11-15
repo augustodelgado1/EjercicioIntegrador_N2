@@ -16,11 +16,14 @@ namespace FrmPreueba
     public partial class FrmClientesList : FrmListar<Cliente>
     {
         Cliente unCliente;
+        Negocio unNegocio;
         bool estado;
         private Predicate<PropertyInfo> unPropertyInfoPredicate;
-        public FrmClientesList(List<Cliente> listaDeClientes) : base(listaDeClientes)
+       
+        public FrmClientesList(Negocio unNegocio) : base(unNegocio.Clientes)
         {
             InitializeComponent();
+            this.unNegocio = unNegocio;
         }
         private void FrmClientesList_Load(object? sender, EventArgs e)
         {
@@ -110,7 +113,7 @@ namespace FrmPreueba
                 frmMostrar.Show();
                 if (estado == true)
                 {
-                    estado = this.listGeneric.Remove(unCliente);
+                    estado = unNegocio - unCliente;
                 }
             }
 

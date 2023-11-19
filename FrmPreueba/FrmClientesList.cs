@@ -20,25 +20,39 @@ namespace FrmPreueba
         bool estado;
         private Predicate<PropertyInfo> unPropertyInfoPredicate;
        
-        public FrmClientesList(Negocio unNegocio) : base(unNegocio.Clientes)
+        public FrmClientesList(Negocio unNegocio,Usuario.Roles unRol) : base(unNegocio.Clientes)
         {
             InitializeComponent();
             this.unNegocio = unNegocio;
+            this.ConfigurarFrm(unRol);
         }
+
+        private void ConfigurarFrm(Usuario.Roles unRol)
+        {
+            if(unRol == Usuario.Roles.Cliente)
+            {
+                base.btnAgregar.Visible = false;
+                base.btnAgregar.Enabled = false;
+                base.btnModificar.Enabled = false;
+                base.btnModificar.Visible = false;
+                base.btnAgregar.Visible = false;
+                base.btnEliminar.Visible = false;
+                base.btnEliminar.Enabled = false;
+            }
+        }
+
         private void FrmClientesList_Load(object? sender, EventArgs e)
         {
             base.cmbFilter.Visible = false;
-            base.Informar += FrmClientesList_Informar;
-            base.InformarError += FrmClientesList_InformarError; 
+            base.Informar += FrmMenuPrincipal.Informar;
+            base.InformarError += FrmMenuPrincipal.InformarError;
             base.Buscador += FrmClientesList_Buscador;
             unPropertyInfoPredicate = unaPrpiedad =>
             {
                 return string.Compare(unaPrpiedad.Name, "Nombre", true) == 0
                 || string.Compare(unaPrpiedad.Name, "Dni", true) == 0
                 || string.Compare(unaPrpiedad.Name, "FechaDeNacimiento", true) == 0 ||
-                string.Compare(unaPrpiedad.Name, "Gastos", true) == 0 ||
                 string.Compare(unaPrpiedad.Name, "CantidadDeServicios", true) == 0;
-
             };
         }
 
@@ -52,26 +66,18 @@ namespace FrmPreueba
             }
             return result;
         }
-        private void FrmClientesList_InformarError(string titulo, string mensajeDeError)
-        {
-            MessageBox.Show(mensajeDeError, titulo, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private void FrmClientesList_Informar(string titulo, string mensajeDeError)
-        {
-            MessageBox.Show(mensajeDeError, titulo, MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        public override Cliente Alta()
+        public override bool Alta()
         {
             FrmAltaDePersona frmAltaDeCliente = new FrmAltaDePersona(Usuario.Roles.Cliente);
             bool estado;
+            estado = false;
             frmAltaDeCliente.seIngesaronDatos += FrmAltaDeCliente_seRealizoUnAlta;
-            if(estado = frmAltaDeCliente.ShowDialog() == DialogResult.OK)
+            if(estado = frmAltaDeCliente.ShowDialog() == DialogResult.OK
+             && unNegocio + unCliente)
             {
-                this.listGeneric.Add(unCliente);
+                estado = true;
             }
-            return unCliente;
+            return estado;
         }
 
         protected override void ActualizarDataGried(DataGridView dgtv, List<Cliente> lista)
@@ -82,7 +88,7 @@ namespace FrmPreueba
                 dgtv.Rows.Clear();
                 foreach (Cliente unCliente in lista)
                 {
-                    dgtv.Rows.Add(unCliente.Nombre, unCliente.Email, unCliente.FechaDeNacimiento, unCliente.Gastos);
+                    dgtv.Rows.Add(unCliente.Nombre, unCliente.Email, unCliente.FechaDeNacimiento, unCliente.CantidadDeServicios);
                 }
             }
         }
@@ -90,10 +96,10 @@ namespace FrmPreueba
         {
             dgtvList.Columns.Add("colClienteName", "Nombre");
             dgtvList.Columns.Add("colEmailName", "Email");
-            dgtvList.Columns.Add("colFechaDeNacimiento", "FechaDeNacimiento");
-            dgtvList.Columns.Add("colGastos", "Gastos");
+            dgtvList.Columns.Add("colFechaDeNacimiento", "Fecha De Nacimiento");
+            dgtvList.Columns.Add("colCantidadDeServicios", "Cantidad De Servicios");
         }
-        private void FrmAltaDeCliente_seRealizoUnAlta(Persona obj)
+        private void FrmAltaDeCliente_seRealizoUnAlta(Cliente obj)
         {
             if (obj is Cliente clienteAlta)
             {
@@ -137,11 +143,7 @@ namespace FrmPreueba
             {
                 frmAltaDeCliente = new FrmAltaDePersona(Usuario.Roles.Cliente, unClienteEdit);
                 frmAltaDeCliente.seIngesaronDatos += FrmAltaDeCliente_seRealizoUnAlta;
-                if (frmAltaDeCliente.ShowDialog() == DialogResult.OK)
-                {
-                    unClienteEdit = this.unCliente;
-                    estado = true;
-                }
+                estado = frmAltaDeCliente.ShowDialog() != DialogResult.OK;
             }
             return estado;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Entidades.Extension;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,43 +8,63 @@ using static Entidades.Servicio;
 
 namespace Entidades
 {
-    public class Cliente: Persona
+    public class Cliente: Usuario
     {
+        string nombre;
+        string dni;
+        DateTime fechaDeNacimiento;
         List<Servicio> servicios;
-
+        List<Vehiculo> vehiculos;
         internal Cliente(int id, string nombre, string dni, DateTime fechaDeNacimiento, string email, string clave, string path = null)
             : this(nombre, dni, fechaDeNacimiento, email, clave, path)
         {
             base.id = id;
         }
         public Cliente(string nombre, string dni, DateTime fechaDeNacimiento, string email, string clave, string path = null)
-           : base(nombre, dni, fechaDeNacimiento, email, clave,Roles.Cliente, path)
+           : base(email, clave,Roles.Cliente, path)
         {
+            this.Nombre = nombre;
+            this.Dni = dni;
+            this.FechaDeNacimiento = fechaDeNacimiento;
             this.servicios = new List<Servicio>();
+            this.vehiculos = new List<Vehiculo>();
         }
 
-        public float CalcularGastosTotales()
+        public override bool Equals(object? obj)
         {
-            float gastosTotal = 0;  
-            if (this.Servicios is not null)
+            return base.Equals(obj) && obj is Cliente unCliente
+                 && unCliente.dni == this.dni;
+        }
+
+        public static bool ValidarDni(string dni)
+        {
+            bool estado;
+            estado = false;
+            char[] separadores = { ' ', ',', '.', '_', '-' };
+            if (!string.IsNullOrWhiteSpace(dni))
             {
-                foreach (Servicio unServicio in this.Servicios)
-                {
-                    gastosTotal += unServicio.Cotizacion;
-                }
+                dni = dni.BorrarCaracteres(separadores);
+                estado = dni.EsNumerica() == true && dni.Length >= 6
+               && dni.Length <= 8;
             }
-
-            return gastosTotal;
+            return estado;
+        }
+        public static bool ValidarFechaDeNacimiento(DateTime value)
+        {
+            return value.Year < DateTime.Now.Year;
         }
 
-        public override string ToString()
+        public static bool ValidarNombre(string text)
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"{base.ToString()}");
-            stringBuilder.AppendLine($"Dni = {base.Dni}");
-
-
-            return base.ToString();
+            bool estado;
+            estado = false;
+            char[] separadores = { ' ', ',', '.', '_', '-' };
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                text = text.BorrarCaracteres(separadores);
+                estado = text.isLetter() == true;
+            }
+            return estado;
         }
         public override int GetHashCode()
         {
@@ -57,35 +78,46 @@ namespace Entidades
         {
             return !(unCliente == unServicio);
         }
-        public static bool operator +(List<Cliente> listaDeCliente, Cliente unCliente)
+
+        public DateTime FechaDeNacimiento
         {
-            bool result = false;
+            get => fechaDeNacimiento;
 
-            if (unCliente is not null && listaDeCliente is not null
-             && listaDeCliente.Contains(unCliente) == false)
+            set
             {
-                listaDeCliente.Add(unCliente);
-                result = true;
+                this.fechaDeNacimiento = DateTime.MinValue;
+                if (ValidarFechaDeNacimiento(value))
+                {
+                    this.fechaDeNacimiento = value;
+                }
             }
+        }
+        public string Dni
+        {
+            get => this.dni;
 
-
-            return result;
+            set
+            {
+                if (ValidarDni(value))
+                {
+                    this.dni = value;
+                }
+            }
         }
 
-        public static bool operator -(List<Cliente> listaDeCliente, Cliente unCliente)
+        public string Nombre
         {
-            bool result = false;
+            get => nombre;
 
-            if (unCliente is not null && listaDeCliente is not null
-             && listaDeCliente.Contains(unCliente) == false)
+            set
             {
-                listaDeCliente.Remove(unCliente);
-                result = true;
+                if (ValidarNombre(value))
+                {
+                    this.nombre = value.ToLower();
+                }
             }
-
-
-            return result;
         }
+        [JsonIgnore]
         public List<Servicio> Servicios { get => this.servicios; }
         public int CantidadDeServicios { get => this.servicios.Count; }
 
@@ -97,24 +129,8 @@ namespace Entidades
 
         [JsonIgnore]
         public List<Servicio> ServiciosCancelado { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Cancelado); }
-
         [JsonIgnore]
-        public string Gastos { 
-            get 
-            {
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append("No se realizo gastos");
-                float gastos = this.CalcularGastosTotales();
-                if (gastos > 0)
-                {
-                    stringBuilder.Clear();
-                    stringBuilder.Append(gastos.ToString());
-                }
-
-                return stringBuilder.ToString();
-            } 
-        
-        }
+        public List<Vehiculo> Vehiculos { get => vehiculos; }
     }
 
    

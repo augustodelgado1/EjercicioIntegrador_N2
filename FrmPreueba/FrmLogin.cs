@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TallerMecanico;
 
+
 namespace Interfaz
 {
     public partial class FrmLogin : Form
@@ -18,8 +19,8 @@ namespace Interfaz
         private bool respuesta;
         public event Action<Usuario> LoginUser;
         Usuario unUsuario;
-        Negocio unNegocio;
         FrmMenuPrincipal frmMenuPrincipal;
+        Negocio unNegocio;
         Cliente unCliente;
         public FrmLogin()
         {
@@ -28,15 +29,26 @@ namespace Interfaz
 
         private void Login_Load(object sender, EventArgs e)
         {
+            try
+            {
+                unNegocio = Negocio.CargarBaseDeDatos("Taller Mecanico");
+            }
+            catch (Exception ex)
+            {
+                FrmMenuPrincipal.InformarError("Error Base De Datos", ex.Message);
+                this.Close();
+            }
+
             this.LoginUser += FrmLogin_loginUser;
             lblError.Visible = false;
+            this.cmboxRol.DataSource = Enum.GetValues(typeof(Usuario.Roles));
         }
 
         private void FrmLogin_loginUser(Usuario unUsuario)
         {
             if (unUsuario is not null)
             {
-                frmMenuPrincipal = new FrmMenuPrincipal(unUsuario);
+                frmMenuPrincipal = new FrmMenuPrincipal(unNegocio, unUsuario);
                 frmMenuPrincipal.Show();
                 this.Hide();
             }
@@ -44,10 +56,12 @@ namespace Interfaz
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            respuesta = lblError.ActivarControlError("No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls) == true;
+            respuesta = lblError.ActivarControlError("No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls) == true &&
+                lblError.ActivarControlError<string>("el Email Debe tener como minimo 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text)
+                && lblError.ActivarControlError<string>("el Clave Debe tener como minimo 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
             if (respuesta == true)
             {
-                if((unUsuario = Usuario.EncontarUsuario(Negocio.ListaDeUsuarios, this.txtEmail.Text, this.txtClave.Text)) is not null)
+                if ((unUsuario = unNegocio.BuscarUsuario(this.txtEmail.Text, this.txtClave.Text)) is not null)
                 {
                     lblError.Visible = false;
                     OnLoginUser(unUsuario);
@@ -68,12 +82,11 @@ namespace Interfaz
                 OnLoginUser(unUsuario);
             }
         }
-        private void FrmAltaDePersona_seIngesaronDatos(Persona obj)
+        private void FrmAltaDePersona_seIngesaronDatos(Cliente obj)
         {
-            if (obj is not null)
+            if (obj is not null && unNegocio + obj)
             {
                 this.unUsuario = obj;
-                Negocio.ListaDeUsuarios.Add(this.unUsuario);
             }
         }
 
@@ -87,12 +100,21 @@ namespace Interfaz
         }
         private void txtUser_TextChanged_1(object sender, EventArgs e)
         {
-            respuesta = lblError.ActivarControlError<string>("el Email Debe tener como minimo 8 caracteres", Persona.ValidarEmail, this.txtEmail.Text);
+            respuesta = lblError.ActivarControlError<string>("el Email Debe tener como minimo 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text);
         }
 
         private void txtClave_TextChanged(object sender, EventArgs e)
         {
-            respuesta = lblError.ActivarControlError<string>("el Clave Debe tener como minimo 8 caracteres", Persona.ValidarContracenia, this.txtClave.Text);
+            respuesta = lblError.ActivarControlError<string>("el Clave Debe tener como minimo 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
+        }
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.cmboxRol.SelectedItem is Usuario.Roles unRol
+             && Usuario.ObtenerUnUsuarioPorRol(unNegocio.ListaDeUsuarios, unRol) is Usuario unUsuario)
+            {
+                txtEmail.Text = unUsuario.Email;
+                txtClave.Text = unUsuario.Clave;
+            }
         }
     }
 }

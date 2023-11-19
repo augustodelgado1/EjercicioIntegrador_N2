@@ -28,82 +28,88 @@
         /// </summary>
         private void InitializeComponent()
         {
-            txtNombre = new TextBox();
-            btnIngresar = new Button();
-            txtCosto = new TextBox();
-            rtbTextDescripcion = new RichTextBox();
-            lblDescripcion = new Label();
+            cmbDignosticar = new ComboBox();
+            lbl_Diagnostico = new Label();
+            lblError = new Label();
+            txtCotizacion = new TextBox();
+            btnAceptar = new Button();
             SuspendLayout();
             // 
-            // txtNombre
+            // cmbDignosticar
             // 
-            txtNombre.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            txtNombre.Location = new Point(12, 12);
-            txtNombre.Name = "txtNombre";
-            txtNombre.PlaceholderText = "Nombre";
-            txtNombre.Size = new Size(255, 27);
-            txtNombre.TabIndex = 3;
+            cmbDignosticar.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbDignosticar.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            cmbDignosticar.FormattingEnabled = true;
+            cmbDignosticar.Location = new Point(71, 30);
+            cmbDignosticar.Name = "cmbDignosticar";
+            cmbDignosticar.Size = new Size(238, 28);
+            cmbDignosticar.TabIndex = 0;
             // 
-            // btnIngresar
+            // lbl_Diagnostico
             // 
-            btnIngresar.Location = new Point(70, 316);
-            btnIngresar.Name = "btnIngresar";
-            btnIngresar.Size = new Size(141, 38);
-            btnIngresar.TabIndex = 4;
-            btnIngresar.Text = "Ingresar";
-            btnIngresar.UseVisualStyleBackColor = true;
-            btnIngresar.Click += btnIngresar_Click;
+            lbl_Diagnostico.AutoSize = true;
+            lbl_Diagnostico.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            lbl_Diagnostico.Location = new Point(71, 9);
+            lbl_Diagnostico.Name = "lbl_Diagnostico";
+            lbl_Diagnostico.Size = new Size(92, 18);
+            lbl_Diagnostico.TabIndex = 1;
+            lbl_Diagnostico.Text = "Diagnostico";
             // 
-            // txtCosto
+            // lblError
             // 
-            txtCosto.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            txtCosto.Location = new Point(12, 60);
-            txtCosto.Name = "txtCosto";
-            txtCosto.PlaceholderText = "Costo";
-            txtCosto.Size = new Size(255, 27);
-            txtCosto.TabIndex = 5;
+            lblError.AutoSize = true;
+            lblError.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            lblError.Location = new Point(12, 148);
+            lblError.Name = "lblError";
+            lblError.Size = new Size(50, 18);
+            lblError.TabIndex = 3;
+            lblError.Text = "label3";
             // 
-            // rtbTextDescripcion
+            // txtCotizacion
             // 
-            rtbTextDescripcion.Location = new Point(12, 130);
-            rtbTextDescripcion.Name = "rtbTextDescripcion";
-            rtbTextDescripcion.Size = new Size(255, 93);
-            rtbTextDescripcion.TabIndex = 6;
-            rtbTextDescripcion.Text = "";
+            txtCotizacion.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            txtCotizacion.Location = new Point(71, 98);
+            txtCotizacion.Name = "txtCotizacion";
+            txtCotizacion.PlaceholderText = "Cotizacion";
+            txtCotizacion.Size = new Size(238, 29);
+            txtCotizacion.TabIndex = 4;
             // 
-            // lblDescripcion
+            // btnAceptar
             // 
-            lblDescripcion.AutoSize = true;
-            lblDescripcion.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            lblDescripcion.Location = new Point(12, 106);
-            lblDescripcion.Name = "lblDescripcion";
-            lblDescripcion.Size = new Size(91, 21);
-            lblDescripcion.TabIndex = 7;
-            lblDescripcion.Text = "Descripcion";
+            btnAceptar.Location = new Point(123, 191);
+            btnAceptar.Name = "btnAceptar";
+            btnAceptar.Size = new Size(139, 36);
+            btnAceptar.TabIndex = 5;
+            btnAceptar.Text = "Aceptar";
+            btnAceptar.UseVisualStyleBackColor = true;
+            btnAceptar.Click += btnAceptar_Click;
             // 
             // FrmDiagnosticar
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(288, 366);
-            Controls.Add(lblDescripcion);
-            Controls.Add(rtbTextDescripcion);
-            Controls.Add(txtCosto);
-            Controls.Add(btnIngresar);
-            Controls.Add(txtNombre);
+            ClientSize = new Size(397, 239);
+            Controls.Add(btnAceptar);
+            Controls.Add(txtCotizacion);
+            Controls.Add(lblError);
+            Controls.Add(lbl_Diagnostico);
+            Controls.Add(cmbDignosticar);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FrmDiagnosticar";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmDiagnosticar";
+            Load += FrmDiagnosticar_Load;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private TextBox txtNombre;
-        private Button btnIngresar;
-        private TextBox txtCosto;
-        private RichTextBox rtbTextDescripcion;
-        private Label lblDescripcion;
+        private ComboBox cmbDignosticar;
+        private Label lbl_Diagnostico;
+        private Label lblError;
+        private TextBox txtCotizacion;
+        private Button btnAceptar;
     }
 }

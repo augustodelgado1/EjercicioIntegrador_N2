@@ -17,9 +17,9 @@ namespace FrmPreueba
     public partial class FrmAltaDePersona : Form
     {
         OpenFileDialog ofd;
-        Persona unaPersona;
+        Cliente unaPersona;
         Usuario.Roles unRol;
-        public event Action<Persona> seIngesaronDatos;
+        public event Action<Cliente> seIngesaronDatos;
         bool result;
         string path;
 
@@ -30,14 +30,14 @@ namespace FrmPreueba
             this.path = null;
         }
 
-        private void OnSeIngesaronDatos(Persona unaPersona)
+        private void OnSeIngesaronDatos(Cliente unaPersona)
         {
             if (seIngesaronDatos is not null)
             {
                 seIngesaronDatos(unaPersona);
             }
         }
-        public FrmAltaDePersona(Usuario.Roles unRol, Persona unaPersona) : this(unRol)
+        public FrmAltaDePersona(Usuario.Roles unRol, Cliente unaPersona) : this(unRol)
         {
             this.unaPersona = unaPersona;
             SetPersona();
@@ -69,7 +69,7 @@ namespace FrmPreueba
             }
             else
             {
-                unUsuario = new Mecanico(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text);
+               /* unUsuario = new Mecanico(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text);*/
             }
 
             return unUsuario;
@@ -77,15 +77,15 @@ namespace FrmPreueba
         private void btnIngresar_Click(object sender, EventArgs e)
         {
             result = lb_Fallas.ActivarControlError( "No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls) == true 
-                &&  lb_Fallas.ActivarControlError<string>("el dni debe tener como min 6 y max 8 numeros", Persona.ValidarDni, this.txtDni.Text)
-                && lb_Fallas.ActivarControlError( "La fecha no es valida", Persona.ValidarFechaDeNacimiento, this.DateFechaDeNacimiento.Value) == true
-                && lb_Fallas.ActivarControlError<string>("el Nombre Debe Contener solo letras", Persona.ValidarNombre, this.txtNombre.Text) == true
-                && lb_Fallas.ActivarControlError<string>("el Email Debe tener como min 8 caracteres", Persona.ValidarEmail, this.txtEmail.Text)
-                && lb_Fallas.ActivarControlError<string>("el Clave Debe tener como min 8 caracteres", Persona.ValidarContracenia, this.txtClave.Text);
+                &&  lb_Fallas.ActivarControlError<string>("el dni debe tener como min 6 y max 8 numeros", Cliente.ValidarDni, this.txtDni.Text)
+                && lb_Fallas.ActivarControlError( "La fecha no es valida", Cliente.ValidarFechaDeNacimiento, this.DateFechaDeNacimiento.Value) == true
+                && lb_Fallas.ActivarControlError<string>("el Nombre Debe Contener solo letras", Cliente.ValidarNombre, this.txtNombre.Text) == true
+                && lb_Fallas.ActivarControlError<string>("el Email Debe tener como min 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text)
+                && lb_Fallas.ActivarControlError<string>("el Clave Debe tener como min 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
             
             if (result == true)
             {
-                this.unaPersona = (Persona)this.CrearUsuario();
+                this.unaPersona = (Cliente)this.CrearUsuario();
                 OnSeIngesaronDatos(this.unaPersona);
                 this.DialogResult = DialogResult.OK;
             }
@@ -93,7 +93,7 @@ namespace FrmPreueba
 
         private void txtEmail_TextChanged(object sender, EventArgs e)
         {
-            result = lb_Fallas.ActivarControlError<string>("el Email Debe tener como min 8 caracteres", Persona.ValidarEmail, this.txtEmail.Text);
+            result = lb_Fallas.ActivarControlError<string>("el Email Debe tener como min 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text);
         }
 
         private void btnImagen_Click(object sender, EventArgs e)

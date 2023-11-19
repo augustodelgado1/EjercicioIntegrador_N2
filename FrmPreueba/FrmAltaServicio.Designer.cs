@@ -87,7 +87,6 @@
             cmbMarcaDeVehiculo.Name = "cmbMarcaDeVehiculo";
             cmbMarcaDeVehiculo.Size = new Size(243, 28);
             cmbMarcaDeVehiculo.TabIndex = 4;
-            cmbMarcaDeVehiculo.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             // 
             // lblTipoDeVehiculo
             // 

@@ -23,8 +23,7 @@ namespace Entidades.Archivo
         private static bool ValidarPath(string path)
         {
             return string.IsNullOrWhiteSpace(path) == false
-             && string.Compare(Path.GetExtension(path), extension, true) == 0
-             && File.Exists(path);
+             && string.Compare(Path.GetExtension(path), extension, true) == 0;
         }
         public static List<T> LeerArchivo(string path)
         {

@@ -7,29 +7,83 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entidades.Exepciones;
+using System.Reflection.Metadata;
+using Entidades.Interfaces;
 
 namespace Entidades.BaseDeDatos
 {
-    public class ClienteDao : ConeccionABaseDeDatos<Cliente>
+    public class ClienteDao : IConeccionABaseDeDatos<Cliente>
     {
-       
-        public override bool Agregar(Cliente unElemento)
+        protected static string cadenaConexion;
+        protected static SqlConnection coneccionSql;
+        protected static SqlCommand comando;
+        static ClienteDao()
+        {
+            cadenaConexion = @"Data Source = .;Initial Catalog=TallerMecanico;Integrated Security=True";
+            coneccionSql = new SqlConnection(cadenaConexion);
+            comando = new SqlCommand();
+            comando.CommandType = CommandType.Text;
+            comando.Connection = coneccionSql;
+        }
+
+        public bool Agregar(List<Cliente> list)
+        {
+            bool estado;
+            estado = false;
+            if (list is not null && list.Count > 0)
+            {
+                estado = true;
+                foreach (Cliente element in list)
+                {
+                    try
+                    {
+                        Agregar(element);
+                    }
+                    catch (ConeccionBaseDeDatosException)
+                    {
+                        throw;
+                    }
+
+                }
+            }
+
+            return estado;
+        }
+
+        public static SqlParameter SetValueSqlParameter(string parameter, object value)
+        {
+            SqlParameter parametro = new(parameter, value);
+            if (value is null)
+            {
+                parametro.Value = DBNull.Value;
+            }
+
+            return parametro;
+        }
+
+        public bool Agregar(Cliente unElemento)
         {
             bool estado;
             estado = false;
             try
             {
+                /*[ID]
+      ,[nombre]
+      ,[email]
+      ,[clave]
+      ,[path]
+      ,[dni]
+      ,[fechaDeNacimiento]*/
                 comando.Parameters.Clear();
                 comando.Parameters.AddWithValue("@email", unElemento.Email);
                 comando.Parameters.AddWithValue("@clave", unElemento.Clave);
-                comando.Parameters.AddWithValue("@Nombre", unElemento.Nombre);
-                comando.Parameters.AddWithValue("@FechaDeNacimiento", unElemento.FechaDeNacimiento);
+                comando.Parameters.AddWithValue("@nombre", unElemento.Nombre);
+                comando.Parameters.AddWithValue("@fechaDeNacimiento", unElemento.FechaDeNacimiento.ToString("d/MM/yy"));
                 comando.Parameters.AddWithValue("@dni", unElemento.Dni);
-                comando.Parameters.AddWithValue("@path", unElemento.Path);
-
+                comando.Parameters.Add(SetValueSqlParameter("@path", unElemento.Path));
                 coneccionSql.Open();
                 comando.CommandText = "INSERT INTO Cliente(nombre,email,clave,dni,path,fechaDeNacimiento) " +
-                    "Values(@Nombre,@email,@clave,@dni,@path,@FechaDeNacimiento)";
+                    "Values(@nombre,@email,@clave,@dni,@path,@fechaDeNacimiento)";
 
                 if (comando.ExecuteNonQuery() == 1)
                 {
@@ -51,7 +105,7 @@ namespace Entidades.BaseDeDatos
             return estado;
         }
 
-        public override List<Cliente> Leer()
+        public List<Cliente> Leer()
         {
             List<Cliente> list = null;
 
@@ -84,7 +138,7 @@ namespace Entidades.BaseDeDatos
             return list;
         }
 
-        public override Cliente ObtenerUnElemento(SqlDataReader dataReader)
+        public Cliente ObtenerUnElemento(SqlDataReader dataReader)
         {
             return new Cliente(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["nombre"]), Convert.ToString(dataReader["dni"]),
                 Convert.ToDateTime(dataReader["fechaDeNacimiento"]),Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]));

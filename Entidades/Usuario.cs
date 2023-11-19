@@ -9,10 +9,8 @@ using Entidades.Extension;
 
 namespace Entidades
 {
-    [JsonSerializable(typeof(Persona))] 
     [JsonSerializable(typeof(Cliente))] 
-    [JsonSerializable(typeof(Mecanico))]
-    public abstract class Usuario
+    public class Usuario
     {
         protected int id;
         string email;
@@ -23,7 +21,7 @@ namespace Entidades
         {
             this.id = this.GetHashCode();
         }
-        internal Usuario(string email, string clave, Roles rol,string path = null):this()
+        public Usuario(string email, string clave, Roles rol,string path = null):this()
         {
             this.Email = email;
             this.Clave = clave;
@@ -35,28 +33,6 @@ namespace Entidades
             return string.IsNullOrWhiteSpace(contracenia) == false && contracenia.Length >= 8
              && contracenia.Length <= 30;
         }
-
-        public static List<T> ObtenerLista<T>(List<Usuario> list)
-            where T : Usuario
-        {
-            List<T> listaDeUsuarios = new List<T>();
-
-            if (list is not null && list.Count > 0)
-            {
-               
-                foreach (Usuario UnUsuario in list)
-                {
-                    if (UnUsuario is not null &&
-                   UnUsuario.GetType() == typeof(T))
-                    {
-                        listaDeUsuarios.Add(((T)UnUsuario));
-                    }
-                }
-            }
-
-            return listaDeUsuarios;
-        }
-
         public static bool ValidarEmail(string email)
         {
             List<Char> listaDeCaracteres = new List<Char>()
@@ -65,7 +41,7 @@ namespace Entidades
                 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z','0',
                 '1', '2', '3', '4', '5', '6', '7', '8', '9'
             };
-             char[] separadores = { ' ', ','};
+            char[] separadores = { ' ', ','};
             bool estado = false;
             if (!string.IsNullOrWhiteSpace(email))
             {
@@ -73,7 +49,7 @@ namespace Entidades
                 email = email.BorrarCaracteres(separadores);
                 estado = email.Length >= 3 && email.Length <= 25
                  && email.VerificarCaracteres(listaDeCaracteres) == true 
-                 && email.Count(char.IsLetter) > 5 && email.Contains('@');
+                 && email.Count(char.IsLetter) >= 5 && email.Contains('@');
             }
 
             return estado;
@@ -94,14 +70,47 @@ namespace Entidades
                    this.clave == usuario.clave;
         }
 
-        public override string ToString()
+        public static List<T> ObtenerLista<T>(List<Usuario> list)
+            where T : Usuario
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"Email = {this.Email}");
+            List<T> listaDeUsuarios = new List<T>();
 
-            return base.ToString();
+            if (list is not null && list.Count > 0)
+            {
+
+                foreach (Usuario UnUsuario in list)
+                {
+                    if (UnUsuario is not null &&
+                   UnUsuario.GetType() == typeof(T))
+                    {
+                        listaDeUsuarios.Add(((T)UnUsuario));
+                    }
+                }
+            }
+
+            return listaDeUsuarios;
         }
 
+        public static List<Usuario> FiltarPorRol(List<Usuario> listaDeUsuarios, Roles unRol)
+        {
+            List<Usuario> result = null;
+            if (listaDeUsuarios is not null)
+            {
+                result = listaDeUsuarios.FindAll(unUsuario => unUsuario is not null && unUsuario.Rol == unRol);
+            }
+            return result;
+        }
+
+        public static Usuario ObtenerUnUsuarioPorRol(List<Usuario> listaDeUsuarios, Roles unRol)
+        {
+            List<Usuario> result = null;
+            Usuario unUsuario = null;
+            if ((result = Usuario.FiltarPorRol(listaDeUsuarios, unRol)) is not null && result.Count > 0)
+            {
+                unUsuario = result.First();
+            }
+            return unUsuario;
+        }
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -135,9 +144,9 @@ namespace Entidades
 
         public enum Roles
         {
-            Cliente,
-            Personal,
-            Administrador
+            Cliente = 3,
+            Personal = 2,
+            Administrador = 1
         }
 
     }

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Channels;
 using Entidades;
+using Entidades.Archivo;
 using Entidades.BaseDeDatos;
 
 namespace TestConsole
@@ -14,13 +16,19 @@ namespace TestConsole
         static Cliente unCliente;
         static Usuario unUsuario;
         static Vehiculo unVehiculo;
-        static Vehiculo otroVehiculo;
+        static List<Vehiculo> Vehiculos;
         static Program()
         {
-            
 
 
+            Vehiculos = JsonFile<Vehiculo>.LeerArchivo("file:///C:/Users/PC/Desktop/vehiculos.json");
 
+            foreach (Vehiculo unVehiculo in Vehiculos)
+            {
+                unVehiculo.Patente = Sistema.GeneradorDeAlphaNumerico(3, 3);
+            }
+
+            new VehiculoDao().Agregar(Vehiculos);
         }
         static void Main(string[] args)
         {
@@ -29,7 +37,6 @@ namespace TestConsole
             Vehiculo veh;
             
             Servicio ser;
-            List<Cliente> listaDeVehiculos = Negocio.Clientes; ;
 
 
             Type type = typeof(Cliente);
@@ -159,14 +166,7 @@ namespace TestConsole
                                             {
                                                 case 1:
 
-                                                    foreach (Servicio unServicio in Negocio.ListaDeServicio)
-                                                    {
-                                                        if (unServicio is not null)
-                                                        {
-                                                            Console.WriteLine(unServicio.ToString());
-                                                        }
-                                                    }
-
+                                                    
                                                     break;
 
                                                 case 2:
@@ -182,16 +182,7 @@ namespace TestConsole
 
                             case 4:
 
-                                if (Negocio.Clientes.Count > 0)
-                                {
-                                    foreach (Cliente unCliente in Negocio.Clientes)
-                                    {
-                                        if (unCliente is not null)
-                                        {
-                                            Console.WriteLine(unCliente.ToString());
-                                        }
-                                    }
-                                }
+                            
 
                                 break;
 

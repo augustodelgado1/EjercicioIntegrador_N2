@@ -34,25 +34,6 @@ namespace TallerMecanico
 
             return estado;
         }
-
-        private static bool LimpiarListaDeTextBox(Control.ControlCollection listaDeControles)
-        {
-            bool result = false;
-            if (listaDeControles is not null)
-            {
-                result = true;
-                foreach (Control unControl in listaDeControles)
-                {
-                    if (unControl is not null && unControl is TextBox
-                     && string.IsNullOrWhiteSpace(unControl.Text) == false)
-                    {
-                        ((TextBox)unControl).Clear();
-                    }
-                }
-            }
-
-            return result;
-        }
         
         public static bool DetectarTextBoxVacio(Control.ControlCollection listaDeControles)
         {

@@ -25,47 +25,27 @@ namespace Entidades
             this.nombre = nombre;
             listaDeServicio = new List<Servicio>();
             listaDeCliente = new List<Cliente>();
+            listaDeUsuarios = new List<Usuario>();
             cancellationToken = new CancellationTokenSource();
         }
         
-        public Negocio(string nombre,List<Servicio> servicios, List<Cliente> listaDeClientes,List<Vehiculo> listaDeVehiculos):this(nombre)
+        public Negocio(string nombre,List<Usuario> listaDeUsuarios, List<Cliente> listaDeClientes,List<Vehiculo> listaDeVehiculos, List<Servicio> servicios) :this(nombre)
         {
-            this.ListaDeServicio = servicios;
-            this.Clientes = listaDeClientes;
-            this.ListaDeVehiculos = listaDeVehiculos;
+            this.listaDeUsuarios = listaDeUsuarios;
+            this.listaDeServicio = servicios;
+            this.listaDeCliente = listaDeClientes;
+            this.listaDeVehiculos = listaDeVehiculos;
+            this.listaDeUsuarios.AddRange(new List<Cliente>(this.listaDeCliente));
         }
 
-        public Cliente BuscarPorIdCliente(int id)
-        {
-            return BuscarPorId<Cliente>(this.Clientes, id);
-        }
-        
-        public Mecanico BuscarPorIdMecanico(int id)
-        {
-            return BuscarPorId<Mecanico>(this.Mecanicos, id);
-        }
-        private static T BuscarPorId<T>(List<T> listaUsuario, int id)
-          where T : Usuario
-        {
-            T result = default;
-            if (listaUsuario is not null)
-            {
-                result = listaUsuario.Find(unUsuario => unUsuario is not null && unUsuario.Id == id);
-            }
-
-            return result;
-        }
-
-
-
-        public static bool operator +(Negocio unNegocio, Cliente unCliente)
+        public static bool operator +(Negocio unNegocio, Usuario unUsuario)
         {
             bool result = false;
 
-            if (unCliente is not null && unNegocio is not null  
-             && unNegocio.listaDeCliente.Contains(unCliente) == false)
+            if (unUsuario is not null && unNegocio is not null
+             && unNegocio.listaDeUsuarios.Contains(unUsuario) == false)
             {
-                unNegocio.listaDeCliente.Add(unCliente);
+                unNegocio.listaDeUsuarios.Add(unUsuario);
                 result = true;
             }
 
@@ -73,20 +53,19 @@ namespace Entidades
             return result;
         }
 
-        public static bool operator -(Negocio unNegocio, Cliente unCliente)
+        public static bool operator -(Negocio unNegocio, Usuario unUsuario)
         {
             bool result = false;
 
-            if (unNegocio is not null && unNegocio.listaDeCliente.Contains(unCliente) == true)
+            if (unNegocio is not null && unNegocio.listaDeUsuarios.Contains(unUsuario) == true)
             {
-                unNegocio.listaDeCliente.Remove(unCliente);
+                unNegocio.listaDeUsuarios.Remove(unUsuario);
                 result = true;
             }
 
 
             return result;
         }
-
         public static bool operator +(Negocio unNegocio, Servicio unServicio)
         {
             bool result = false;
@@ -117,6 +96,41 @@ namespace Entidades
 
             return result;
         }
+        public static bool operator +(Negocio unNegocio, Vehiculo unVehiculo)
+        {
+            bool result = false;
+
+            if (unNegocio is not null && unVehiculo is not null
+              && unNegocio.listaDeVehiculos.Contains(unVehiculo) == false)
+            {
+                unNegocio.listaDeVehiculos.Add(unVehiculo);
+                result = true;
+            }
+
+
+            return result;
+        }
+
+
+        public static bool operator -(Negocio unNegocio, Vehiculo unVehiculo)
+        {
+            bool result = false;
+
+            if (unNegocio is not null && unVehiculo is not null
+              && unNegocio.listaDeVehiculos.Contains(unVehiculo) == true)
+            {
+                unNegocio.listaDeVehiculos.Remove(unVehiculo);
+                result = true;
+            }
+
+
+            return result;
+        }
+
+        public Usuario BuscarUsuario(string email,string password)
+        {
+            return Usuario.EncontarUsuario(this.listaDeUsuarios, email, password);
+        }
 
         /// <summary>
         /// C
@@ -128,9 +142,9 @@ namespace Entidades
             estado = false;
             try
             {
-                new ClienteDao().Agregar(this.listaDeCliente);
                 new ServicioDao().Agregar(listaDeServicio);
                 new VehiculoDao().Agregar(listaDeVehiculos);
+                new ClienteDao().Agregar(this.listaDeCliente);
                 estado = true;
             }
             catch (ConeccionBaseDeDatosException)
@@ -140,6 +154,21 @@ namespace Entidades
 
             return estado;
         } 
+
+        public static Negocio CargarBaseDeDatos(string nombre)
+        {
+            Negocio unNegocio = default;
+            try
+            {
+                unNegocio = new Negocio(nombre,new UsuarioDao().Leer(), new ClienteDao().Leer(), new VehiculoDao().Leer(), new ServicioDao().Leer());
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return unNegocio;
+        }
         
         /// <summary>
         /// 
@@ -193,13 +222,13 @@ namespace Entidades
             }
         }
         
-        public static Mecanico unMecanicoRandom
+      /*  public static Mecanico unMecanicoRandom
         {
 
             get { ;
                 return new Mecanico("manuel","123456",DateTime.Now,"manuel@gmail","maurop¿1213");
             }
-        }
+        }*/
 
         public enum Diagnostico
         {
@@ -208,41 +237,17 @@ namespace Entidades
             Suspension,
             ReparacionDeMotor,
         }
-        public List<Servicio> ListaDeServicio { get => listaDeServicio; set
-            {
-                this.listaDeServicio = new List<Servicio>();
-                if (value is not null)
-                {
-                    this.listaDeServicio = value;
-                }
-            }
+        public List<Servicio> ListaDeServicio { get => listaDeServicio; 
         }
         public List<Servicio> ServiciosEnProcesos { get => Servicio.BuscarPorEstado(listaDeServicio, Servicio.EstadoDelSevicio.EnProceso); }
         public List<Servicio> ServiciosTerminados { get => Servicio.BuscarPorEstado(listaDeServicio, Servicio.EstadoDelSevicio.Terminado); }
         public List<Servicio> ServiciosCancelado { get => Servicio.BuscarPorEstado(listaDeServicio, Servicio.EstadoDelSevicio.Cancelado); }
         public List<Usuario> ListaDeUsuarios { get => listaDeUsuarios;}
-        public List<Vehiculo> ListaDeVehiculos { get => listaDeVehiculos; 
-            
-            set
-            {
-                this.listaDeVehiculos = new List<Vehiculo>();
-                if (value is not null)
-                {
-                    this.listaDeVehiculos = value;
-                }
-            }
+        public List<Vehiculo> ListaDeVehiculos { get => listaDeVehiculos;
+           
         }
-        public List<Mecanico> Mecanicos { get => Usuario.ObtenerLista<Mecanico>(listaDeUsuarios); }
-        public List<Cliente> Clientes { get => this.listaDeCliente; 
+        public List<Cliente> Clientes { get => Usuario.ObtenerLista<Cliente>(listaDeUsuarios); }
             
-            set 
-            {
-                this.listaDeCliente = new List<Cliente>();
-                if (value is not null)
-                {
-                    this.listaDeCliente = value;
-                }
-            } 
-        }
+        
     }
 }

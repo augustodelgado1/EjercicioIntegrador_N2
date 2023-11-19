@@ -21,8 +21,9 @@ namespace TallerMecanico
     public abstract partial class FrmListar<T> : Form, IAbm<T>
         where T : class
     {
+        protected T element;
         private int indexRow;
-        protected List<T> listGeneric;
+        private List<T> listGeneric;
         SaveFileDialog saveFileDialog;
         private OpenFileDialog openFileDialog;
         public event Action<string, string> InformarError;
@@ -36,7 +37,7 @@ namespace TallerMecanico
             this.Load += FrmListar_Load;
             indexRow = -1;
         }
-        protected T this[int index]
+        private T this[int index]
         {
             get
             {
@@ -108,7 +109,7 @@ namespace TallerMecanico
         }
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            if (this.Alta() is not null)
+            if (this.Alta())
             {
                 ActualizarDataGried(this.dgtvList, this.listGeneric);
                 this.OnInformar("Alta", "Se realizo la Alta correctamente");
@@ -156,6 +157,7 @@ namespace TallerMecanico
                  e.ColumnIndex >= 0 && e.RowIndex >= 0 && e.RowIndex <= dgtvList.RowCount)
             {
                 indexRow = e.RowIndex;
+                element = this[indexRow];
             }
         }
         private void BtnCargar_Click(object sender, EventArgs e)
@@ -229,10 +231,7 @@ namespace TallerMecanico
 
         private void BtnInfo_Click(object sender, EventArgs e)
         {
-            if(this.Mostrar(this[indexRow]) == false)
-            {
-                this.OnInformarError("Error Al Mostrar",$"No Se pudo mostar el {typeof(T).Name}");
-            }
+            this.Mostrar(this[indexRow]);
         }
         private void BtnGuardarArchivo_Click(object sender, EventArgs e)
         {
@@ -251,7 +250,7 @@ namespace TallerMecanico
             }
         }
 
-        public abstract T Alta();
+        public abstract bool Alta();
         protected abstract void ActualizarDataGried(DataGridView dgtv, List<T> lista);
         protected abstract void AgregarColumnasDataGried(DataGridView dgtvList, List<T> listGeneric);
         public abstract bool Baja(T element);

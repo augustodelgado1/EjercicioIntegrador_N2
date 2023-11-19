@@ -35,9 +35,9 @@ namespace Test
         public void ObetenerLista_CuandoLeMandoUnTipoDeberiaRetornarmeUnListaDeEseTipo()
         {
             List<Usuario> listaDeCliente = new List<Usuario>() {
-               new Mecanico("kaak", "12345678",DateTime.Now, "koko@gmail.com", "123456789"),
+               new Usuario("kaak", "12345678",Usuario.Roles.Administrador),
                new Cliente("pepe", "12345678",DateTime.Now, "mario@gmail.com", "123456789"),
-               new Mecanico("kaak", "12345678",DateTime.Now, "koko@gmail.com", "123456789"),
+               new Usuario("mario", "12345678",Usuario.Roles.Personal),
                new Cliente("pepe", "12345678",DateTime.Now, "mario@gmail.com", "123456789"),
             };
 

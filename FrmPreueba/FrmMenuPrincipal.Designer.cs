@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             lblTitulo = new Label();
-            btnInicio = new Button();
             btnClientes = new Button();
             btnServicio = new Button();
             btnVehiculos = new Button();
@@ -49,23 +48,11 @@
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "Taller Mecanico";
             // 
-            // btnInicio
-            // 
-            btnInicio.FlatStyle = FlatStyle.System;
-            btnInicio.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnInicio.Location = new Point(27, 44);
-            btnInicio.Name = "btnInicio";
-            btnInicio.Size = new Size(119, 30);
-            btnInicio.TabIndex = 4;
-            btnInicio.Text = "Inicio";
-            btnInicio.UseVisualStyleBackColor = true;
-            btnInicio.Click += btnInicio_Click;
-            // 
             // btnClientes
             // 
             btnClientes.FlatStyle = FlatStyle.System;
             btnClientes.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnClientes.Location = new Point(180, 44);
+            btnClientes.Location = new Point(87, 38);
             btnClientes.Name = "btnClientes";
             btnClientes.Size = new Size(125, 30);
             btnClientes.TabIndex = 0;
@@ -77,7 +64,7 @@
             // 
             btnServicio.FlatStyle = FlatStyle.System;
             btnServicio.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnServicio.Location = new Point(340, 44);
+            btnServicio.Location = new Point(247, 38);
             btnServicio.Name = "btnServicio";
             btnServicio.Size = new Size(118, 30);
             btnServicio.TabIndex = 1;
@@ -89,7 +76,7 @@
             // 
             btnVehiculos.FlatStyle = FlatStyle.System;
             btnVehiculos.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnVehiculos.Location = new Point(491, 44);
+            btnVehiculos.Location = new Point(398, 38);
             btnVehiculos.Name = "btnVehiculos";
             btnVehiculos.Size = new Size(117, 30);
             btnVehiculos.TabIndex = 2;
@@ -100,9 +87,9 @@
             // panelContenedor
             // 
             panelContenedor.Dock = DockStyle.Fill;
-            panelContenedor.Location = new Point(0, 77);
+            panelContenedor.Location = new Point(0, 76);
             panelContenedor.Name = "panelContenedor";
-            panelContenedor.Size = new Size(800, 373);
+            panelContenedor.Size = new Size(824, 416);
             panelContenedor.TabIndex = 2;
             // 
             // panel1
@@ -112,19 +99,18 @@
             panel1.Controls.Add(btnClientes);
             panel1.Controls.Add(btnVehiculos);
             panel1.Controls.Add(btnServicio);
-            panel1.Controls.Add(btnInicio);
             panel1.Controls.Add(lblTitulo);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(800, 77);
+            panel1.Size = new Size(824, 76);
             panel1.TabIndex = 2;
             // 
             // btnSalir
             // 
             btnSalir.FlatStyle = FlatStyle.System;
             btnSalir.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnSalir.Location = new Point(643, 44);
+            btnSalir.Location = new Point(550, 38);
             btnSalir.Name = "btnSalir";
             btnSalir.Size = new Size(118, 30);
             btnSalir.TabIndex = 5;
@@ -136,7 +122,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(824, 492);
             Controls.Add(panelContenedor);
             Controls.Add(panel1);
             MaximizeBox = false;
@@ -154,7 +140,6 @@
         private Button btnVehiculos;
         private Button btnServicio;
         private Button btnClientes;
-        private Button btnInicio;
         private Panel panelContenedor;
         private Panel panel1;
         private Button btnSalir;

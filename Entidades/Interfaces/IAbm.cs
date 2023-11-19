@@ -8,7 +8,7 @@ namespace Entidades.Interfaces
 {
     public interface IAbm<T> where T : class
     {
-        public T Alta();
+        public bool Alta();
         public bool Modificacion(T element);
         public bool Baja(T element);
         public bool Mostrar(T element);

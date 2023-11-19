@@ -11,13 +11,15 @@ namespace Entidades
         MarcaDelVehiculo marca;
         string modelo;
         string path;
-        Servicio servicio;
+        EstadoDeVehiculo estado;
+        private Cliente duenio;
 
-        internal Vehiculo(int id, string patente, MarcaDelVehiculo marca, TipoDeVehiculo tipo, string modelo,Servicio unServicio, string path = null) 
+        internal Vehiculo(int id, string patente, MarcaDelVehiculo marca, TipoDeVehiculo tipo, string modelo, EstadoDeVehiculo estado,Cliente unCliente, string path = null) 
             :this(patente, marca, tipo,modelo,path)
         { 
             this.id = id;
-            this.Servicio = unServicio;
+            this.estado = estado;
+            this.Duenio = unCliente;
         }
 
         public Vehiculo(string patente, MarcaDelVehiculo marca,TipoDeVehiculo tipo, string modelo, string path = null)
@@ -47,7 +49,7 @@ namespace Entidades
         public override bool Equals(object? obj)
         {
             return obj is Vehiculo vehiculo &&
-                   patente == vehiculo.patente;
+                   id == vehiculo.id;
         }
 
         internal static Vehiculo BuscarPorId(List<Vehiculo> listaDeVehiculos, int id)
@@ -62,6 +64,38 @@ namespace Entidades
             return result;
         }
 
+        public static bool operator +(Vehiculo unVehiculo, Cliente unCliente)
+        {
+            bool result = false;
+
+            if (unCliente is not null && unCliente is not null
+             && unCliente.Vehiculos.Contains(unVehiculo) == false)
+            {
+                unCliente.Vehiculos.Add(unVehiculo);
+                unVehiculo.duenio = unCliente;
+                result = true;
+            }
+
+
+            return result;
+        }
+
+        public static bool operator -(Vehiculo unVehiculo, Cliente unCliente)
+        {
+            bool result = false;
+
+            if (unCliente is not null && unCliente is not null
+             && unCliente.Vehiculos.Contains(unVehiculo) == true)
+            {
+                unCliente.Vehiculos.Remove(unVehiculo);
+                unVehiculo.duenio = null;
+                result = true;
+            }
+
+
+            return result;
+        }
+
         internal int Id { get => id; }
         public string Patente
         {
@@ -70,41 +104,21 @@ namespace Entidades
             set
             {
                 this.patente = null;
-                if (ValidarPatente(value) == true)
-                {
+                /*if (ValidarPatente(value) == true)
+                {*/
                     patente = value;
-                }
+                
             }
         }
 
-        public EstadoDeVehiculo Estado { 
+        public EstadoDeVehiculo Estado {
 
-            get {
+            get => this.estado;
 
-                EstadoDeVehiculo estado;
-                estado = EstadoDeVehiculo.NoDiagnosticado;
-
-                if (this.servicio is not null 
-                 && this.servicio.Estado == Servicio.EstadoDelSevicio.EnProceso)
-                {
-                    estado = EstadoDeVehiculo.Diagnosticado;
-                }
-
-                return estado;
-            } 
-        }
-
-        public Servicio Servicio { get => this.servicio;
-
-            set
+            internal set 
             {
-                if (value is not null
-                && this.Estado == EstadoDeVehiculo.NoDiagnosticado)
-                {
-                    this.servicio = value;
-                }
+                this.estado = value;
             } 
-        
         }
 
         public string Modelo { get => modelo; 
@@ -127,6 +141,20 @@ namespace Entidades
         public TipoDeVehiculo Tipo { get => tipo; set => tipo = value; }
         public MarcaDelVehiculo Marca { get => marca; set => marca = value; }
         public string Path { get => path; set => path = value; }
+        public Cliente Duenio { get => duenio; 
+            
+            set { 
+            
+                if(this + value)
+                {
+                    this.duenio = value;
+                }
+            
+            } 
+        
+        }
+
+        public string DuenioName { get => duenio.Nombre; }
 
         public enum TipoDeVehiculo
         {

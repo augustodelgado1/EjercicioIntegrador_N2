@@ -1,5 +1,4 @@
 ﻿using Entidades;
-using Entidades.Extension;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TallerMecanico;
 using static Entidades.Vehiculo;
+using Entidades.Extension;
 
 namespace FrmPreueba
 {
@@ -18,9 +18,9 @@ namespace FrmPreueba
     {
         OpenFileDialog ofd;
         Servicio unServicio;
+        Servicio unServicioModify;
         Vehiculo unVehiculo;
-        public event Action<Servicio, Vehiculo> seIngesaronDatos;
-        public event Action<string> noSePudoDarDeAlta;
+        public event Action<Servicio, Vehiculo> OnSeIngesaronDatos;
         Array arrayMarcaDelVehiculo;
         Array arrayTipoDeVehiculo;
         bool result;
@@ -29,10 +29,10 @@ namespace FrmPreueba
         {
             InitializeComponent();
         }
-        public FrmAltaServicio(Servicio unServicio):this()
+        public FrmAltaServicio(Servicio unServicioModify):this()
         {
-            this.unServicio = unServicio;
-            this.SetServicio(unServicio);
+            this.unServicioModify = unServicioModify;
+            this.SetServicio(unServicioModify);
         }
 
         private void SetServicio(Servicio unServicio)
@@ -50,23 +50,28 @@ namespace FrmPreueba
         private void btnIngresar_Click(object sender, EventArgs e)
         {
             result = lblFallas.ActivarControlError("No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls)
-             && this.lblFallas.ActivarControlError<string>("la patente debe tener min 6 y max 8 caracteres", Vehiculo.ValidarPatente, this.txtPatente.Text)
-             && this.lblFallas.ActivarControlError<string>("el Modelo debe se alphanumerico", Vehiculo.ValidarModelo, this.txtModelo.Text);
+                && this.lblFallas.ActivarControlError<string>("la patente debe tener min 6 y max 8 caracteres", Vehiculo.ValidarPatente, this.txtPatente.Text) 
+                && this.lblFallas.ActivarControlError<string>("el Modelo debe se alphanumerico", Vehiculo.ValidarModelo, this.txtModelo.Text); ;
 
-            if (result == true)
+            if (result == true )
             {
                 this.unVehiculo = new Vehiculo(txtPatente.Text, (Vehiculo.MarcaDelVehiculo)arrayMarcaDelVehiculo.GetValue(this.cmbMarcaDeVehiculo.SelectedIndex), (Vehiculo.TipoDeVehiculo)arrayTipoDeVehiculo.GetValue(cmbTipoDeVehiculo.SelectedIndex), this.txtModelo.Text, this.path);
                 this.unServicio = new Servicio(rtbTextDescripcion.Text, this.unVehiculo);
-                OnSeIngesaronDatos(this.unServicio, this.unVehiculo);
+                if(unServicioModify is not null)
+                {
+                    this.unServicio.Cotizacion = unServicioModify.Cotizacion;
+                    this.unServicio.Diagnistico = unServicioModify.Diagnistico;
+                }
+                seIngesaronDatos(this.unServicio, this.unVehiculo);
                 this.DialogResult = DialogResult.OK;
             }
         }
 
-        private void OnSeIngesaronDatos(Servicio unServicio, Vehiculo unVehiculo)
+        private void seIngesaronDatos(Servicio unServicio, Vehiculo unVehiculo)
         {
-            if (seIngesaronDatos is not null)
+            if (OnSeIngesaronDatos is not null)
             {
-                seIngesaronDatos.Invoke(unServicio, unVehiculo);
+                OnSeIngesaronDatos.Invoke(unServicio, unVehiculo);
             }
         }
 
@@ -78,11 +83,6 @@ namespace FrmPreueba
             {
                 this.path = ofd.FileName;
             }
-        }
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)

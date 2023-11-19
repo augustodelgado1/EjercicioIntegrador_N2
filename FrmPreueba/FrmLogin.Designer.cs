@@ -34,11 +34,12 @@
             txtClave = new TextBox();
             lbl_Titulo = new Label();
             lblError = new Label();
+            cmboxRol = new ComboBox();
             SuspendLayout();
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(24, 198);
+            btnAceptar.Location = new Point(24, 231);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(98, 32);
             btnAceptar.TabIndex = 6;
@@ -48,7 +49,7 @@
             // 
             // btnRegistrarse
             // 
-            btnRegistrarse.Location = new Point(302, 198);
+            btnRegistrarse.Location = new Point(302, 231);
             btnRegistrarse.Name = "btnRegistrarse";
             btnRegistrarse.Size = new Size(98, 32);
             btnRegistrarse.TabIndex = 7;
@@ -98,17 +99,32 @@
             lblError.TabIndex = 13;
             lblError.Text = "lblError";
             // 
+            // cmboxRol
+            // 
+            cmboxRol.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmboxRol.Font = new Font("Arial", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            cmboxRol.FormattingEnabled = true;
+            cmboxRol.Location = new Point(24, 193);
+            cmboxRol.Name = "cmboxRol";
+            cmboxRol.Size = new Size(376, 23);
+            cmboxRol.TabIndex = 15;
+            cmboxRol.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
             // FrmLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(432, 242);
+            ClientSize = new Size(432, 275);
+            Controls.Add(cmboxRol);
             Controls.Add(lblError);
             Controls.Add(lbl_Titulo);
             Controls.Add(txtClave);
             Controls.Add(txtEmail);
             Controls.Add(btnRegistrarse);
             Controls.Add(btnAceptar);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FrmLogin";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
@@ -124,5 +140,6 @@
         private TextBox txtClave;
         private Label lbl_Titulo;
         private Label lblError;
+        private ComboBox cmboxRol;
     }
 }

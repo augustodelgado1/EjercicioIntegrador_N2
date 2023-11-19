@@ -1,12 +1,48 @@
 ﻿using Entidades.Exepciones;
+using Entidades.Interfaces;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace Entidades.BaseDeDatos
 {
-    public class VehiculoDao : ConeccionABaseDeDatos<Vehiculo>
+    public class VehiculoDao : IConeccionABaseDeDatos<Vehiculo>
     {
-        public override bool Agregar(Vehiculo unElemento)
+        protected static string cadenaConexion;
+        protected static SqlConnection coneccionSql;
+        protected static SqlCommand comando;
+        static VehiculoDao()
+        {
+            cadenaConexion = @"Data Source = .;Initial Catalog=TallerMecanico;Integrated Security=True";
+            coneccionSql = new SqlConnection(cadenaConexion);
+            comando = new SqlCommand();
+            comando.CommandType = CommandType.Text;
+            comando.Connection = coneccionSql;
+        }
+
+        public bool Agregar(List<Vehiculo> list)
+        {
+            bool estado;
+            estado = false;
+            if (list is not null && list.Count > 0)
+            {
+                estado = true;
+                foreach (Vehiculo element in list)
+                {
+                    try
+                    {
+                        Agregar(element);
+                    }
+                    catch (ConeccionBaseDeDatosException)
+                    {
+                        throw;
+                    }
+
+                }
+            }
+
+            return estado;
+        }
+        public bool Agregar(Vehiculo unElemento)
         {
             bool estado;
             estado = false;
@@ -17,12 +53,13 @@ namespace Entidades.BaseDeDatos
                 comando.Parameters.AddWithValue("@patente", unElemento.Patente);
                 comando.Parameters.AddWithValue("@tipo",(int) unElemento.Tipo);
                 comando.Parameters.AddWithValue("@modelo", unElemento.Modelo);
-                comando.Parameters.AddWithValue("@id", unElemento.Servicio.Id);
+                comando.Parameters.AddWithValue("@Estado", unElemento.Estado);
+                comando.Parameters.Add(ClienteDao.SetValueSqlParameter("@Path", unElemento.Path));
                 comando.Parameters.AddWithValue("@marca", (int)unElemento.Marca);
 
                 coneccionSql.Open();
-                comando.CommandText = "INSERT INTO Vehiculo(patente,tipo,modelo,idDeServicio,marca) " +
-                    "Values(@patente,@tipo,@modelo,@id,@marca)";
+                comando.CommandText = "INSERT INTO Vehiculo(patente,tipo,modelo,idDeServicio,marca,estado,path) " +
+                    "Values(@patente,@tipo,@modelo,@id,@marca,@Estado,@Path)";
 
                 if (comando.ExecuteNonQuery() == 1)
                 {
@@ -44,14 +81,14 @@ namespace Entidades.BaseDeDatos
             return estado;
         }
 
-        public override List<Vehiculo> Leer()
+        public List<Vehiculo> Leer()
         {
             List<Vehiculo> list = null;
 
             try
             {
                 coneccionSql.Open();
-                comando.CommandText = $"Select * From Vehiculo AS V INNER JOIN Servicio AS S ON V.idDeServicio = S.ID";
+                comando.CommandText = $"Select * From Vehiculo";
 
                 using (SqlDataReader dataReader = comando.ExecuteReader())
                 {
@@ -77,10 +114,10 @@ namespace Entidades.BaseDeDatos
             return list;
         }
 
-        public override Vehiculo ObtenerUnElemento(SqlDataReader dataReader)
+        public Vehiculo ObtenerUnElemento(SqlDataReader dataReader)
         {
             return new Vehiculo(Convert.ToInt32(dataReader["id"]), Convert.ToString(dataReader["patente"]), (Vehiculo.MarcaDelVehiculo)Convert.ToInt32(dataReader["marca"]), (Vehiculo.TipoDeVehiculo)Convert.ToInt32(dataReader["tipo"]),
-                Convert.ToString(dataReader["modelo"]),new ServicioDao().ObtenerUnElemento(dataReader));
+                Convert.ToString(dataReader["modelo"]), (Vehiculo.EstadoDeVehiculo)Convert.ToInt32(dataReader["estado"]),new ClienteDao().ObtenerUnElemento(dataReader));
         }
     }
 }

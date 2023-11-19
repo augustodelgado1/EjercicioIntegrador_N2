@@ -15,39 +15,32 @@ namespace FrmPreueba
 {
     public partial class FrmSevicios : FrmListar<Servicio>
     {
-        Persona unaPersona;
+        Usuario unUsuario;
         Servicio unServicio;
+        Negocio unNegocio;
+        Vehiculo unVehiculo;
+        public event Func<Servicio,Task> Predicate; 
         bool estado;
-        public FrmSevicios(List<Servicio> listaDeServicio) :base(listaDeServicio)
+        public FrmSevicios(List<Servicio> listaDeServicio, Negocio unNegocio, Usuario unUsuario) :base(listaDeServicio)
         {
             InitializeComponent();
             this.Load += FrmSevicios_Load;
+            this.unUsuario = unUsuario;
+            this.unNegocio = unNegocio;
+            ConfigurarForm(unUsuario.Rol);
         }
 
-        public FrmSevicios(Persona unaPersona, List<Servicio> listaDeServicio) :this(listaDeServicio)
+        private void ConfigurarForm(Usuario.Roles rol)
         {
-            this.unaPersona = unaPersona;
-            this.ConfigurarForm(unaPersona);
-        }
-
-        private void ConfigurarForm(Persona unaPersona)
-        {
-            if (unaPersona is Cliente)
+            if (rol == Usuario.Roles.Cliente)
             {
                 this.btnTerminarServicio.Visible = false;
-                this.btnTerminarServicio.Enabled = false;
             }
             else
             {
-                if(unaPersona is Mecanico)
-                {
-                    this.btnAgregar.Visible = false;
-                    this.btnAgregar.Enabled = false;
-                    this.btnEliminar.Visible = false;
-                    this.btnEliminar.Enabled = false;
-                    this.btnModificar.Visible = false;
-                    this.btnModificar.Enabled = false;
-                }
+                this.btnAgregar.Visible = false;
+                this.btnEliminar.Visible = false;
+                this.btnAgregar.Visible = false;
             }
         }
 
@@ -56,29 +49,25 @@ namespace FrmPreueba
             base.cmbFilter.Visible = true;
             base.cmbFilter.DataSource = Enum.GetValues(typeof(Servicio.EstadoDelSevicio));
             base.Filtrar += FrmSevicios_Filtrar;
-            base.Informar += FrmSevicios_Informar;
-            base.InformarError += FrmSevicios_InformarError;
+            base.Informar += FrmMenuPrincipal.Informar;
+            base.InformarError += FrmMenuPrincipal.InformarError;
             base.Buscador += FrmSevicios_Buscador;
+            this.btnTerminarServicio.Click += BtnTerminarServicio_Click;
         }
-
-        private void BtnTerminarServicio_Click(object sender, EventArgs e)
+        private void BtnTerminarServicio_Click(object? sender, EventArgs e)
         {
-            FrmDiagnosticar frmDiagnosticar = new FrmDiagnosticar(this.unServicio);
-        
-            if(frmDiagnosticar.ShowDialog() == DialogResult.OK
-                && unaPersona is Mecanico unMecanico)
-            {
-                if(unMecanico + this.unServicio)
-                {
-                  /*  FrmSevicios_Informar();*/
-                }
-                else
-                {
-                    /*FrmSevicios_InformarError();*/
-                }
-            }
-        }
+            this.unServicio = new Servicio("No anda", new Vehiculo("123456", Vehiculo.MarcaDelVehiculo.Pontiac, Vehiculo.TipoDeVehiculo.Auto, "Sunnaty"));
+            /*if (base.element is not null)
+            {*/
+                FrmDiagnosticar frmDiagnosticar = new FrmDiagnosticar(unServicio);
 
+                if (frmDiagnosticar.ShowDialog() == DialogResult.OK && Predicate is not null
+                  && Predicate(unServicio) is Task unaTarea)
+                {
+                    
+                }
+           /* }*/
+        }
         private List<Servicio> FrmSevicios_Filtrar(List<Servicio> unaLista,string criterio)
         {
             List<Servicio> result = default;
@@ -89,43 +78,41 @@ namespace FrmPreueba
             return result;
         }
 
-        private List<Servicio> FrmSevicios_Buscador(string patente, List<Servicio> unaLista)
+        private List<Servicio> FrmSevicios_Buscador(string diagnostico, List<Servicio> unaLista)
         {
             List<Servicio> result = default;
-            if (string.IsNullOrWhiteSpace(patente) == false && unaLista is not null)
+            if (string.IsNullOrWhiteSpace(diagnostico) == false && unaLista is not null)
             {
-                result = unaLista.FindAll(unServicio => unServicio.UnVehiculo.Patente.Contains(patente.ToLower()) == true);
+                result = unaLista.FindAll(unServicio => unServicio.Diagnistico.ToString().Contains(diagnostico.ToLower()) == true);
             }
             return result;
         }
-
-        private void FrmSevicios_InformarError(string titulo, string mensajeDeError)
+        public override bool Alta()
         {
-            MessageBox.Show(mensajeDeError, titulo, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private void FrmSevicios_Informar(string titulo, string mensaje)
-        {
-            MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        public override Servicio Alta()
-        {
+            bool estado;
+            estado = false;
             FrmAltaServicio frmAltaSevicio = new FrmAltaServicio();
-            frmAltaSevicio.seIngesaronDatos += FrmAltaSevicio_seIngesaronDatos;
-            
-            if (unaPersona is Cliente unCliente 
-               && frmAltaSevicio.ShowDialog() == DialogResult.OK
-               && unServicio + unCliente)
+            frmAltaSevicio.OnSeIngesaronDatos += FrmAltaSevicio_seIngesaronDatos;
+
+            if (frmAltaSevicio.ShowDialog() == DialogResult.OK
+                && this.unNegocio + unServicio && this.unNegocio + unVehiculo  
+                && this.unUsuario is Cliente unCliente)
             {
-
+                
+                estado = unServicio + unCliente && unVehiculo + unCliente;
             }
-            return this.unServicio;
+            
+            return estado;
         }
-
-        private void FrmAltaSevicio_seIngesaronDatos(Servicio unServicio, Vehiculo unVehiculo)
+       
+        private void FrmAltaSevicio_seIngesaronDatos(Servicio unServicio,Vehiculo unVehiculo)
         {
-            this.unServicio = unServicio;
+            bool result;
+            if (unServicio is not null)
+            {
+                this.unServicio = unServicio;
+                this.unVehiculo = unVehiculo;
+            }
         }
 
         public override bool Baja(Servicio unServicio)
@@ -133,15 +120,15 @@ namespace FrmPreueba
             estado = false;
             FrmMostrar<Servicio> frmMostrar;
            
-            if (unaPersona is Cliente unCliente && unServicio is not null)
+            if (unServicio is not null)
             {
-                frmMostrar = new FrmMostrar<Servicio>(unServicio, unPropertyInfoPredicate, unServicio.UnVehiculo.Path, "Vehiculo");
+                frmMostrar = new FrmMostrar<Servicio>(unServicio, unPropertyInfoPredicate, unServicio.UnVehiculo.Path, "Sevicio");
                 frmMostrar.Activated += FrmMostrar_Shown;
                 frmMostrar.Show();
 
-                if(estado == true && unServicio - unCliente == false)
+                if(estado == true && unUsuario is Cliente unCliente)
                 {
-                    estado = false;
+                    estado = unServicio - unCliente;
                 }
             }
 
@@ -153,11 +140,18 @@ namespace FrmPreueba
             bool estado;
             estado = true;
             FrmAltaServicio frmSevicios;
+           
             frmSevicios = new FrmAltaServicio(unServicioEdit);
-            frmSevicios.seIngesaronDatos += FrmAltaSevicio_seIngesaronDatos;
+            frmSevicios.OnSeIngesaronDatos += FrmAltaSevicio_seIngesaronDatos;
             if (frmSevicios.ShowDialog() == DialogResult.OK)
             {
-                unServicioEdit = this.unServicio;
+                if (unUsuario is Cliente unCliente && unServicioEdit.UnVehiculo - unCliente 
+                    && unServicioEdit - unCliente && this.unServicio + unCliente
+                 && this.unServicio.UnVehiculo + unCliente)
+                {
+                    this.unNegocio.ListaDeServicio[this.unNegocio.ListaDeServicio.IndexOf(unServicioEdit)] = this.unServicio;
+                    this.unNegocio.ListaDeVehiculos[this.unNegocio.ListaDeVehiculos.IndexOf(unServicioEdit.UnVehiculo)] = this.unServicio.UnVehiculo;
+                }
             }
 
             return estado;
@@ -178,12 +172,13 @@ namespace FrmPreueba
 
         private bool unPropertyInfoPredicate(PropertyInfo unaPrpiedad)
         {
-            return string.Compare(unaPrpiedad.Name, "Descripcion", true) == 0
-                || string.Compare(unaPrpiedad.Name, "MecanicoAsignado", true) == 0
+            return string.Compare(unaPrpiedad.Name, "FechaDeIngreso", true) == 0
                 || string.Compare(unaPrpiedad.Name, "Patente", true) == 0 ||
                    string.Compare(unaPrpiedad.Name, "CotizacionStr", true) == 0 ||
-                   string.Compare(unaPrpiedad.Name, "UnCliente", true) == 0 ||
-                   string.Compare(unaPrpiedad.Name, "Estado", true) == 0;
+                   string.Compare(unaPrpiedad.Name, "Estado", true) == 0 ||
+                   string.Compare(unaPrpiedad.Name, "Diagnostico", true) == 0
+                   || string.Compare(unaPrpiedad.Name, "Problema", true) == 0;
+            
         }
 
         
@@ -198,24 +193,24 @@ namespace FrmPreueba
 
         protected override void ActualizarDataGried(DataGridView dgtv, List<Servicio> lista)
         {
-            string textoCot;
+          
             if(dgtv is not null && lista is not null)
             {
                 dgtv.Rows.Clear();
                 foreach (Servicio unServicio in lista)
                 {
-                    dgtv.Rows.Add(unServicio.UnCliente.Nombre, unServicio.MecanicoAsignado, unServicio.Problema, unServicio.UnVehiculo.Patente, unServicio.CotizacionStr);
+                    dgtv.Rows.Add(unServicio.FechaDeIngreso, unServicio.UnVehiculo.Patente, unServicio.Problema, unServicio.CotizacionStr,unServicio.Diagnistico);
                 }
             }
         }
 
         protected override void AgregarColumnasDataGried(DataGridView dgtvList, List<Servicio> listGeneric)
         {
-            dgtvList.Columns.Add("colClienteName", "Cliente");
-            dgtvList.Columns.Add("colMecanicoName", "Mecanico");
-            dgtvList.Columns.Add("colDescripcion", "Descripcion");
+            dgtvList.Columns.Add("colFecha", "Fecha De Ingreso");
             dgtvList.Columns.Add("colUnVehiculo", "Patente");
+            dgtvList.Columns.Add("colProblema", "Problema");
             dgtvList.Columns.Add("colCosto", "Costo");
+            dgtvList.Columns.Add("colDiagnostico", "Diagnostico");
         }
         
         

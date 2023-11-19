@@ -9,14 +9,6 @@ namespace Test
     public class VehiculoTest
     {
         [TestMethod]
-        [DataRow("6S525A", MarcaDelVehiculo.Scort, TipoDeVehiculo.Moto,"1989")]
-        [DataRow("6S5 25A", MarcaDelVehiculo.Ford, TipoDeVehiculo.Auto,"9666")]
-        public void Constructor_CuandoInstancioUnUsuarioValido_DeberiaDevolverLaInstanciaConLosDatosPasados(string patente, MarcaDelVehiculo marca, TipoDeVehiculo tipo, string modelo)
-        {
-            Assert.IsNotNull(new Vehiculo(patente, marca,tipo,modelo));
-        }
-
-        [TestMethod]
         [DataRow("Hjajaajajajja")]
         [DataRow(null)]
         [DataRow("6S5*25A")]

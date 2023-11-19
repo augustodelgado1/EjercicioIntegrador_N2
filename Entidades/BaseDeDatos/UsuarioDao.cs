@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using Entidades.Exepciones;
+using Entidades.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -6,17 +7,15 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Entidades.Exepciones;
-using Entidades.Interfaces;
 
 namespace Entidades.BaseDeDatos
 {
-    public class ServicioDao : IConeccionABaseDeDatos<Servicio>
+    public class UsuarioDao : IConeccionABaseDeDatos<Usuario>
     {
         protected static string cadenaConexion;
         protected static SqlConnection coneccionSql;
         protected static SqlCommand comando;
-        static ServicioDao()
+        static UsuarioDao()
         {
             cadenaConexion = @"Data Source = .;Initial Catalog=TallerMecanico;Integrated Security=True";
             coneccionSql = new SqlConnection(cadenaConexion);
@@ -25,14 +24,14 @@ namespace Entidades.BaseDeDatos
             comando.Connection = coneccionSql;
         }
 
-        public bool Agregar(List<Servicio> list)
+        public bool Agregar(List<Usuario> list)
         {
             bool estado;
             estado = false;
             if (list is not null && list.Count > 0)
             {
                 estado = true;
-                foreach (Servicio element in list)
+                foreach (Usuario element in list)
                 {
                     try
                     {
@@ -48,41 +47,21 @@ namespace Entidades.BaseDeDatos
 
             return estado;
         }
-
-        protected SqlParameter SetValueSqlParameter(string parameter, object value)
-        {
-            SqlParameter parametro = new(parameter, value);
-            if (value is null)
-            {
-                parametro.Value = DBNull.Value;
-            }
-
-            return parametro;
-        }
-        public bool Agregar(Servicio unElemento)
+        public bool Agregar(Usuario unElemento)
         {
             bool estado;
             estado = false;
             try
             {
-                /* ,[idCliente]
-      ,[idDeVehiculo]
-      ,[idDiagnostico]
-      ,[fechaDeIngreso]
-      ,[fechaDeEgreso]
-      ,[descripcion]
-      ,[estado]*/
+
                 comando.Parameters.Clear();
-                comando.Parameters.AddWithValue("@FechaDeIngreso", unElemento.FechaDeIngreso);
-                comando.Parameters.AddWithValue("@FechaDeEgreso", unElemento.FechaDeEgreso);
-                comando.Parameters.AddWithValue("@IdCliente", unElemento.UnCliente.Id);
-                comando.Parameters.AddWithValue("@Estado", (int)unElemento.Estado);
-                comando.Parameters.AddWithValue("@IdVehiculo", unElemento.UnVehiculo.Id);
-                comando.Parameters.Add(ClienteDao.SetValueSqlParameter("@descripcion", unElemento.Problema));
-                comando.Parameters.AddWithValue("@Diagnistico", (int)unElemento.Diagnistico);
+                comando.Parameters.AddWithValue("@Email", unElemento.Email);
+                comando.Parameters.AddWithValue("@Clave", unElemento.Clave);
+                comando.Parameters.AddWithValue("@Rol", unElemento.Rol);
+
                 coneccionSql.Open();
-                comando.CommandText = "INSERT INTO Servicio(descripcion,fechaDeIngreso,fechaDeEgreso,idDeVehiculo,idCliente,estado,idDiagnostico) " +
-                    "Values(@descripcion,@FechaDeIngreso,@FechaDeEgreso,@IdVehiculo,@IdCliente,@Estado,@Diagnistico)";
+                comando.CommandText = "INSERT INTO Usuario(email,clave,rol) " +
+                    "Values(@Email,@Clave,@Rol)";
 
                 if (comando.ExecuteNonQuery() == 1)
                 {
@@ -104,19 +83,18 @@ namespace Entidades.BaseDeDatos
             return estado;
         }
 
-        public List<Servicio> Leer()
+        public List<Usuario> Leer()
         {
-            List<Servicio> list = null;
+            List<Usuario> list = null;
 
             try
             {
                 coneccionSql.Open();
-                comando.CommandText = $"Select * From Servicio AS S INNER JOIN Vehiculo AS V ON S.idDeVehiculo = V.ID INNER JOIN Cliente AS C ON S.idCliente = C.ID";
+                comando.CommandText = $"Select * From Usuario";
 
                 using (SqlDataReader dataReader = comando.ExecuteReader())
                 {
-                   /* var a = dataReader.GetColumnSchema();*/
-                    list = new List<Servicio>();
+                    list = new List<Usuario>();
                     while (dataReader.Read())
                     {
                         list.Add(ObtenerUnElemento(dataReader));
@@ -137,11 +115,11 @@ namespace Entidades.BaseDeDatos
 
             return list;
         }
-      
-        public Servicio ObtenerUnElemento(SqlDataReader dataReader)
+
+        public Usuario ObtenerUnElemento(SqlDataReader dataReader)
         {
-            return new Servicio(Convert.ToInt32(dataReader["id"]), Convert.ToString(dataReader["descripcion"]), Convert.ToDateTime(dataReader["fechaDeIngreso"]), Convert.ToDateTime(dataReader["fechaDeEgreso"])
-                , new VehiculoDao().ObtenerUnElemento(dataReader), new ClienteDao().ObtenerUnElemento(dataReader), (Servicio.EstadoDelSevicio)Convert.ToInt32(dataReader["estado"]));
+            return new Usuario(Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]),(Usuario.Roles)Convert.ToInt32(dataReader["rol"]));
         }
+    
     }
 }

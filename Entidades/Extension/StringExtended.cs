@@ -29,6 +29,7 @@ namespace Entidades.Extension
             bool result;
             result = false;
 
+            
             if (texto is not null && texto.Length > 0 && criterio is not null)
             {
                 result = true;

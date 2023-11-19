@@ -36,9 +36,10 @@ namespace FrmPreueba
             // 
             // FrmVehiculo
             // 
+
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(764, 390);
             FormBorderStyle = FormBorderStyle.None;
             Name = "FrmVehiculo";
             StartPosition = FormStartPosition.CenterScreen;

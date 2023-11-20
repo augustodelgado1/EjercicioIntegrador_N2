@@ -25,6 +25,7 @@ namespace TallerMecanico
         private Task tareaProssgerBar;
         public event Action<object> CancelarProgessBar;
         public event Action TerminarProgessBar;
+        CancellationTokenSource cancellationToken;
         private FrmMenuPrincipal()
         {
             InitializeComponent();
@@ -53,7 +54,6 @@ namespace TallerMecanico
                 e.Cancel = false;
             }
         }
-
         public void SetUser(Usuario unUsuario)
         {
             if (unUsuario.Rol == Usuario.Roles.Cliente)
@@ -99,8 +99,6 @@ namespace TallerMecanico
 
             return resultado;
         }
-
-
         private void AbrirPanel(Form unForm)
         {
             if (unForm is not null)
@@ -117,44 +115,6 @@ namespace TallerMecanico
 
             }
         }
-        CancellationTokenSource cancellationToken;
-        public Task ActivarProgessBar(ProgressBar barra, Servicio unServicio)
-        {
-            if (unServicio is not null && (tareaProssgerBar is null || tareaProssgerBar.IsCompleted == true || tareaProssgerBar.IsCanceled == true))
-            {
-                return Task.Run(() => AvanzarProgessBar(barra, unServicio), cancellationToken.Token);
-            }
-
-            return default;
-        }
-        private void AvanzarProgessBar(ProgressBar barra, Servicio unServicio)
-        {
-            Random random = new Random();
-
-            if (barra is not null)
-            {
-                do
-                {
-                    Thread.Sleep(random.Next(100, 1000));
-                    IncrementarProgessBar(barra);
-                } while (barra.Value < barra.Maximum && tareaProssgerBar.IsCanceled == false);
-                barra.Visible = false;
-                barra.Value = 0;
-                unServicio.Estado = Servicio.EstadoDelSevicio.Terminado;
-            }
-        }
-        private void IncrementarProgessBar(ProgressBar barra)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(() => IncrementarProgessBar(barra));
-            }
-            else
-            {
-                barra.Increment(1);
-            }
-        }
-
         private void btnClientes_Click(object sender, EventArgs e)
         {
             if (this.panelContenedor.Tag is string texto && texto != "Clientes")
@@ -172,27 +132,25 @@ namespace TallerMecanico
                 if (unUsuario is Cliente unCliente)
                 {
                     frmSevicios = new FrmSevicios(unCliente.Servicios, unNegocio, unCliente);
+                    this.AbrirPanel(frmSevicios);
                 }
                 else
                 {
-                    frmSevicios = new FrmSevicios(unNegocio.ListaDeServicio, unNegocio, unUsuario);
+
+                    FrmTareas frmTareas = new FrmTareas(unNegocio, unNegocio.ServiciosEnProcesos);
+                    frmTareas.Show();
+
                 }
-                this.AbrirPanel(frmSevicios);
+
                 this.panelContenedor.Tag = "Servicio";
             }
         }
 
-        /*private Task FrmSevicios_Predicate(Servicio obj)
-        {
-            this.progressBar1.Visible = true;
-            return ActivarProgessBar(this.progressBar1, obj);
-        }
-*/
         private void btnVehiculos_Click(object sender, EventArgs e)
         {
             if (unUsuario is Cliente unCliente && this.panelContenedor.Tag is string texto && texto != "Vehiculos")
             {
-                frmVehiculo = new FrmVehiculo(unNegocio, unCliente, unCliente.Vehiculos);
+
             }
             else
             {
@@ -208,5 +166,53 @@ namespace TallerMecanico
         {
             this.Close();
         }
+
+        /// <summary>
+        /// Muestra un error provider informando que condiciones debe cumplir el Control pasado por parametro
+        /// </summary>
+        /// <param name="unControl">el control</param>
+        /// <param name="mensaje">Mensaje informando que condiciones debe cumplir el control</param>
+        /// <param name="predicate">el metodo que va a derminar si se cumplieron las condiciones , que debe
+        /// retornar (True) en caso que se cumpla o (false) de caso contrario</param>
+        /// <returns>(false) en caso de que el control no se cumpla con la condiciones de el metodo pasado por parametro
+        /// de lo contrario devueve (true)</returns>
+        public static bool ActivarControlError<T>(Control unControl, string msgError, Predicate<T> predicate, T element)
+        {
+            bool estado;
+            estado = false;
+            if (unControl is not null && predicate is not null)
+            {
+                unControl.Visible = true;
+                unControl.Text = msgError;
+                if ((estado = predicate.Invoke(element)) == true)
+                {
+                    estado = true;
+                    unControl.Visible = false;
+                }
+            }
+
+            return estado;
+        }
+
+        public static bool DetectarTextBoxVacio(Control.ControlCollection listaDeControles)
+        {
+            bool result = false;
+            if (listaDeControles is not null)
+            {
+                result = true;
+                foreach (Control unControlDeLaLista in listaDeControles)
+                {
+                    if (unControlDeLaLista is TextBox unTexbox
+                     && string.IsNullOrWhiteSpace(unTexbox.Text))
+                    {
+                        result = false;
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
     }
 }

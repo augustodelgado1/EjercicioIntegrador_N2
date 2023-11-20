@@ -21,6 +21,7 @@ namespace FrmPreueba
         Servicio unServicioModify;
         Vehiculo unVehiculo;
         public event Action<Servicio, Vehiculo> OnSeIngesaronDatos;
+        KeyValuePair<Servicio.Diagnostico, float> keyValue;
         Array arrayMarcaDelVehiculo;
         Array arrayTipoDeVehiculo;
         bool result;
@@ -46,12 +47,12 @@ namespace FrmPreueba
                 this.cmbMarcaDeVehiculo.SelectedValue = unServicio.UnVehiculo.Marca;
             }
         }
-
+        
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            result = lblFallas.ActivarControlError("No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls)
-                && this.lblFallas.ActivarControlError<string>("la patente debe tener min 6 y max 8 caracteres", Vehiculo.ValidarPatente, this.txtPatente.Text) 
-                && this.lblFallas.ActivarControlError<string>("el Modelo debe se alphanumerico", Vehiculo.ValidarModelo, this.txtModelo.Text); ;
+            result = FrmMenuPrincipal.ActivarControlError(lblFallas, "No se aceptan valores vacios", FrmMenuPrincipal.DetectarTextBoxVacio, this.Controls)
+                && FrmMenuPrincipal.ActivarControlError<string>(this.lblFallas, "la patente debe tener min 6 y max 8 caracteres", Vehiculo.ValidarPatente, this.txtPatente.Text) 
+                && FrmMenuPrincipal.ActivarControlError<string>(this.lblFallas, "el Modelo debe se alphanumerico", Vehiculo.ValidarModelo, this.txtModelo.Text); ;
 
             if (result == true )
             {
@@ -59,8 +60,8 @@ namespace FrmPreueba
                 this.unServicio = new Servicio(rtbTextDescripcion.Text, this.unVehiculo);
                 if(unServicioModify is not null)
                 {
-                    this.unServicio.Cotizacion = unServicioModify.Cotizacion;
-                    this.unServicio.Diagnistico = unServicioModify.Diagnistico;
+                    keyValue = new KeyValuePair<Servicio.Diagnostico, float>(unServicioModify.Diagnistico, unServicioModify.Cotizacion);
+                    result = this.unServicio + keyValue;
                 }
                 seIngesaronDatos(this.unServicio, this.unVehiculo);
                 this.DialogResult = DialogResult.OK;
@@ -87,7 +88,7 @@ namespace FrmPreueba
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-            this.lblFallas.ActivarControlError<string>("Debe Dar una Descripsion mas coherente", texto => string.IsNullOrWhiteSpace(texto) == false && texto.isLetter(), this.rtbTextDescripcion.Text); ;
+            FrmMenuPrincipal.ActivarControlError<string>(this.lblFallas, "Debe Dar una Descripsion mas coherente", texto => string.IsNullOrWhiteSpace(texto) == false && texto.isLetter(), this.rtbTextDescripcion.Text); ;
         }
 
         private void FrmAltaServicio_Load(object sender, EventArgs e)

@@ -69,3 +69,4 @@ C:\Users\PC\Desktop\Mecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net
 C:\Users\PC\Desktop\Mecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.genruntimeconfig.cache
 C:\Users\PC\Desktop\Mecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\ref\FrmPreueba.dll
 C:\Users\PC\Desktop\Mecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.FrmDiagnosticar.resources
+C:\Users\PC\Desktop\Mecanicos\Delgado.Augusto.C.TPFinal\FrmPreueba\obj\Debug\net6.0-windows\FrmPreueba.FrmTareas.resources

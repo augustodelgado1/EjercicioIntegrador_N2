@@ -59,7 +59,7 @@
             // 
             lblError.AutoSize = true;
             lblError.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            lblError.Location = new Point(12, 148);
+            lblError.Location = new Point(12, 141);
             lblError.Name = "lblError";
             lblError.Size = new Size(50, 18);
             lblError.TabIndex = 3;
@@ -68,7 +68,7 @@
             // txtCotizacion
             // 
             txtCotizacion.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            txtCotizacion.Location = new Point(71, 98);
+            txtCotizacion.Location = new Point(71, 77);
             txtCotizacion.Name = "txtCotizacion";
             txtCotizacion.PlaceholderText = "Cotizacion";
             txtCotizacion.Size = new Size(238, 29);

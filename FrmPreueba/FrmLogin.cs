@@ -36,7 +36,7 @@ namespace Interfaz
             catch (Exception ex)
             {
                 FrmMenuPrincipal.InformarError("Error Base De Datos", ex.Message);
-                this.Close();
+               /* this.Close();*/
             }
 
             this.LoginUser += FrmLogin_loginUser;
@@ -56,9 +56,9 @@ namespace Interfaz
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            respuesta = lblError.ActivarControlError("No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls) == true &&
-                lblError.ActivarControlError<string>("el Email Debe tener como minimo 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text)
-                && lblError.ActivarControlError<string>("el Clave Debe tener como minimo 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
+            respuesta = FrmMenuPrincipal.ActivarControlError(lblError, "No se aceptan valores vacios", FrmMenuPrincipal.DetectarTextBoxVacio, this.Controls) == true &&
+                FrmMenuPrincipal.ActivarControlError<string>(lblError, "el Email Debe tener como minimo 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text)
+                && FrmMenuPrincipal.ActivarControlError<string>(lblError, "el Clave Debe tener como minimo 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
             if (respuesta == true)
             {
                 if ((unUsuario = unNegocio.BuscarUsuario(this.txtEmail.Text, this.txtClave.Text)) is not null)
@@ -100,12 +100,12 @@ namespace Interfaz
         }
         private void txtUser_TextChanged_1(object sender, EventArgs e)
         {
-            respuesta = lblError.ActivarControlError<string>("el Email Debe tener como minimo 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text);
+            respuesta = FrmMenuPrincipal.ActivarControlError<string>(lblError, "el Email Debe tener como minimo 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text);
         }
 
         private void txtClave_TextChanged(object sender, EventArgs e)
         {
-            respuesta = lblError.ActivarControlError<string>("el Clave Debe tener como minimo 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
+
         }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {

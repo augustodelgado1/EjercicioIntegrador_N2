@@ -11,7 +11,6 @@ namespace Entidades
         Cliente unCliente;
         Vehiculo unVehiculo;
         DateTime fechaDeIngreso;
-        DateTime fechaDeEgreso;
         string descripcionDelProblema;
         Diagnostico diagnostico;
         EstadoDelSevicio estado;
@@ -19,7 +18,6 @@ namespace Entidades
 
         private Servicio()
         {
-            this.fechaDeEgreso = default;
             this.diagnostico = Diagnostico.NoDeterminado;
         }
 
@@ -29,13 +27,11 @@ namespace Entidades
             this.descripcionDelProblema = descripcion;
         }
 
-        internal Servicio(int id, string descripcion,
-            DateTime fechaDeIngreso, DateTime fechaDeEgreso,
-            Vehiculo unVehiculo, Cliente unCliente, EstadoDelSevicio estado) : this(descripcion, unVehiculo)
+        public Servicio(int id, string descripcion,
+            DateTime fechaDeIngreso,Vehiculo unVehiculo, Cliente unCliente, EstadoDelSevicio estado) : this(descripcion, unVehiculo)
         {
             this.id = id;
             this.FechaDeIngreso = fechaDeIngreso;
-            this.FechaDeEgreso = fechaDeEgreso;
             this.UnCliente = unCliente;
             this.estado = estado;
         }
@@ -52,8 +48,7 @@ namespace Entidades
         public override bool Equals(object? obj)
         {
             return obj is Servicio servicio &&
-                   this.id == servicio.id
-                   && this.unVehiculo.Equals(servicio.unVehiculo);
+                   this.id == servicio.id;
         }
         public static bool operator +(Servicio servicio, Vehiculo unVehiculo)
         {
@@ -72,11 +67,26 @@ namespace Entidades
 
             return result;
         }
+        
+        public static bool operator +(Servicio servicio, KeyValuePair<Diagnostico,float> diagnostico)
+        {
+            bool result = false;
+
+            if (servicio is not null && servicio.Estado == EstadoDelSevicio.EnProceso
+              && diagnostico.Key != Diagnostico.NoDeterminado)
+            {
+                servicio.Diagnistico = diagnostico.Key;
+                servicio.Cotizacion = diagnostico.Value;
+                result = true;
+            }
+
+
+            return result;
+        }
 
         internal void TerminarServicio()
         {
             this.estado = EstadoDelSevicio.Terminado;
-            this.fechaDeEgreso = DateTime.Now;
             this.UnVehiculo.Estado = EstadoDeVehiculo.NoDiagnosticado;
         }
         public static bool operator +(Servicio servicio, Cliente unCliente)
@@ -110,7 +120,16 @@ namespace Entidades
         }
 
         internal int Id { get => id; }
-        public float Cotizacion { get => costo; set => this.costo = value; }
+        public float Cotizacion { get => costo; 
+           
+            private set
+            {
+                if (value > 0)
+                {
+                    this.costo = value;
+                }
+            }
+        }
         public string CotizacionStr {
             get 
             { 
@@ -126,11 +145,20 @@ namespace Entidades
             }
         }
         public EstadoDelSevicio Estado { get => estado; set => estado = value; }
-        public DateTime FechaDeIngreso { get => fechaDeIngreso; private set => this.fechaDeIngreso = value; }
-        public DateTime FechaDeEgreso { get => fechaDeEgreso; private set => this.fechaDeEgreso = value; }
+        public DateTime FechaDeIngreso { get => fechaDeIngreso; 
+            
+            private set
+            { 
+                if(value >= DateTime.Now)
+                {
+                    this.fechaDeIngreso = value;
+                }
+            } 
+        
+        }
         public Diagnostico Diagnistico 
         {
-            set { this.diagnostico = value; }
+           private set { this.diagnostico = value; }
             get
             {
                 return this.diagnostico;

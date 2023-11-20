@@ -17,7 +17,7 @@ namespace Entidades.Extension
                 {
                     if (texto.Contains(caracterDeLaLista) == true)
                     {
-                        result = texto.Replace(caracterDeLaLista.ToString(), "");
+                        result = result.Replace(caracterDeLaLista.ToString(), "");
                     }
                 }
             }

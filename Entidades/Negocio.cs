@@ -15,10 +15,7 @@ namespace Entidades
         private List<Usuario> listaDeUsuarios;
         private List<Cliente> listaDeCliente;
         private List<Vehiculo> listaDeVehiculos;
-        private Dictionary<Diagnostico,float> listaDiagnostico;
         private List<Servicio> listaDeServicio;
-        private Task hiloDeServicio;
-        CancellationTokenSource cancellationToken;
 
         public Negocio(string nombre)
         {
@@ -26,7 +23,6 @@ namespace Entidades
             listaDeServicio = new List<Servicio>();
             listaDeCliente = new List<Cliente>();
             listaDeUsuarios = new List<Usuario>();
-            cancellationToken = new CancellationTokenSource();
         }
         
         public Negocio(string nombre,List<Usuario> listaDeUsuarios, List<Cliente> listaDeClientes,List<Vehiculo> listaDeVehiculos, List<Servicio> servicios) :this(nombre)
@@ -144,7 +140,8 @@ namespace Entidades
             {
                 new ServicioDao().Agregar(listaDeServicio);
                 new VehiculoDao().Agregar(listaDeVehiculos);
-                new ClienteDao().Agregar(this.listaDeCliente);
+                new ClienteDao().Agregar(this.Clientes);
+                new UsuarioDao().Agregar(this.listaDeUsuarios);
                 estado = true;
             }
             catch (ConeccionBaseDeDatosException)
@@ -168,74 +165,6 @@ namespace Entidades
             }
 
             return unNegocio;
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        /// 
-
-/*        public bool CancelarPartida()
-        {
-            bool estado = false;
-
-            if (this.hiloDeServicio is not null && this.cancellationToken is not null 
-                && this.hiloDeServicio.IsCanceled == false)
-            {
-                this.cancellationToken.Cancel();
-                estado = true;
-            }
-            return estado;
-        }
-
-        
-        private async void SimularAtencionDeServicios()
-        {
-            Servicio unServicio;
-            Diagnostico unDiagnostico;
-            List<Servicio> servicios = ServiciosEnProcesos;
-            if (servicios is not null && servicios.Count > 0)
-            {
-                while (this.hiloDeServicio.IsCanceled == false && servicios.Count > 0)
-                {
-                    
-                }
-            }
-        }
-        public bool AtenderServicios()
-        {
-            bool estado;
-            estado = false;
-            if (this.hiloDeServicio is not null && this.hiloDeServicio.IsCanceled == false)
-            {
-                this.cancellationToken = new CancellationTokenSource();
-                this.hiloDeServicio = Task.Run(SimularAtencionDeServicios, this.cancellationToken.Token);
-                estado = true;
-            }
-            return estado;
-        }*/
-        public static Cliente unClienteRandom {
-
-            get { ;
-                return new Cliente("manuel","123456",DateTime.Now,"manuel@gmail","maurop¿1213");
-            }
-        }
-        
-      /*  public static Mecanico unMecanicoRandom
-        {
-
-            get { ;
-                return new Mecanico("manuel","123456",DateTime.Now,"manuel@gmail","maurop¿1213");
-            }
-        }*/
-
-        public enum Diagnostico
-        {
-            CambioDeRuedas,
-            CambioDeFrenos,
-            Suspension,
-            ReparacionDeMotor,
         }
         public List<Servicio> ListaDeServicio { get => listaDeServicio; 
         }

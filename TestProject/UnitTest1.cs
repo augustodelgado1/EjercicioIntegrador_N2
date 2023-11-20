@@ -26,6 +26,23 @@ namespace Test
         {
             Vehiculo unVehiculo = new Vehiculo(patente, MarcaDelVehiculo.Scort, TipoDeVehiculo.Moto, "1989");
             Assert.IsTrue(unVehiculo.Patente is not null);
+        } 
+        
+        [TestMethod]
+        [DataRow("/////////////")]
+        [DataRow(null)]
+        public void ValidarModelo_CunadoNoValido(string modelo)
+        {
+            Assert.IsFalse(Vehiculo.ValidarModelo(modelo));
+        }
+
+        [TestMethod]
+        [DataRow("6S525A")]
+        [DataRow("6S5 25A")]
+        [DataRow("HoalMe")]
+        public void ValidarModelo_CunadoEsValido(string modelo)
+        {
+            Assert.IsTrue(Vehiculo.ValidarModelo(modelo));
         }
     }
 }

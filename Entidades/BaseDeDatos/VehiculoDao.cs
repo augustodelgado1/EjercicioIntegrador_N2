@@ -92,6 +92,7 @@ namespace Entidades.BaseDeDatos
 
                 using (SqlDataReader dataReader = comando.ExecuteReader())
                 {
+                    var a = dataReader.GetSchemaTable();
                     list = new List<Vehiculo>();
                     while (dataReader.Read())
                     {
@@ -117,7 +118,7 @@ namespace Entidades.BaseDeDatos
         public Vehiculo ObtenerUnElemento(SqlDataReader dataReader)
         {
             return new Vehiculo(Convert.ToInt32(dataReader["id"]), Convert.ToString(dataReader["patente"]), (Vehiculo.MarcaDelVehiculo)Convert.ToInt32(dataReader["marca"]), (Vehiculo.TipoDeVehiculo)Convert.ToInt32(dataReader["tipo"]),
-                Convert.ToString(dataReader["modelo"]), (Vehiculo.EstadoDeVehiculo)Convert.ToInt32(dataReader["estado"]),new ClienteDao().ObtenerUnElemento(dataReader));
+                Convert.ToString(dataReader["modelo"]));
         }
     }
 }

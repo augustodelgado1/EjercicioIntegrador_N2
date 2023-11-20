@@ -15,9 +15,11 @@ namespace FrmPreueba
 {
     public partial class FrmDiagnosticar : Form
     {
-        bool retornoCot;
         bool respuesta;
         Servicio unServicio;
+        int cotizacion;
+        Array unArray;
+        KeyValuePair<Servicio.Diagnostico, float> keyValue;
         public FrmDiagnosticar(Servicio unServicio)
         {
             InitializeComponent();
@@ -26,21 +28,24 @@ namespace FrmPreueba
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            respuesta = lblError.ActivarControlError("No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls) &&
-            lblError.ActivarControlError<string>("la cotizacion debe ser un valor numerico", unTexto => string.IsNullOrEmpty(unTexto) == false && unTexto.EsNumerica() == true, txtCotizacion.Text);
+            respuesta = FrmMenuPrincipal.ActivarControlError(lblError, "No se aceptan valores vacios", FrmMenuPrincipal.DetectarTextBoxVacio, this.Controls) &&
+            FrmMenuPrincipal.ActivarControlError<string>(lblError, "la cotizacion debe ser un valor numerico", unTexto => int.TryParse(unTexto, out cotizacion) == true && cotizacion > 0, txtCotizacion.Text);
 
-            if (unServicio is not null && respuesta == true && int.TryParse(txtCotizacion.Text, out int cotizacion) == true
-             && cmbDignosticar.SelectedItem is Servicio.Diagnostico unDiagnostico)
+            if (unServicio is not null && respuesta == true &&
+              cmbDignosticar.SelectedItem is Servicio.Diagnostico unDiagnostico)
             {
-                unServicio.Diagnistico = unDiagnostico;
-                unServicio.Cotizacion = cotizacion;
-                this.DialogResult = DialogResult.OK;
+                keyValue = new KeyValuePair<Servicio.Diagnostico, float>(unDiagnostico, cotizacion);
+                if (unServicio + keyValue)
+                {
+                    this.DialogResult = DialogResult.OK;
+                }
             }
         }
         private void FrmDiagnosticar_Load(object sender, EventArgs e)
         {
             cmbDignosticar.DataSource = Enum.GetValues(typeof(Servicio.Diagnostico));
             lblError.Visible = false;
+            lblError.ForeColor = Color.Red;
         }
     }
 }

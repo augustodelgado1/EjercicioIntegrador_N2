@@ -29,34 +29,26 @@
         private void InitializeComponent()
         {
             SuspendLayout();
-            btnTerminarServicio = new Button();
             // 
             // FrmSevicios
             // 
-            btnTerminarServicio.Location = new Point(606, 139);
-            btnTerminarServicio.Name = "btnTerminarServicio";
-            btnTerminarServicio.Size = new Size(148, 29);
-            btnTerminarServicio.TabIndex = 34;
-            btnTerminarServicio.Text = "Terminar Servicio";
-            btnTerminarServicio.UseVisualStyleBackColor = true;
+
+            //
+            // Button
+            //
             // 
             // progressBar
             // 
             //
-            //
-            //
-            this.Controls.Add(btnTerminarServicio);
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(764, 390);
-            FormBorderStyle = FormBorderStyle.None;
+            this.FormBorderStyle = FormBorderStyle.None;
             Name = "FrmSevicios";
             Text = "FrmSevicios";
             ResumeLayout(false);
             
         }
-
-        Button btnTerminarServicio;
         #endregion
     }
 }

@@ -185,7 +185,7 @@
         protected Button btnGuardarArchivo;
         protected Button btnCargar;
         protected Button btnInfo;
-        private DataGridView dgtvList;
+        protected DataGridView dgtvList;
         protected Button btnEliminar;
         protected Button btnModificar;
         protected Button btnAgregar;

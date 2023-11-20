@@ -23,13 +23,13 @@ namespace TallerMecanico
     {
         protected T element;
         private int indexRow;
-        private List<T> listGeneric;
-        SaveFileDialog saveFileDialog;
+        protected List<T> listGeneric;
+        private SaveFileDialog saveFileDialog;
         private OpenFileDialog openFileDialog;
-        public event Action<string, string> InformarError;
-        public event Action<string, string> Informar;
-        public event Func<string, List<T>, List<T>> Buscador;
-        public event Func<List<T>, string, List<T>> Filtrar;
+        protected event Action<string, string> InformarError;
+        protected event Action<string, string> Informar;
+        protected event Func<string, List<T>, List<T>> Buscador;
+        protected event Func<List<T>, string, List<T>> Filtrar;
         public FrmListar(List<T> listGeneric)
         {
             InitializeComponent();
@@ -251,8 +251,8 @@ namespace TallerMecanico
         }
 
         public abstract bool Alta();
-        protected abstract void ActualizarDataGried(DataGridView dgtv, List<T> lista);
-        protected abstract void AgregarColumnasDataGried(DataGridView dgtvList, List<T> listGeneric);
+        public abstract void ActualizarDataGried(DataGridView dgtv, List<T> lista);
+        public abstract void AgregarColumnasDataGried(DataGridView dgtvList, List<T> listGeneric);
         public abstract bool Baja(T element);
         public abstract bool Mostrar(T element);
         public abstract bool Modificacion(T element);

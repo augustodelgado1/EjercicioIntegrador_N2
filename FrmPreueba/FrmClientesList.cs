@@ -32,12 +32,8 @@ namespace FrmPreueba
             if(unRol == Usuario.Roles.Cliente)
             {
                 base.btnAgregar.Visible = false;
-                base.btnAgregar.Enabled = false;
-                base.btnModificar.Enabled = false;
                 base.btnModificar.Visible = false;
-                base.btnAgregar.Visible = false;
                 base.btnEliminar.Visible = false;
-                base.btnEliminar.Enabled = false;
             }
         }
 
@@ -51,7 +47,8 @@ namespace FrmPreueba
             {
                 return string.Compare(unaPrpiedad.Name, "Nombre", true) == 0
                 || string.Compare(unaPrpiedad.Name, "Dni", true) == 0
-                || string.Compare(unaPrpiedad.Name, "FechaDeNacimiento", true) == 0 ||
+                || string.Compare(unaPrpiedad.Name, "FechaDeNacimiento", true) == 0 
+                || string.Compare(unaPrpiedad.Name, "Email", true) == 0 ||
                 string.Compare(unaPrpiedad.Name, "CantidadDeServicios", true) == 0;
             };
         }
@@ -80,7 +77,7 @@ namespace FrmPreueba
             return estado;
         }
 
-        protected override void ActualizarDataGried(DataGridView dgtv, List<Cliente> lista)
+        public override void ActualizarDataGried(DataGridView dgtv, List<Cliente> lista)
         {
             string textoCot;
             if (dgtv is not null && lista is not null)
@@ -92,7 +89,7 @@ namespace FrmPreueba
                 }
             }
         }
-        protected override void AgregarColumnasDataGried(DataGridView dgtvList, List<Cliente> listGeneric)
+        public override void AgregarColumnasDataGried(DataGridView dgtvList, List<Cliente> listGeneric)
         {
             dgtvList.Columns.Add("colClienteName", "Nombre");
             dgtvList.Columns.Add("colEmailName", "Email");

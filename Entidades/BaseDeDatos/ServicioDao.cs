@@ -65,28 +65,23 @@ namespace Entidades.BaseDeDatos
             estado = false;
             try
             {
-                /* ,[idCliente]
-      ,[idDeVehiculo]
-      ,[idDiagnostico]
-      ,[fechaDeIngreso]
-      ,[fechaDeEgreso]
-      ,[descripcion]
-      ,[estado]*/
-                comando.Parameters.Clear();
-                comando.Parameters.AddWithValue("@FechaDeIngreso", unElemento.FechaDeIngreso);
-                comando.Parameters.AddWithValue("@FechaDeEgreso", unElemento.FechaDeEgreso);
-                comando.Parameters.AddWithValue("@IdCliente", unElemento.UnCliente.Id);
-                comando.Parameters.AddWithValue("@Estado", (int)unElemento.Estado);
-                comando.Parameters.AddWithValue("@IdVehiculo", unElemento.UnVehiculo.Id);
-                comando.Parameters.Add(ClienteDao.SetValueSqlParameter("@descripcion", unElemento.Problema));
-                comando.Parameters.AddWithValue("@Diagnistico", (int)unElemento.Diagnistico);
-                coneccionSql.Open();
-                comando.CommandText = "INSERT INTO Servicio(descripcion,fechaDeIngreso,fechaDeEgreso,idDeVehiculo,idCliente,estado,idDiagnostico) " +
-                    "Values(@descripcion,@FechaDeIngreso,@FechaDeEgreso,@IdVehiculo,@IdCliente,@Estado,@Diagnistico)";
-
-                if (comando.ExecuteNonQuery() == 1)
+                if (unElemento.UnVehiculo is not null)
                 {
-                    estado = true;
+                    comando.Parameters.Clear();
+                    comando.Parameters.AddWithValue("@FechaDeIngreso", unElemento.FechaDeIngreso);
+                    comando.Parameters.AddWithValue("@IdCliente", unElemento.UnCliente.Id);
+                    comando.Parameters.AddWithValue("@Estado", (int)unElemento.Estado);
+                    comando.Parameters.AddWithValue("@IdVehiculo", unElemento.UnVehiculo.Id);
+                    comando.Parameters.Add(ClienteDao.SetValueSqlParameter("@descripcion", unElemento.Problema));
+                    comando.Parameters.AddWithValue("@Diagnistico", (int)unElemento.Diagnistico);
+                    coneccionSql.Open();
+                    comando.CommandText = "INSERT INTO Servicio(descripcion,fechaDeIngreso,idDeVehiculo,idCliente,estado,idDiagnostico) " +
+                        "Values(@descripcion,@FechaDeIngreso,@IdVehiculo,@IdCliente,@Estado,@Diagnistico)";
+
+                    if (comando.ExecuteNonQuery() == 1)
+                    {
+                        estado = true;
+                    }
                 }
             }
             catch (Exception e)
@@ -115,7 +110,7 @@ namespace Entidades.BaseDeDatos
 
                 using (SqlDataReader dataReader = comando.ExecuteReader())
                 {
-                   /* var a = dataReader.GetColumnSchema();*/
+                    var a = dataReader.GetColumnSchema();
                     list = new List<Servicio>();
                     while (dataReader.Read())
                     {
@@ -140,8 +135,7 @@ namespace Entidades.BaseDeDatos
       
         public Servicio ObtenerUnElemento(SqlDataReader dataReader)
         {
-            return new Servicio(Convert.ToInt32(dataReader["id"]), Convert.ToString(dataReader["descripcion"]), Convert.ToDateTime(dataReader["fechaDeIngreso"]), Convert.ToDateTime(dataReader["fechaDeEgreso"])
-                , new VehiculoDao().ObtenerUnElemento(dataReader), new ClienteDao().ObtenerUnElemento(dataReader), (Servicio.EstadoDelSevicio)Convert.ToInt32(dataReader["estado"]));
+            return new Servicio(Convert.ToInt32(dataReader["id"]), Convert.ToString(dataReader["descripcion"]), Convert.ToDateTime(dataReader["fechaDeIngreso"]),new VehiculoDao().ObtenerUnElemento(dataReader), new ClienteDao().ObtenerUnElemento(dataReader), (Servicio.EstadoDelSevicio)Convert.ToInt32(dataReader["estado"]));
         }
     }
 }

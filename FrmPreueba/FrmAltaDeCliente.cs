@@ -63,25 +63,25 @@ namespace FrmPreueba
         {
             Usuario unUsuario = new Cliente(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text, path); ;
 
-            if (this.unRol == Usuario.Roles.Cliente)
+         /*   if (this.unRol == Usuario.Roles.Cliente)
             {
                 unUsuario = new Cliente(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text, path);
             }
             else
             {
-               /* unUsuario = new Mecanico(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text);*/
-            }
+               *//* unUsuario = new Mecanico(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text);*//*
+            }*/
 
             return unUsuario;
         }
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            result = lb_Fallas.ActivarControlError( "No se aceptan valores vacios", ControlExtended.DetectarTextBoxVacio, this.Controls) == true 
-                &&  lb_Fallas.ActivarControlError<string>("el dni debe tener como min 6 y max 8 numeros", Cliente.ValidarDni, this.txtDni.Text)
-                && lb_Fallas.ActivarControlError( "La fecha no es valida", Cliente.ValidarFechaDeNacimiento, this.DateFechaDeNacimiento.Value) == true
-                && lb_Fallas.ActivarControlError<string>("el Nombre Debe Contener solo letras", Cliente.ValidarNombre, this.txtNombre.Text) == true
-                && lb_Fallas.ActivarControlError<string>("el Email Debe tener como min 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text)
-                && lb_Fallas.ActivarControlError<string>("el Clave Debe tener como min 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
+            result = FrmMenuPrincipal.ActivarControlError(lb_Fallas, "No se aceptan valores vacios", FrmMenuPrincipal.DetectarTextBoxVacio, this.Controls) == true 
+                &&  FrmMenuPrincipal.ActivarControlError(lb_Fallas,"el dni debe tener como min 6 y max 8 numeros", Cliente.ValidarDni, this.txtDni.Text)
+                && FrmMenuPrincipal.ActivarControlError(lb_Fallas, "La fecha no es valida", Cliente.ValidarFechaDeNacimiento, this.DateFechaDeNacimiento.Value) == true
+                && FrmMenuPrincipal.ActivarControlError(lb_Fallas,"el Nombre Debe Contener solo letras", Cliente.ValidarNombre, this.txtNombre.Text) == true
+                && FrmMenuPrincipal.ActivarControlError(lb_Fallas,"el Email Debe tener como min 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text)
+                && FrmMenuPrincipal.ActivarControlError(lb_Fallas,"el Clave Debe tener como min 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
             
             if (result == true)
             {
@@ -93,7 +93,7 @@ namespace FrmPreueba
 
         private void txtEmail_TextChanged(object sender, EventArgs e)
         {
-            result = lb_Fallas.ActivarControlError<string>("el Email Debe tener como min 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text);
+            result = FrmMenuPrincipal.ActivarControlError(lb_Fallas,"el Email Debe tener como min 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text);
         }
 
         private void btnImagen_Click(object sender, EventArgs e)

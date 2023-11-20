@@ -14,7 +14,6 @@ namespace Entidades
         string dni;
         DateTime fechaDeNacimiento;
         List<Servicio> servicios;
-        List<Vehiculo> vehiculos;
         internal Cliente(int id, string nombre, string dni, DateTime fechaDeNacimiento, string email, string clave, string path = null)
             : this(nombre, dni, fechaDeNacimiento, email, clave, path)
         {
@@ -27,7 +26,6 @@ namespace Entidades
             this.Dni = dni;
             this.FechaDeNacimiento = fechaDeNacimiento;
             this.servicios = new List<Servicio>();
-            this.vehiculos = new List<Vehiculo>();
         }
 
         public override bool Equals(object? obj)
@@ -120,17 +118,7 @@ namespace Entidades
         [JsonIgnore]
         public List<Servicio> Servicios { get => this.servicios; }
         public int CantidadDeServicios { get => this.servicios.Count; }
-
-        [JsonIgnore]
-        public List<Servicio> ServiciosEnProcesos { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.EnProceso); }
-
-        [JsonIgnore]
-        public List<Servicio> ServiciosTerminados { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Terminado); }
-
-        [JsonIgnore]
-        public List<Servicio> ServiciosCancelado { get => Servicio.BuscarPorEstado(this.servicios, Servicio.EstadoDelSevicio.Cancelado); }
-        [JsonIgnore]
-        public List<Vehiculo> Vehiculos { get => vehiculos; }
+ 
     }
 
    

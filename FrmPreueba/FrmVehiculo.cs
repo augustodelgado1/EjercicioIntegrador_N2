@@ -71,7 +71,6 @@ namespace FrmPreueba
             return string.Compare(unaPrpiedad.Name, "Patente", true) == 0
             || string.Compare(unaPrpiedad.Name, "Modelo", true) == 0 ||
                string.Compare(unaPrpiedad.Name, "Tipo", true) == 0 ||
-               string.Compare(unaPrpiedad.Name, "Duenio", true) == 0 ||
                string.Compare(unaPrpiedad.Name, "Estado", true) == 0;
         }
 
@@ -87,8 +86,7 @@ namespace FrmPreueba
 
             if (element is not null)
             {
-                /*frmMostrar = new FrmMostrar<Vehiculo>(element, unPropertyInfoPredicate, element.Path, "Vehiculo");*/
-                frmMostrar = new FrmMostrar<Vehiculo>(element, element.Path, "Vehiculo");
+                frmMostrar = new FrmMostrar<Vehiculo>(element, unPropertyInfoPredicate, element.Path, "Vehiculo");
                 frmMostrar.Show();
                 estado = true;
             }
@@ -96,23 +94,22 @@ namespace FrmPreueba
         }
 
 
-        protected override void ActualizarDataGried(DataGridView dgtv, List<Vehiculo> lista)
+        public override void ActualizarDataGried(DataGridView dgtv, List<Vehiculo> lista)
         {
             if (dgtv is not null && lista is not null)
             {
                 dgtv.Rows.Clear(); 
                 foreach (Vehiculo unVehiculo in lista)
                 {
-                    dgtv.Rows.Add(unVehiculo.Patente, unVehiculo.Modelo, unVehiculo.DuenioName, unVehiculo.Tipo, unVehiculo.Estado);
+                    dgtv.Rows.Add(unVehiculo.Patente, unVehiculo.Modelo, unVehiculo.Tipo, unVehiculo.Estado);
                 }
             }
         }
 
-        protected override void AgregarColumnasDataGried(DataGridView dgtvList, List<Vehiculo> listGeneric)
+        public override void AgregarColumnasDataGried(DataGridView dgtvList, List<Vehiculo> listGeneric)
         {
             dgtvList.Columns.Add("colPatente", "Patente");
             dgtvList.Columns.Add("colModelo", "Modelo");
-            dgtvList.Columns.Add("colDuenio", "Duenio");
             dgtvList.Columns.Add("colTipo", "Tipo");
             dgtvList.Columns.Add("colEstado", "Estado");
         }

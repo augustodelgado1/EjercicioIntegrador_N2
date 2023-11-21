@@ -18,6 +18,10 @@ using Entidades.Archivo;
 
 namespace TallerMecanico
 {
+    /// <summary>
+    /// Permite Manejar los datos de una lista atravez de un abm , cosultar datos de esta lista , filtar elementos , etc
+    /// </summary>
+    /// <typeparam name="T">el tipo de la clase de abm que se va generar</typeparam>
     public abstract partial class FrmListar<T> : Form, IAbm<T>
         where T : class
     {
@@ -48,7 +52,7 @@ namespace TallerMecanico
                 }
                 catch (Exception)
                 {
-                    OnInformarError("Error indice","Debe seleccionar un elemento valido");
+                    ManejadorInformarError("Error indice","Debe seleccionar un elemento valido");
                 }
 
                 return element;
@@ -56,10 +60,18 @@ namespace TallerMecanico
         }
         private void FrmListar_Load(object? sender, EventArgs e)
         {
-            AgregarColumnasDataGried(this.dgtvList, this.listGeneric);
+            AgregarColumnasDataGried(this.dgtvList);
             ActualizarDataGried(this.dgtvList, this.listGeneric);
         }
-        private bool OnInformarError(string titulo, string mensaje)
+
+        /// <summary>
+        /// Permite invocar al evento InformarError pasandole los parametros , verificando que los parametros pasados sean validos y que el evento
+        /// este referenciado a un metodo
+        /// </summary>
+        /// <param name="titulo"></param>
+        /// <param name="mensaje"></param>
+        /// <returns>(false) si se cumplieron las condiciones ,(true) si se se pudo invocar al metodo</returns>
+        private bool ManejadorInformarError(string titulo, string mensaje)
         {
             bool estado;
             estado = false;
@@ -71,18 +83,14 @@ namespace TallerMecanico
 
             return estado;
         }
-        private List<T> OnSeBuscador(string mensaje, List<T> unaLista)
-        {
-            List<T> list = default;
-            if (Buscador is not null)
-            {
-                list = this.Buscador.Invoke(mensaje, unaLista);
-            }
-
-            return list;
-        }
-
-        private bool OnInformar(string titulo, string mensaje)
+        /// <summary>
+        /// Permite invocar al evento Informar pasandole los parametros , verificando que los parametros pasados sean validos y que el evento
+        /// este referenciado a un metodo
+        /// </summary>
+        /// <param name="titulo"></param>
+        /// <param name="mensaje"></param>
+        /// <returns>(false) si se cumplieron las condiciones ,(true) si se se pudo invocar al metodo</returns>
+        private bool ManejadorInformar(string titulo, string mensaje)
         {
             bool estado;
 
@@ -95,12 +103,18 @@ namespace TallerMecanico
 
             return estado;
         }
-        
-        private List<T> OnFiltrar(List<T> lista,string nombreDelFiltro)
+        /// <summary>
+        /// Permite invocar al evento Filtrar pasandole los parametros , verificando que los parametros pasados sean validos y que el evento
+        /// este referenciado a un metodo
+        /// </summary>
+        /// <param name="lista"></param>
+        /// <param name="nombreDelFiltro"></param>
+        /// <returns>()</returns>
+        private List<T> ManejadorFiltrar(List<T> lista,string nombreDelFiltro)
         {
             List<T> result;
             result = default;
-            if (this.Filtrar is not null)
+            if (this.Filtrar is not null && lista is not null && nombreDelFiltro is not null)
             {
                 result = this.Filtrar.Invoke(lista, nombreDelFiltro);
             }
@@ -112,7 +126,7 @@ namespace TallerMecanico
             if (this.Alta())
             {
                 ActualizarDataGried(this.dgtvList, this.listGeneric);
-                this.OnInformar("Alta", "Se realizo la Alta correctamente");
+                this.ManejadorInformar("Alta", "Se realizo la Alta correctamente");
             }
         }
         private void BtnEliminar_Click(object sender, EventArgs e)
@@ -121,7 +135,7 @@ namespace TallerMecanico
              && this.Baja(this[indexRow]) == true)
             {
                 ActualizarDataGried(this.dgtvList, this.listGeneric);
-                this.OnInformar("Baja", "Se realizo la Baja correctamente");
+                this.ManejadorInformar("Baja", "Se realizo la Baja correctamente");
             }
         }
 
@@ -131,21 +145,24 @@ namespace TallerMecanico
              && Modificacion(this[indexRow]) == true)
             {
                 ActualizarDataGried(this.dgtvList, this.listGeneric);
-                this.OnInformar("Modificacion", "Se realizo la modificacion correctamente");
+                this.ManejadorInformar("Modificacion", "Se realizo la modificacion correctamente");
             }
         }
 
         private void TxtBuscar_TextChanged(object sender, EventArgs e)
         {
             List<T> result;
-            if((result = this.OnSeBuscador(this.txtBuscar.Text, this.listGeneric)) is  null 
-              || this.txtBuscar.Text == string.Empty)
-            {
-                ActualizarDataGried(this.dgtvList, this.listGeneric);
-            }
-            else
-            {
-                ActualizarDataGried(this.dgtvList, result);
+            if (Buscador is not null)
+            { 
+                if ((result = this.Buscador(this.txtBuscar.Text, this.listGeneric)) is null
+                  || this.txtBuscar.Text == string.Empty)
+                {
+                    ActualizarDataGried(this.dgtvList, this.listGeneric);
+                }
+                else
+                {
+                    ActualizarDataGried(this.dgtvList, result);
+                }
             }
             
         }
@@ -165,23 +182,27 @@ namespace TallerMecanico
             List<T> unLista;
             if ((this.openFileDialog = AbrirArchivo("Cargar archivo", "Archivo Json (*.Json)|*.Json",
               Environment.GetFolderPath(Environment.SpecialFolder.Desktop))) is not null)
-            {  ///Le Pido al usurio que seleccione que archio quiere leer  
+            {  
                 try
                 {
-                    if ((unLista = JsonFile<T>.LeerArchivo(this.openFileDialog.FileName)) is not null)// le paso el path al metodo 
-                        //que lee el archivo
+                    if ((unLista = JsonFile<T>.LeerArchivo(this.openFileDialog.FileName)) is not null)
                     {
                         ActualizarDataGried(dgtvList, listGeneric);
-                        this.OnInformar("Abrir Archivo", "Se cargo el archivo correctamente");
+                        this.ManejadorInformar("Abrir Archivo", "Se cargo el archivo correctamente");
                     }
                 }
                 catch (Exception ex)
                 {
-                    OnInformarError("Abrir Archivo", ex.Message);
+                    ManejadorInformarError("Abrir Archivo", ex.Message);
                 }
             }
         }
-
+        /// Le Pide al usurio que seleccione donde quiere guardar el arhivo 
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="filter"></param>
+        /// <param name="initialDirectory"></param>
+        /// <returns>(SaveFileDialog) ua instancia con los datos de archivo,(NULL) de caso contrario</returns>
         public static SaveFileDialog GuardarArchivo(string title, string filter, string initialDirectory)
         {
             SaveFileDialog saveFileDialog = null;
@@ -202,7 +223,13 @@ namespace TallerMecanico
 
             return saveFileDialog;
         }
-
+        /// <summary>
+        /// Le Pide al usurio que seleccione que un archivo 
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="filter"></param>
+        /// <param name="initialDirectory"></param>
+        /// <returns>(OpenFileDialog) ua instancia con los datos de archivo,(NULL) de caso contrario</returns>
         public static OpenFileDialog AbrirArchivo(string title, string filter, string initialDirectory)
         {
             OpenFileDialog openFileDialog = default;
@@ -226,7 +253,7 @@ namespace TallerMecanico
         {
             if (sender is ComboBox unComboBox)
             {
-                this.ActualizarDataGried(this.dgtvList, OnFiltrar(this.listGeneric, unComboBox.Text));
+                this.ActualizarDataGried(this.dgtvList, ManejadorFiltrar(this.listGeneric, unComboBox.Text));
             }
         }
 
@@ -239,22 +266,35 @@ namespace TallerMecanico
             if ((this.saveFileDialog = GuardarArchivo("Guardar archivo", "Archivo Json (*.Json)|*.Json",
                 Environment.GetFolderPath(Environment.SpecialFolder.Desktop))) is not null)
             {
-                ///Le Pido al usurio que seleccione donde quiere guardar el arhivo   
+                 
                 try
                 {
                     JsonFile<T>.GuardarArchivo(this.saveFileDialog.FileName, listGeneric);//Le paso el path y lo guardo
-                    OnInformar("Guardar archivo", "los datos se Guardaron correctamente ");
+                    ManejadorInformar("Guardar archivo", "los datos se Guardaron correctamente ");
                 }
                 catch (Exception ex)
                 {
-                    OnInformarError("Guardar archivo", ex.Message);
+                    ManejadorInformarError("Guardar archivo", ex.Message);
                 }
             }
         }
 
+
         public abstract bool Alta();
+
+        /// <summary>
+        /// Guarda los datos de la lista en el dataGriedView
+        /// </summary>
+        /// <param name="dgtv">el dataGriedView donde se van a guardar los datos</param>
+        /// <param name="lista">la lista con los elementos a guardar</param>
         public abstract void ActualizarDataGried(DataGridView dgtv, List<T> lista);
-        public abstract void AgregarColumnasDataGried(DataGridView dgtvList, List<T> listGeneric);
+
+        /// <summary>
+        /// Agrega columnas al Data dataGriedView
+        /// </summary>
+        /// <param name="dgtvList"></param>
+        /// <param name="listGeneric"></param>
+        public abstract void AgregarColumnasDataGried(DataGridView dgtvList);
         public abstract bool Baja(T element);
         public abstract bool Mostrar(T element);
         public abstract bool Modificacion(T element);

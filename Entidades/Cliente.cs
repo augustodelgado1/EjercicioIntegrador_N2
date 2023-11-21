@@ -34,6 +34,12 @@ namespace Entidades
                  && unCliente.dni == this.dni;
         }
 
+
+        /// <summary>
+        /// Verifica si el dni pasado por parametro contiene solo numeros y si cantidad de numeros ingresada sea menor o igual a 8
+        /// </summary>
+        /// <param name="dni"></param>
+        /// <returns>(true) en caso de cumpla con esas condiciones ,(false) si no conicide</returns>
         public static bool ValidarDni(string dni)
         {
             bool estado;
@@ -47,11 +53,20 @@ namespace Entidades
             }
             return estado;
         }
+        /// <summary>
+        /// Valida si la fecha de naciomiento pasada por parametro es valida, verificando que no haya nacido en el dia de ahora  
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>(true) en caso de cumpla con esas condiciones ,(false) si no conicide</returns>
         public static bool ValidarFechaDeNacimiento(DateTime value)
         {
             return value.Year < DateTime.Now.Year;
         }
-
+        /// <summary>
+        /// Verifica si el Nombre pasado por parametro es valido , verificando si contiene solo letras y borrando todos los separadores ingresados
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns>(true) en caso de cumpla con esas condiciones ,(false) si no conicide</returns>
         public static bool ValidarNombre(string text)
         {
             bool estado;
@@ -68,10 +83,22 @@ namespace Entidades
         {
             return base.GetHashCode();
         }
+        /// <summary>
+        /// Verifica si el Servicio se encuntra dentro de la lista de Servicio de la clase Cliente
+        /// </summary>
+        /// <param name="unCliente"></param>
+        /// <param name="unServicio"></param>
+        /// <returns>(false) en caso de que no lo encuentre,(true) de caso contrario</returns>
         public static bool operator ==(Cliente unCliente, Servicio unServicio)
         {
             return unCliente.servicios.Contains(unServicio);
         }
+        /// <summary>
+        /// Verifica si el Servicio no se encuntra dentro de la lista de Servicio de la clase Cliente
+        /// </summary>
+        /// <param name="unCliente"></param>
+        /// <param name="unServicio"></param>
+        /// <returns>(true) en caso de que no lo encuentre,(false) de caso contrario</returns>
         public static bool operator !=(Cliente unCliente, Servicio unServicio)
         {
             return !(unCliente == unServicio);

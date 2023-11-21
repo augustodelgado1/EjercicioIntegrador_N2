@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TallerMecanico;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 
 namespace Interfaz
@@ -21,7 +22,6 @@ namespace Interfaz
         Usuario unUsuario;
         FrmMenuPrincipal frmMenuPrincipal;
         Negocio unNegocio;
-        Cliente unCliente;
         public FrmLogin()
         {
             InitializeComponent();
@@ -61,7 +61,7 @@ namespace Interfaz
                 && FrmMenuPrincipal.ActivarControlError<string>(lblError, "el Clave Debe tener como minimo 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
             if (respuesta == true)
             {
-                if ((unUsuario = unNegocio.BuscarUsuario(this.txtEmail.Text, this.txtClave.Text)) is not null)
+                if ((unUsuario = Usuario.EncontarUsuario(unNegocio.ListaDeUsuarios, this.txtEmail.Text, this.txtClave.Text)) is not null)
                 {
                     lblError.Visible = false;
                     OnLoginUser(unUsuario);
@@ -101,11 +101,6 @@ namespace Interfaz
         private void txtUser_TextChanged_1(object sender, EventArgs e)
         {
             respuesta = FrmMenuPrincipal.ActivarControlError<string>(lblError, "el Email Debe tener como minimo 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text);
-        }
-
-        private void txtClave_TextChanged(object sender, EventArgs e)
-        {
-
         }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {

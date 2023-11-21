@@ -108,7 +108,7 @@ namespace FrmPreueba
             }
         }
 
-        public override void AgregarColumnasDataGried(DataGridView dgtvList, List<Vehiculo> listGeneric)
+        public override void AgregarColumnasDataGried(DataGridView dgtvList)
         {
             dgtvList.Columns.Add("colPatente", "Patente");
             dgtvList.Columns.Add("colModelo", "Modelo");

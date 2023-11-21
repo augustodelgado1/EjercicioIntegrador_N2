@@ -40,11 +40,6 @@ namespace FrmPreueba
             this.progressBar1.Size = base.txtBuscar.Size;
             this.btnCancelarServicio.Enabled = false;
         }
-
-        private void BtnDiagnosticarServicio_Click(object sender, EventArgs e)
-        {
-            
-        }
         private List<Servicio> FrmTareas_Filtrar(List<Servicio> unaLista, string criterio)
         {
             List<Servicio> result = default;
@@ -64,6 +59,11 @@ namespace FrmPreueba
             }
             return result;
         }
+        /// <summary>
+        /// Cuando se presiona el boton cancela el servicio
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnCancelarServicio_Click(object sender, EventArgs e)
         {
             if(cancellationTokenSource is not null)
@@ -99,10 +99,10 @@ namespace FrmPreueba
             frmSevicios.ActualizarDataGried(dgtv, lista);
         }
 
-        public override void AgregarColumnasDataGried(DataGridView dgtvList, List<Servicio> listGeneric)
+        public override void AgregarColumnasDataGried(DataGridView dgtvList)
         {
             frmSevicios = new FrmSevicios(listGeneric);
-            frmSevicios.AgregarColumnasDataGried(dgtvList, listGeneric);
+            frmSevicios.AgregarColumnasDataGried(dgtvList);
         }
 
         public override bool Baja(Servicio element)
@@ -120,7 +120,12 @@ namespace FrmPreueba
             throw new NotImplementedException();
         }
 
-
+        /// <summary>
+        /// Activa el ProgressBar var en un hilo secundario 
+        /// </summary>
+        /// <param name="barra"></param>
+        /// <param name="unServicio"></param>
+        /// <returns></returns>
         public bool ActivarProgessBar(ProgressBar barra, Servicio unServicio)
         {
             bool estado;
@@ -134,6 +139,11 @@ namespace FrmPreueba
             }
             return estado;
         }
+        /// <summary>
+        /// Incrementar ProgressBar hasta que llegue al final o hasta que se cancele el hilo
+        /// </summary>
+        /// <param name="barra">la barra que queremos incrementar</param>
+        /// <param name="unServicio"></param>
         private void AvanzarProgessBar(ProgressBar barra, Servicio unServicio)
         {
             Random random = new Random();
@@ -157,7 +167,11 @@ namespace FrmPreueba
             }
         }
 
-        
+        /// <summary>
+        /// Actualiza el DataGridView y verifica si esta el hilo principal o en otro
+        /// </summary>
+        /// <param name="DataGridView"></param>
+        /// <param name="List<Servicio>"</param>
         private void ActualizarDataGriedView(DataGridView dataGrid,List<Servicio> lista)
         {
             if (InvokeRequired)
@@ -169,7 +183,12 @@ namespace FrmPreueba
                 this.ActualizarDataGried(dataGrid, lista);
             }
         }
-        
+
+        /// <summary>
+        /// Inicializa el ProgressBar y verifica si esta el hilo principal o en otro
+        /// </summary>
+        /// <param name="DataGridView"></param>
+        /// <param name="List<Servicio>"</param>
         private void InicializarProsgerBar(ProgressBar barra)
         {
             if (InvokeRequired)
@@ -181,6 +200,10 @@ namespace FrmPreueba
                 barra.Value = 0;
             }
         }
+        /// <summary>
+        /// Incrementa el ProgressBar y verifica si esta el hilo principal o en otro
+        /// </summary>
+        /// <param name="barra">barra de progeso a incrementar</param>
         private void IncrementarProgessBar(ProgressBar barra)
         {
             if (InvokeRequired)
@@ -191,8 +214,11 @@ namespace FrmPreueba
             {
                 barra.Increment(1);
             }
-        } 
-        
+        }
+        /// <summary>
+        /// Actualiza el boton en enable  y verifica si esta el hilo principal o en otro
+        /// </summary>
+        /// <param name="unButton"></param>
         private void ActualizarBoton(Button unButton)
         {
             if (InvokeRequired)

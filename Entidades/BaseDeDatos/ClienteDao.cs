@@ -26,7 +26,7 @@ namespace Entidades.BaseDeDatos
             comando.Connection = coneccionSql;
         }
         /// <summary>
-        /// Agrega los Detos De la lista de clientes en la base de datos
+        /// Agrega los Datos De la lista de clientes en la base de datos
         /// </summary>
         /// <param name="list">(List<Cliente>) los datos a guardar</param>
         /// <returns>(true) si lo pudo gurdar, (false) de caso contrario</returns>

@@ -35,6 +35,12 @@ namespace Entidades
             this.UnCliente = unCliente;
             this.estado = estado;
         }
+        /// <summary>
+        /// Busca los servicios que cocidan con el estado pasado por parametro y los guarda en una lista
+        /// </summary>
+        /// <param name="listaDeServicios"></param>
+        /// <param name="estado"></param>
+        /// <returns>(null) si los parametro no son validos ,(List<Servicio>) de caso contrario</returns>
         public static List<Servicio> BuscarPorEstado(List<Servicio> listaDeServicios, EstadoDelSevicio estado)
         {
             List<Servicio> result = null;
@@ -67,7 +73,12 @@ namespace Entidades
 
             return result;
         }
-        
+        /// <summary>
+        /// Diagnostica el servicio pasado por parametro y le asigna el costo pasado por parametro
+        /// </summary>
+        /// <param name="servicio"></param>
+        /// <param name="diagnostico"></param>
+        /// <returns></returns>
         public static bool operator +(Servicio servicio, KeyValuePair<Diagnostico,float> diagnostico)
         {
             bool result = false;
@@ -83,12 +94,20 @@ namespace Entidades
 
             return result;
         }
-
+        /// <summary>
+        /// Setea al servicio en estado terminado 
+        /// </summary>
         internal void TerminarServicio()
         {
             this.estado = EstadoDelSevicio.Terminado;
             this.UnVehiculo.Estado = EstadoDeVehiculo.NoDiagnosticado;
         }
+        /// <summary>
+        /// Guarda dentro de la lista de servicios de cliente un servicio 
+        /// </summary>
+        /// <param name="servicio"></param>
+        /// <param name="unCliente"></param>
+        /// <returns>(true) si pudo Agregarlo,(false) si no pudo Agregarlo</returns>
         public static bool operator +(Servicio servicio, Cliente unCliente)
         {
             bool result = false;
@@ -104,6 +123,12 @@ namespace Entidades
 
             return result;
         } 
+        /// <summary>
+        /// Borra de la lista de servicios de cliente el servicio pasado por parametro
+        /// </summary>
+        /// <param name="servicio"></param>
+        /// <param name="unCliente"></param>
+        /// <returns>(true) si pudo eliminarlo,(false) si no pudo eliminarlo</returns>
         public static bool operator -(Servicio servicio, Cliente unCliente)
         {
             bool result = false;

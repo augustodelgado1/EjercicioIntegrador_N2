@@ -33,7 +33,12 @@ namespace Entidades
             this.listaDeVehiculos = listaDeVehiculos;
             this.listaDeUsuarios.AddRange(new List<Cliente>(this.listaDeCliente));
         }
-
+        /// <summary>
+        /// Guarda dentro de la lista de Usuario de Negocio un Usuario, verificando si ese elemento no se encuntra en la lista
+        /// </summary>
+        /// <param name="unNegocio"></param>
+        /// <param name="unUsuario"></param>
+        /// <returns>(false) en caso de que pudo Agragar el parametro,(false) de caso contrario</returns>
         public static bool operator +(Negocio unNegocio, Usuario unUsuario)
         {
             bool result = false;
@@ -48,7 +53,12 @@ namespace Entidades
 
             return result;
         }
-
+        /// <summary>
+        /// Elimina un Usuario de la lista de Usuario de Negocio 
+        /// </summary>
+        /// <param name="unNegocio"></param>
+        /// <param name="unUsuario"></param>
+        /// <returns>(false) en caso de que pudo Elimina el parametro,(false) de caso contrario</returns>
         public static bool operator -(Negocio unNegocio, Usuario unUsuario)
         {
             bool result = false;
@@ -62,6 +72,12 @@ namespace Entidades
 
             return result;
         }
+        /// <summary>
+        /// Guarda dentro de la lista de Servicio de Negocio un Servicio
+        /// </summary>
+        /// <param name="unNegocio"></param>
+        /// <param name="unServicio"></param>
+        /// <returns>(false) en caso de que pudo Agragar el parametro,(false) de caso contrario</returns>
         public static bool operator +(Negocio unNegocio, Servicio unServicio)
         {
             bool result = false;
@@ -76,8 +92,12 @@ namespace Entidades
 
             return result;
         }
-
-
+        /// <summary>
+        /// Termina el servicio pasado por parametro y verifica si esta en la lista de Servicio de Negocio
+        /// </summary>
+        /// <param name="unNegocio"></param>
+        /// <param name="unVehiculo"></param>
+        /// <returns>(false) en caso de que pudo Agragar el parametro,(false) de caso contrario</returns>
         public static bool operator -(Negocio unNegocio, Servicio unServicio)
         {
             bool result = false;
@@ -92,6 +112,12 @@ namespace Entidades
 
             return result;
         }
+        /// <summary>
+        /// Guarda dentro de la lista de vehiculos de Negocio un vehiculo
+        /// </summary>
+        /// <param name="unNegocio"></param>
+        /// <param name="unVehiculo"></param>
+        /// <returns>(false) en caso de que pudo Agragar el parametro,(false) de caso contrario</returns>
         public static bool operator +(Negocio unNegocio, Vehiculo unVehiculo)
         {
             bool result = false;
@@ -106,32 +132,10 @@ namespace Entidades
 
             return result;
         }
-
-
-        public static bool operator -(Negocio unNegocio, Vehiculo unVehiculo)
-        {
-            bool result = false;
-
-            if (unNegocio is not null && unVehiculo is not null
-              && unNegocio.listaDeVehiculos.Contains(unVehiculo) == true)
-            {
-                unNegocio.listaDeVehiculos.Remove(unVehiculo);
-                result = true;
-            }
-
-
-            return result;
-        }
-
-        public Usuario BuscarUsuario(string email,string password)
-        {
-            return Usuario.EncontarUsuario(this.listaDeUsuarios, email, password);
-        }
-
         /// <summary>
-        /// C
+        /// Guarda los datos de la instancia en la base de datos 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>(false) en caso de que no haya podido guardar los datos , (true) si pudo gurdar los datos</returns>
         public bool GuardarBaseDeDatos()
         {
             bool estado;
@@ -150,16 +154,21 @@ namespace Entidades
             }
 
             return estado;
-        } 
-
+        }
+        /// <summary>
+        /// Carga los datos de la base de datos y los guada dentro de una variable de tipo negocio y la devuelve
+        /// </summary>
+        /// <param name="nombre"></param>
+        /// <returns>(NULL) en caso de que no pudo cargar los elementos,(Negocio) de caso contrario</returns>
         public static Negocio CargarBaseDeDatos(string nombre)
         {
             Negocio unNegocio = default;
             try
             {
-                unNegocio = new Negocio(nombre,new UsuarioDao().Leer(), new ClienteDao().Leer(), new VehiculoDao().Leer(), new ServicioDao().Leer());
+                unNegocio = new Negocio(nombre,new UsuarioDao().Leer(), new ClienteDao().Leer(), 
+                    new VehiculoDao().Leer(), new ServicioDao().Leer());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

@@ -35,7 +35,10 @@ namespace FrmPreueba
             this.unServicioModify = unServicioModify;
             this.SetServicio(unServicioModify);
         }
-
+        /// <summary>
+        /// Setea los datos del serviocio pasado por parametro en los controles
+        /// </summary>
+        /// <param name="unServicio"></param>
         private void SetServicio(Servicio unServicio)
         {
             if (unServicio is not null)
@@ -63,12 +66,19 @@ namespace FrmPreueba
                     keyValue = new KeyValuePair<Servicio.Diagnostico, float>(unServicioModify.Diagnistico, unServicioModify.Cotizacion);
                     result = this.unServicio + keyValue;
                 }
-                seIngesaronDatos(this.unServicio, this.unVehiculo);
+                ManejadorSeIngesaronDatos(this.unServicio, this.unVehiculo);
                 this.DialogResult = DialogResult.OK;
             }
         }
-
-        private void seIngesaronDatos(Servicio unServicio, Vehiculo unVehiculo)
+        /// <summary>
+        /// Permite invocar al evento seIngesaronDatos pasandole los parametros 
+        /// , verificando que los parametros pasados sean validos y que el evento
+        /// este referenciado a un metodo
+        /// </summary>
+        /// <param name="titulo"></param>
+        /// <param name="mensaje"></param>
+        /// <returns>(false) si se cumplieron las condiciones ,(true) si se se pudo invocar al metodo</returns>
+        private void ManejadorSeIngesaronDatos(Servicio unServicio, Vehiculo unVehiculo)
         {
             if (OnSeIngesaronDatos is not null)
             {

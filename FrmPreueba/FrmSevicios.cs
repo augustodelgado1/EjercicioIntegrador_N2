@@ -52,6 +52,12 @@ namespace FrmPreueba
             base.InformarError += FrmMenuPrincipal.InformarError;
             base.Buscador += FrmSevicios_Buscador;
         }
+        /// <summary>
+        /// Busca que elementos de la lista concide con el texto pasado por parametro
+        /// </summary>
+        /// <param name="unaLista"></param>
+        /// <param name="criterio"></param>
+        /// <returns>la lista con los elemntos que concidecon el texto o (NULL) en caso de que no se valido el texto</returns>
         private List<Servicio> FrmSevicios_Filtrar(List<Servicio> unaLista,string criterio)
         {
             List<Servicio> result = default;
@@ -61,7 +67,12 @@ namespace FrmPreueba
             }
             return result;
         }
-
+        /// <summary>
+        /// Busca que elementos de la lista concide con el texto pasado por parametro
+        /// </summary>
+        /// <param name="diagnostico"></param>
+        /// <param name="unaLista"></param>
+        /// <returns>la lista con los elemntos que concidecon el texto o (NULL) en caso de que no se valido el texto</returns>
         private List<Servicio> FrmSevicios_Buscador(string diagnostico, List<Servicio> unaLista)
         {
             List<Servicio> result = default;
@@ -150,7 +161,11 @@ namespace FrmPreueba
             }
             return estado;
         }
-
+        /// <summary>
+        /// mindica que los datos de que propiedades que se van a mostrar
+        /// </summary>
+        /// <param name="unaPrpiedad"></param>
+        /// <returns>(true) si cumple con el criterio ,(false) de caso contrario</returns>
         private bool unPropertyInfoPredicate(PropertyInfo unaPrpiedad)
         {
             return string.Compare(unaPrpiedad.Name, "FechaDeIngreso", true) == 0
@@ -180,12 +195,13 @@ namespace FrmPreueba
                 dgtv.Rows.Clear();
                 foreach (Servicio unServicio in lista)
                 {
-                    dgtv.Rows.Add(unServicio.FechaDeIngreso, unServicio.UnVehiculo.Patente, unServicio.Problema, unServicio.CotizacionStr,unServicio.Diagnistico);
+                    dgtv.Rows.Add(unServicio.FechaDeIngreso, unServicio.UnVehiculo.Patente, unServicio.Problema, 
+                        unServicio.CotizacionStr,unServicio.Diagnistico);
                 }
             }
         }
 
-        public override void AgregarColumnasDataGried(DataGridView dgtvList, List<Servicio> listGeneric)
+        public override void AgregarColumnasDataGried(DataGridView dgtvList)
         {
             dgtvList.Columns.Add("colFecha", "Fecha De Ingreso");
             dgtvList.Columns.Add("colUnVehiculo", "Patente");

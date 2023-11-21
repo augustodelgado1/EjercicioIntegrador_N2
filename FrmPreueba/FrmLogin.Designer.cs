@@ -76,7 +76,6 @@
             txtClave.PlaceholderText = "Clave";
             txtClave.Size = new Size(376, 32);
             txtClave.TabIndex = 10;
-            txtClave.TextChanged += txtClave_TextChanged;
             // 
             // lbl_Titulo
             // 

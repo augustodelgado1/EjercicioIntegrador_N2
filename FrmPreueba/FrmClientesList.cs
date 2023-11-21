@@ -89,7 +89,7 @@ namespace FrmPreueba
                 }
             }
         }
-        public override void AgregarColumnasDataGried(DataGridView dgtvList, List<Cliente> listGeneric)
+        public override void AgregarColumnasDataGried(DataGridView dgtvList)
         {
             dgtvList.Columns.Add("colClienteName", "Nombre");
             dgtvList.Columns.Add("colEmailName", "Email");

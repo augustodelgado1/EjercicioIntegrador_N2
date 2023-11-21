@@ -54,27 +54,28 @@ namespace TallerMecanico
                 e.Cancel = false;
             }
         }
-        public void SetUser(Usuario unUsuario)
-        {
-            if (unUsuario.Rol == Usuario.Roles.Cliente)
-            {
-
-            }
-        }
 
         private void FrmMenuPrincipal_Load(object? sender, EventArgs e)
         {
-            this.SetUser(this.unUsuario);
             frmClientes = new FrmClientesList(unNegocio, unUsuario.Rol);
             AbrirPanel(frmClientes);
             this.panelContenedor.Tag = "Clientes";
         }
-
+        /// <summary>
+        /// Informa que sucedio un error atraves de un MessageBox
+        /// </summary>
+        /// <param name="titulo">Titulo del error</param>
+        /// <param name="mensajeDeError">el mensaje de error que indica que error sucedio</param>
         public static void InformarError(string titulo, string mensajeDeError)
         {
             MessageBox.Show(mensajeDeError, titulo, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+        /// <summary>
+        /// Informa que sucedio un suceso atraves de un MessageBox
+        /// </summary>
+        /// <param name="titulo">Titulo del suceso</param>
+        /// <param name="mensajeDeError">el mensaje de error que indica que suceso sucedio</param>
         public static void Informar(string titulo, string mensajeDeError)
         {
             MessageBox.Show(mensajeDeError, titulo, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -99,6 +100,10 @@ namespace TallerMecanico
 
             return resultado;
         }
+        /// <summary>
+        /// Guarda un formulario en el panel y lo abre 
+        /// </summary>
+        /// <param name="unForm">el formulario a guardar y abrir</param>
         private void AbrirPanel(Form unForm)
         {
             if (unForm is not null)
@@ -161,13 +166,14 @@ namespace TallerMecanico
         }
 
         /// <summary>
-        /// Muestra un error provider informando que condiciones debe cumplir el Control pasado por parametro
+        /// Muestra un Control informando que criterio debe cumplir el elemento pasado por parametro
         /// </summary>
-        /// <param name="unControl">el control</param>
-        /// <param name="mensaje">Mensaje informando que condiciones debe cumplir el control</param>
-        /// <param name="predicate">el metodo que va a derminar si se cumplieron las condiciones , que debe
+        /// <param name="unControl">el control que va a mostrar el error</param>
+        /// <param name="mensaje">Mensaje informando que criterio debe cumplir el control</param>
+        /// <param name="predicate">el metodo que va a derminar si se cumplieron las criterio , que debe
+        /// <param name="element">el elemento a verificar</param>
         /// retornar (True) en caso que se cumpla o (false) de caso contrario</param>
-        /// <returns>(false) en caso de que el control no se cumpla con la condiciones de el metodo pasado por parametro
+        /// <returns>(false) en caso de que el elemento no se cumpla con la criterio de el metodo pasado por parametro,
         /// de lo contrario devueve (true)</returns>
         public static bool ActivarControlError<T>(Control unControl, string msgError, Predicate<T> predicate, T element)
         {
@@ -187,6 +193,11 @@ namespace TallerMecanico
             return estado;
         }
 
+        /// <summary>
+        /// Recorre la lista de controles y verifica si un text box esta vacio
+        /// </summary>
+        /// <param name="listaDeControles">una lista de controles</param>
+        /// <returns>(true) si no encontro ningun text box vacio , (false) de caso contrario </returns>
         public static bool DetectarTextBoxVacio(Control.ControlCollection listaDeControles)
         {
             bool result = false;

@@ -29,8 +29,15 @@ namespace FrmPreueba
             this.unRol = unRol;
             this.path = null;
         }
-
-        private void OnSeIngesaronDatos(Cliente unaPersona)
+        /// <summary>
+        /// Permite invocar al evento seIngesaronDatos pasandole los parametros 
+        /// , verificando que los parametros pasados sean validos y que el evento
+        /// este referenciado a un metodo
+        /// </summary>
+        /// <param name="titulo"></param>
+        /// <param name="mensaje"></param>
+        /// <returns>(false) si se cumplieron las condiciones ,(true) si se se pudo invocar al metodo</returns>
+        private void ManejadorSeIngesaronDatos(Cliente unaPersona)
         {
             if (seIngesaronDatos is not null)
             {
@@ -86,7 +93,7 @@ namespace FrmPreueba
             if (result == true)
             {
                 this.unaPersona = (Cliente)this.CrearUsuario();
-                OnSeIngesaronDatos(this.unaPersona);
+                ManejadorSeIngesaronDatos(this.unaPersona);
                 this.DialogResult = DialogResult.OK;
             }
         }

@@ -10,6 +10,10 @@ namespace Test
     [TestClass]
     public class UsuarioTest
     {
+        /// <summary>
+        /// Verifica en que caso el metodo EncontarUsuario deberia Retornar un True  
+        /// </summary>
+        /// <param name="email">el email del usuario</param>
         [TestMethod]
         [DataRow("pepe@gmail.com")]
         [DataRow("mario@gmail.com")]
@@ -17,8 +21,12 @@ namespace Test
         public void ValidarEmail_CuandoElEmailEsValido_DeberiaRetornarTrue(string email)
         {
             Assert.IsTrue(Usuario.ValidarEmail(email));
-        } 
-        
+        }
+
+        /// <summary>
+        /// Verifica en que caso el metodo EncontarUsuario deberia Retornar un False  
+        /// </summary>
+        /// <param name="email">el email del usuario</param>
         [TestMethod]
         [DataRow("jajaja*jajjajaj")]
         [DataRow("...............")]
@@ -28,6 +36,11 @@ namespace Test
             Assert.IsFalse(Usuario.ValidarEmail(email));
         }
 
+        /// <summary>
+        /// Verifica en que caso el metodo EncontarUsuario deberia Retornar un null  
+        /// </summary>
+        /// <param name="email">el email a buscar</param>
+        /// <param name="contracenia">la contracenia a buscar</param>
         [TestMethod]
         [DataRow("..........", "123456789")]
         [DataRow("jauna@gmail.com", "9666333333")]
@@ -44,6 +57,11 @@ namespace Test
             Assert.IsNull(Usuario.EncontarUsuario(listaDeCliente, email, contracenia));
         }
 
+        /// <summary>
+        /// Verifica en que caso el metodo EncontarUsuario deberia Retornar un Usuario  
+        /// </summary>
+        /// <param name="email">el email a buscar</param>
+        /// <param name="contracenia">la contracenia a buscar</param>
         [TestMethod]
         [DataRow("mario@gmail.com", "123456789")]
         [DataRow("koko@gmail.com", "123456789")]

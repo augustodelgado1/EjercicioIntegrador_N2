@@ -61,7 +61,7 @@ namespace TallerMecanico
             this.Close();
         }
         /// <summary>
-        /// Crea un Label y guada los datos de la propiedad
+        /// Crea un Label y gueada los datos de la propiedad
         /// </summary>
         /// <param name="unaPropiedad">datos a guardar</param>
         /// <returns></returns>

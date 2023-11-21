@@ -23,7 +23,11 @@ namespace Entidades.BaseDeDatos
             comando.CommandType = CommandType.Text;
             comando.Connection = coneccionSql;
         }
-
+        /// <summary>
+        /// Agrega los Datos De la lista de Usuarios en la base de datos
+        /// </summary>
+        /// <param name="list">(List<Usuario>) los datos a guardar</param>
+        /// <returns>(true) si lo pudo gurdar, (false) de caso contrario</returns>
         public bool Agregar(List<Usuario> list)
         {
             bool estado;
@@ -47,6 +51,12 @@ namespace Entidades.BaseDeDatos
 
             return estado;
         }
+        /// <summary>
+        /// Agrega un Usuario a la base de datos
+        /// </summary>
+        /// <param name="unElemento">el Usuario a agregar</param>
+        /// <returns>(true) si lo pudo agragar,(false) si no lo pudo agragar</returns>
+        /// <exception cref="ConeccionBaseDeDatosException"></exception>
         public bool Agregar(Usuario unElemento)
         {
             bool estado;
@@ -82,7 +92,11 @@ namespace Entidades.BaseDeDatos
 
             return estado;
         }
-
+        /// <summary>
+        /// Lee los datos de la base de datos y los guarda dentro de una lista de Usuarios
+        /// </summary>
+        /// <returns>(List<Usuario>) la lista con los datos de los Usuarios</returns>
+        /// <exception cref="ConeccionBaseDeDatosException"></exception>
         public List<Usuario> Leer()
         {
             List<Usuario> list = null;
@@ -116,6 +130,11 @@ namespace Entidades.BaseDeDatos
             return list;
         }
 
+        /// <summary>
+        /// Permite obtener un elemento del tipo Usuario obteniendo los dadoas que guarda el SqlDataRead 
+        /// </summary>
+        /// <param name="dataReader">Dataread con los Datos Usuario</param>
+        /// <returns>(null) en caso de que no se pueda lee los datos</returns>
         public Usuario ObtenerUnElemento(SqlDataReader dataReader)
         {
             return new Usuario(Convert.ToString(dataReader["email"]), Convert.ToString(dataReader["clave"]),(Usuario.Roles)Convert.ToInt32(dataReader["rol"]));

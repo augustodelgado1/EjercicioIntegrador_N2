@@ -28,11 +28,23 @@ namespace Entidades
             this.path = path;
             this.rol = rol;
         }
+        /// <summary>
+        /// Verifica si el string pasado por parametro cumple con las condiciones para que sea un contracenia, 
+        /// verificando que tenga al menos 8 caracteres
+        /// </summary>
+        /// <param name="contracenia"></param>
+        /// <returns>(true) si el contracenia cumple con las condiciones , (false) de caso contrario</returns>
         public static bool ValidarContracenia(string contracenia)
         {
             return string.IsNullOrWhiteSpace(contracenia) == false && contracenia.Length >= 8
              && contracenia.Length <= 30;
         }
+        /// <summary>
+        /// Verifica si el string pasado por parametro cumple con las condiciones para que sea un email , permitiedole caracteres alphanumericos 
+        /// y que obligatoriamente tenega un @  
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>(true) si el email cumple con las condiciones , (false) de caso contrario</returns>
         public static bool ValidarEmail(string email)
         {
             List<Char> listaDeCaracteres = new List<Char>()
@@ -54,6 +66,13 @@ namespace Entidades
 
             return estado;
         }
+        /// <summary>
+        /// Busca en la lista de usuario si hay un usuario que coicida con el email y la clave pasados por parametro
+        /// </summary>
+        /// <param name="listaDeUsuario"></param>
+        /// <param name="email"></param>
+        /// <param name="clave"></param>
+        /// <returns>(NULL) en caso de que no coincida con ningun elemnto de la lista ,(Usuario) en caso de uqe haya en encontrado un usuario que coincida</returns>
         public static Usuario EncontarUsuario(List<Usuario> listaDeUsuario,string email,string clave)
         {
             Usuario unUsuario = null;
@@ -69,7 +88,13 @@ namespace Entidades
                    this.email == usuario.email &&
                    this.clave == usuario.clave;
         }
-
+        /// <summary>
+        /// Busca si la lista de usuario contiene algun elemento del tipo pasado por parametro que herede de usuario y 
+        /// devuelve una lista del tipo con los elementos
+        /// </summary>
+        /// <typeparam name="T">el tipo a buscar que debe heredar de usuarios</typeparam>
+        /// <param name="list"></param>
+        /// <returns>(lIST<T>) una lista con los elementos encontrados </returns>
         public static List<T> ObtenerLista<T>(List<Usuario> list)
             where T : Usuario
         {
@@ -90,7 +115,12 @@ namespace Entidades
 
             return listaDeUsuarios;
         }
-
+        /// <summary>
+        /// busca en lista de usuario que elementos coiciden con el rol pasado por parametro y los guarda en una lista
+        /// </summary>
+        /// <param name="listaDeUsuarios"></param>
+        /// <param name="unRol"></param>
+        /// <returns>(NULL) en caso de que no coincida con ningun elemnto de la lista , (List<Usuario>) con los elementos que coincide</returns>
         public static List<Usuario> FiltarPorRol(List<Usuario> listaDeUsuarios, Roles unRol)
         {
             List<Usuario> result = null;
@@ -101,6 +131,12 @@ namespace Entidades
             return result;
         }
 
+        /// <summary>
+        /// Busca en lista de usuario si un elemento coicide con el rol pasado por parametro 
+        /// </summary>
+        /// <param name="listaDeUsuarios"></param>
+        /// <param name="unRol"></param>
+        /// <returns>(NULL) en caso de que no coincida con ningun elemnto de la lista ,(Usuario) en caso de uqe haya en encontrado un usuario que coincida</returns>
         public static Usuario ObtenerUnUsuarioPorRol(List<Usuario> listaDeUsuarios, Roles unRol)
         {
             List<Usuario> result = null;
@@ -146,7 +182,6 @@ namespace Entidades
         {
             Cliente = 3,
             Personal = 2,
-            Administrador = 1
         }
 
     }

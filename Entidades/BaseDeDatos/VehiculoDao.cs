@@ -18,7 +18,11 @@ namespace Entidades.BaseDeDatos
             comando.CommandType = CommandType.Text;
             comando.Connection = coneccionSql;
         }
-
+        /// <summary>
+        /// Agrega los Datos De la lista de Vehiculos en la base de datos
+        /// </summary>
+        /// <param name="list">(List<Vehiculo>) los datos a guardar</param>
+        /// <returns>(true) si lo pudo gurdar, (false) de caso contrario</returns>
         public bool Agregar(List<Vehiculo> list)
         {
             bool estado;
@@ -42,6 +46,12 @@ namespace Entidades.BaseDeDatos
 
             return estado;
         }
+        /// <summary>
+        /// Agrega un Vehiculo a la base de datos
+        /// </summary>
+        /// <param name="unElemento">el Vehiculo a agregar</param>
+        /// <returns>(true) si lo pudo agragar,(false) si no lo pudo agragar</returns>
+        /// <exception cref="ConeccionBaseDeDatosException"></exception>
         public bool Agregar(Vehiculo unElemento)
         {
             bool estado;
@@ -80,7 +90,11 @@ namespace Entidades.BaseDeDatos
 
             return estado;
         }
-
+        /// <summary>
+        /// Lee los datos de la base de datos y los guarda dentro de una lista de Vehiculos
+        /// </summary>
+        /// <returns>(List<Vehiculo>) la lista con los datos de los Vehiculos</returns>
+        /// <exception cref="ConeccionBaseDeDatosException"></exception>
         public List<Vehiculo> Leer()
         {
             List<Vehiculo> list = null;
@@ -115,6 +129,11 @@ namespace Entidades.BaseDeDatos
             return list;
         }
 
+        /// <summary>
+        /// Permite obtener un elemento del tipo Vehiculos obteniendo los dadoas que guarda el SqlDataRead 
+        /// </summary>
+        /// <param name="dataReader">Dataread con los Datos Vehiculos</param>
+        /// <returns>(null) en caso de que no se pueda lee los datos</returns>
         public Vehiculo ObtenerUnElemento(SqlDataReader dataReader)
         {
             return new Vehiculo(Convert.ToInt32(dataReader["id"]), Convert.ToString(dataReader["patente"]), (Vehiculo.MarcaDelVehiculo)Convert.ToInt32(dataReader["marca"]), (Vehiculo.TipoDeVehiculo)Convert.ToInt32(dataReader["tipo"]),

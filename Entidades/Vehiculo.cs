@@ -28,7 +28,11 @@ namespace Entidades
             this.Modelo = modelo;
             this.path = path;
         }
-
+        /// <summary>
+        /// Valida la patente del auto pasada por parametro es alphanumerico y verifica si cumple con ciertas condiciones
+        /// </summary>
+        /// <param name="patente">la patente del auto</param>
+        /// <returns>(false) si no cumple con las condiciones ,(true) de caso contrario</returns>
         public static bool ValidarPatente(string patente)
         {
             bool result;
@@ -85,7 +89,11 @@ namespace Entidades
                 }
             }
         }
-
+        /// <summary>
+        /// Valida si el modelo del auto pasada por parametro es alphanumerico y verifica si cumple con ciertas condiciones 
+        /// </summary>
+        /// <param name="modelo">el modelo del auto</param>
+        /// <returns>(false) si no cumple con las condiciones ,(true) de caso contrario</returns>
         public static bool ValidarModelo(string modelo)
         {
             bool result;

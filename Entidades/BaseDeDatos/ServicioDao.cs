@@ -25,6 +25,11 @@ namespace Entidades.BaseDeDatos
             comando.Connection = coneccionSql;
         }
 
+        /// <summary>
+        /// Agrega los Datos De la lista de Servicio en la base de datos
+        /// </summary>
+        /// <param name="list">(List<Servicio>) los datos a guardar</param>
+        /// <returns>(true) si lo pudo gurdar, (false) de caso contrario</returns>
         public bool Agregar(List<Servicio> list)
         {
             bool estado;
@@ -48,6 +53,13 @@ namespace Entidades.BaseDeDatos
 
             return estado;
         }
+
+        /// <summary>
+        /// Agrega un Servicio a la base de datos
+        /// </summary>
+        /// <param name="unElemento">el Servicio a agregar</param>
+        /// <returns>(true) si lo pudo agragar,(false) si no lo pudo agragar</returns>
+        /// <exception cref="ConeccionBaseDeDatosException"></exception>
         public bool Agregar(Servicio unElemento)
         {
             bool estado;
@@ -87,7 +99,11 @@ namespace Entidades.BaseDeDatos
 
             return estado;
         }
-
+        /// <summary>
+        /// Lee los datos de la base de datos y los guarda dentro de una lista de Servicios
+        /// </summary>
+        /// <returns>(List<Servicio>) la lista con los datos de los Servicios</returns>
+        /// <exception cref="ConeccionBaseDeDatosException"></exception>
         public List<Servicio> Leer()
         {
             List<Servicio> list = null;
@@ -121,7 +137,11 @@ namespace Entidades.BaseDeDatos
 
             return list;
         }
-      
+        /// <summary>
+        /// Permite obtener un elemento del tipo Servicio obteniendo los dadoas que guarda el SqlDataRead 
+        /// </summary>
+        /// <param name="dataReader">Dataread con los Datos Servicio</param>
+        /// <returns>(null) en caso de que no se pueda lee los datos</returns>
         public Servicio ObtenerUnElemento(SqlDataReader dataReader)
         {
             return new Servicio(Convert.ToInt32(dataReader["id"]), Convert.ToString(dataReader["descripcion"])

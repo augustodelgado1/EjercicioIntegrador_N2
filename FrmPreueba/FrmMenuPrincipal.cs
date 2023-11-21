@@ -138,7 +138,7 @@ namespace TallerMecanico
             {
                 if (unUsuario is Cliente unCliente)
                 {
-                    unCliente.BuscarServiciosDelCliente(unNegocio.ListaDeServicio);
+                    unNegocio.ActualizarClientes();
                     frmSevicios = new FrmSevicios(unCliente.Servicios, unNegocio, unCliente);
                     this.AbrirPanel(frmSevicios);
                 }

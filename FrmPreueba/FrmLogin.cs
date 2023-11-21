@@ -36,7 +36,7 @@ namespace Interfaz
             catch (Exception ex)
             {
                 FrmMenuPrincipal.InformarError("Error Base De Datos", ex.Message);
-               /* this.Close();*/
+                this.Close();
             }
 
             this.LoginUser += FrmLogin_loginUser;

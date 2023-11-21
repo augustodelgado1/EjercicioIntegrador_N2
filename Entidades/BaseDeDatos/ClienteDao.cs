@@ -25,7 +25,11 @@ namespace Entidades.BaseDeDatos
             comando.CommandType = CommandType.Text;
             comando.Connection = coneccionSql;
         }
-
+        /// <summary>
+        /// Agrega los Detos De la lista de clientes en la base de datos
+        /// </summary>
+        /// <param name="list">(List<Cliente>) los datos a guardar</param>
+        /// <returns>(true) si lo pudo gurdar, (false) de caso contrario</returns>
         public bool Agregar(List<Cliente> list)
         {
             bool estado;
@@ -49,7 +53,12 @@ namespace Entidades.BaseDeDatos
 
             return estado;
         }
-
+        /// <summary>
+        /// Setea un valor nulo a un SqlParametro en caso de que la valiable pasada por parametro contenga null
+        /// </summary>
+        /// <param name="parameter">el nombre del parametro</param>
+        /// <param name="value">la valiable con el valor del parametro</param>
+        /// <returns>el parametro creado</returns>
         public static SqlParameter SetValueSqlParameter(string parameter, object value)
         {
             SqlParameter parametro = new(parameter, value);
@@ -60,20 +69,18 @@ namespace Entidades.BaseDeDatos
 
             return parametro;
         }
-
+        /// <summary>
+        /// Agrega un Cliente a la base de datos
+        /// </summary>
+        /// <param name="unElemento">el cliente a agregar</param>
+        /// <returns>(true) si lo pudo agragar,(false) si no lo pudo agragar</returns>
+        /// <exception cref="ConeccionBaseDeDatosException"></exception>
         public bool Agregar(Cliente unElemento)
         {
             bool estado;
             estado = false;
             try
             {
-                /*[ID]
-      ,[nombre]
-      ,[email]
-      ,[clave]
-      ,[path]
-      ,[dni]
-      ,[fechaDeNacimiento]*/
                 comando.Parameters.Clear();
                 comando.Parameters.AddWithValue("@email", unElemento.Email);
                 comando.Parameters.AddWithValue("@clave", unElemento.Clave);
@@ -104,7 +111,11 @@ namespace Entidades.BaseDeDatos
 
             return estado;
         }
-
+        /// <summary>
+        /// Lee los datos de la base de datos y los guarda dentro de una lista de clientes
+        /// </summary>
+        /// <returns>(List<Cliente>) la lista con los datos de los clientes</returns>
+        /// <exception cref="ConeccionBaseDeDatosException"></exception>
         public List<Cliente> Leer()
         {
             List<Cliente> list = null;
@@ -137,7 +148,11 @@ namespace Entidades.BaseDeDatos
 
             return list;
         }
-
+        /// <summary>
+        /// Permite obtener un elemento del tipo cliente obteniendo los dadoas que guarda el SqlDataRead 
+        /// </summary>
+        /// <param name="dataReader">Dataread con los Datos Cliente</param>
+        /// <returns>(null) en caso de que no se pueda lee los datos</returns>
         public Cliente ObtenerUnElemento(SqlDataReader dataReader)
         {
             return new Cliente(Convert.ToInt32(dataReader["ID"]), Convert.ToString(dataReader["nombre"]), Convert.ToString(dataReader["dni"]),

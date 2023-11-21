@@ -148,19 +148,12 @@ namespace TallerMecanico
 
         private void btnVehiculos_Click(object sender, EventArgs e)
         {
-            if (unUsuario is Cliente unCliente && this.panelContenedor.Tag is string texto && texto != "Vehiculos")
+            if (this.panelContenedor.Tag is string texto && texto != "Vehiculos")
             {
-
+                frmVehiculo = new FrmVehiculo(unNegocio.ListaDeVehiculos);
+                AbrirPanel(frmVehiculo);
+                this.panelContenedor.Tag = "Vehiculos";
             }
-            else
-            {
-                if (unUsuario.Rol != Usuario.Roles.Cliente)
-                {
-                    frmVehiculo = new FrmVehiculo(unNegocio.ListaDeVehiculos);
-                }
-            }
-            AbrirPanel(frmVehiculo);
-            this.panelContenedor.Tag = "Vehiculos";
         }
         private void btnSalir_Click(object sender, EventArgs e)
         {

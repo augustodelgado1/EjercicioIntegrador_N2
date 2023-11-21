@@ -144,7 +144,7 @@ namespace FrmPreueba
 
             if (unServicio is not null)
             {
-                frmMostrar = new FrmMostrar<Servicio>(unServicio, unPropertyInfoPredicate, unServicio.UnVehiculo.Path, "Un Cliente");
+                frmMostrar = new FrmMostrar<Servicio>(unServicio, unPropertyInfoPredicate, unServicio.UnVehiculo.Path, "Un Servicio");
                 frmMostrar.Show();
                 estado = true;
             }

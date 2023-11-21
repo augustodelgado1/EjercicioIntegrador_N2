@@ -165,12 +165,13 @@ namespace TallerMecanico
             List<T> unLista;
             if ((this.openFileDialog = AbrirArchivo("Cargar archivo", "Archivo Json (*.Json)|*.Json",
               Environment.GetFolderPath(Environment.SpecialFolder.Desktop))) is not null)
-            {  
+            {  ///Le Pido al usurio que seleccione que archio quiere leer  
                 try
                 {
-                    if ((unLista = JsonFile<T>.LeerArchivo(this.openFileDialog.FileName)) is not null)
+                    if ((unLista = JsonFile<T>.LeerArchivo(this.openFileDialog.FileName)) is not null)// le paso el path al metodo 
+                        //que lee el archivo
                     {
-                        ActualizarDataGried(dgtvList, unLista);
+                        ActualizarDataGried(dgtvList, listGeneric);
                         this.OnInformar("Abrir Archivo", "Se cargo el archivo correctamente");
                     }
                 }
@@ -238,9 +239,10 @@ namespace TallerMecanico
             if ((this.saveFileDialog = GuardarArchivo("Guardar archivo", "Archivo Json (*.Json)|*.Json",
                 Environment.GetFolderPath(Environment.SpecialFolder.Desktop))) is not null)
             {
+                ///Le Pido al usurio que seleccione donde quiere guardar el arhivo   
                 try
                 {
-                    JsonFile<T>.GuardarArchivo(this.saveFileDialog.FileName, listGeneric);
+                    JsonFile<T>.GuardarArchivo(this.saveFileDialog.FileName, listGeneric);//Le paso el path y lo guardo
                     OnInformar("Guardar archivo", "los datos se Guardaron correctamente ");
                 }
                 catch (Exception ex)

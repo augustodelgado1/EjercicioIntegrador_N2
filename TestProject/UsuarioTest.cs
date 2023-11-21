@@ -16,8 +16,7 @@ namespace Test
         [DataRow("koko@gmail.com")]
         public void ValidarEmail_CuandoElEmailEsValido_DeberiaRetornarTrue(string email)
         {
-            Usuario unUsuario = new Cliente("pepe", "12345678",DateTime.Now, email, "123456789");
-            Assert.IsTrue(unUsuario.Email is not null);
+            Assert.IsTrue(Usuario.ValidarEmail(email));
         } 
         
         [TestMethod]
@@ -26,31 +25,14 @@ namespace Test
         [DataRow("1111111@111111111")]
         public void ValidarEmail_CuandoElEmailEsNoValido_DeberiaRetornarFalse(string email)
         {
-            Usuario unUsuario = new Cliente("pepe", "12345678",DateTime.Now, email, "123456789");
-            Assert.IsFalse(unUsuario.Email is not null);
-        }
-        
-        
-        [TestMethod]
-        public void ObetenerLista_CuandoLeMandoUnTipoDeberiaRetornarmeUnListaDeEseTipo()
-        {
-            List<Usuario> listaDeCliente = new List<Usuario>() {
-               new Usuario("kaak", "12345678",Usuario.Roles.Administrador),
-               new Cliente("pepe", "12345678",DateTime.Now, "mario@gmail.com", "123456789"),
-               new Usuario("mario", "12345678",Usuario.Roles.Personal),
-               new Cliente("pepe", "12345678",DateTime.Now, "mario@gmail.com", "123456789"),
-            };
-
-            List<Cliente> listaDeClientes = Usuario.ObtenerLista<Cliente>(listaDeCliente);
-            
-            Assert.IsNotNull(listaDeClientes);
+            Assert.IsFalse(Usuario.ValidarEmail(email));
         }
 
         [TestMethod]
         [DataRow("..........", "123456789")]
         [DataRow("jauna@gmail.com", "9666333333")]
         [DataRow(null, null)]
-        public void BuscarUnUsuario_CuandoElUsusuarioNoEstaEnLalista_DeberiaRetornarError(string email,string contracenia)
+        public void BuscarUnUsuario_CuandoElUsusuarioNoEstaEnLalista_DeberiaRetornarNull(string email,string contracenia)
         {
             //Arrenge - Preparacion el caso de prueva
             List<Usuario> listaDeCliente = new List<Usuario>() {
@@ -65,8 +47,7 @@ namespace Test
         [TestMethod]
         [DataRow("mario@gmail.com", "123456789")]
         [DataRow("koko@gmail.com", "123456789")]
-        public void BuscarUnUsuario_CuandoLaListaContieneElementosNulosPeroLeMandoUnUsuarioQueEstaEnLaLista_DeberiaRetornarLaReferenciaAlJugador
-            (string email, string contracenia)
+        public void BuscarUnUsuario_CuandoElUsusuarioEstaEnLalista_DeberiaRetornarElUsuario(string email, string contracenia)
         {
             //Arrenge - Preparacion el caso de prueva
             List<Usuario> listaDeCliente = new List<Usuario>() {

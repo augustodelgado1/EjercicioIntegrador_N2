@@ -34,6 +34,8 @@ namespace FrmPreueba
             base.btnModificar.Visible = false;
             base.btnAgregar.Visible = false;
             base.btnEliminar.Visible = false;
+            base.btnCargar.Visible = false;
+            base.btnGuardarArchivo.Visible = false;
             base.Informar += FrmMenuPrincipal.Informar;
             base.InformarError += FrmMenuPrincipal.InformarError;
             base.cmbFilter.Visible = true;

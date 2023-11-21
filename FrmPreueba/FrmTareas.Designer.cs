@@ -33,8 +33,6 @@ namespace FrmPreueba
             progressBar1 = new ProgressBar();
             btnIniciarServicio = new Button();
             btnCancelarServicio = new Button();
-            btnDiagnosticarServicio = new Button();
-
             SuspendLayout();
             // 
             // progressBar1
@@ -50,13 +48,6 @@ namespace FrmPreueba
             // 
             // FrmTareas
             // 
-            btnDiagnosticarServicio.Location = base.btnAgregar.Location;
-            btnDiagnosticarServicio.Name = "btnDiagnosticarServicio";
-            btnDiagnosticarServicio.Size = new Size(148, 31);
-            btnDiagnosticarServicio.TabIndex = 25;
-            btnDiagnosticarServicio.Text = "Diagnosticar Servicio";
-            btnDiagnosticarServicio.UseVisualStyleBackColor = true;
-            btnDiagnosticarServicio.Click += BtnIniciarServicio_Click;
             // 
             // btnIniciarServicio
             // 
@@ -64,7 +55,7 @@ namespace FrmPreueba
             btnIniciarServicio.Name = "btnIniciarServicio";
             btnIniciarServicio.Size = new Size(148, 31);
             btnIniciarServicio.TabIndex = 25;
-            btnIniciarServicio.Text = "Iniciar Servicio";
+            btnIniciarServicio.Text = "Atender Servicio";
             btnIniciarServicio.UseVisualStyleBackColor = true;
             btnIniciarServicio.Click += BtnIniciarServicio_Click;
             //
@@ -86,7 +77,6 @@ namespace FrmPreueba
             ClientSize = new Size(843, 391);
             Controls.Add(btnIniciarServicio);
             Controls.Add(btnCancelarServicio);
-            Controls.Add(btnDiagnosticarServicio);
             Controls.Add(progressBar1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -104,7 +94,6 @@ namespace FrmPreueba
         #endregion
         private Button btnIniciarServicio;
         private Button btnCancelarServicio;
-        private Button btnDiagnosticarServicio;
         private ProgressBar progressBar1;
     }
 }

@@ -27,7 +27,6 @@ namespace FrmPreueba
         }
         private void FrmTareas_Load(object sender, EventArgs e)
         {
-            this.btnDiagnosticarServicio.Click += BtnDiagnosticarServicio_Click;
             base.Buscador += FrmTareas_Buscador;
             base.Filtrar += FrmTareas_Filtrar;
             base.cmbFilter.DataSource = Enum.GetValues(typeof(Servicio.Diagnostico));
@@ -39,24 +38,13 @@ namespace FrmPreueba
             base.txtBuscar.Location = new Point(12, 4);
             this.progressBar1.Location = new Point(12, 38);
             this.progressBar1.Size = base.txtBuscar.Size;
+            this.btnCancelarServicio.Enabled = false;
         }
 
         private void BtnDiagnosticarServicio_Click(object sender, EventArgs e)
         {
-            if (base.element is not null && base.element.Diagnistico == Servicio.Diagnostico.NoDeterminado
-             && base.element.Cotizacion == 0)
-            {
-                FrmDiagnosticar frmDiagnosticar = new FrmDiagnosticar(base.element);
-
-                if (frmDiagnosticar.ShowDialog() == DialogResult.OK)
-                {
-                    FrmMenuPrincipal.Informar("Diagnosticar", "Se diagnostico el servicio correctamente");
-                    frmSevicios.ActualizarDataGried(base.dgtvList, base.listGeneric);
-                    // o Negocio.
-                }
-            }
+            
         }
-
         private List<Servicio> FrmTareas_Filtrar(List<Servicio> unaLista, string criterio)
         {
             List<Servicio> result = default;
@@ -87,13 +75,19 @@ namespace FrmPreueba
 
         private void BtnIniciarServicio_Click(object sender, EventArgs e)
         {
-            if (base.element is not null && base.element.Diagnistico != Servicio.Diagnostico.NoDeterminado 
-             && base.element.Cotizacion > 0 && base.element.Estado == Servicio.EstadoDelSevicio.EnProceso 
-             && ActivarProgessBar(this.progressBar1, this.unServicio) == true)
+            if (base.element is not null && base.element.Estado == Servicio.EstadoDelSevicio.EnProceso)
             {
-                this.btnIniciarServicio.Enabled = false;
-            }
+                FrmDiagnosticar frmDiagnosticar = new FrmDiagnosticar(base.element);
 
+                if (frmDiagnosticar.ShowDialog() == DialogResult.OK
+                    && ActivarProgessBar(this.progressBar1, base.element) == true)
+                {
+                    FrmMenuPrincipal.Informar("Diagnosticar", "Se diagnostico el servicio correctamente");
+                    this.ActualizarDataGriedView(base.dgtvList, unNegocio.ServiciosEnProcesos);
+                    this.btnIniciarServicio.Enabled = false;
+                    this.btnCancelarServicio.Enabled = true;
+                }
+            }
         }
         public override bool Alta()
         {
@@ -154,13 +148,16 @@ namespace FrmPreueba
 
                 ActualizarBoton(this.btnIniciarServicio);
                 cancellationTokenSource = null;
-                if (tarea.IsCompleted == true && this.unNegocio - unServicio)
+                if (barra.Value >= barra.Maximum && this.unNegocio - unServicio)
                 {
-                    this.ActualizarDataGriedView(base.dgtvList, listGeneric);
+                    FrmMenuPrincipal.Informar("Se Compelto el servicio", "Se Compelto el servicio correctamente");
                 }
+                this.ActualizarDataGriedView(base.dgtvList, unNegocio.ServiciosEnProcesos);
+                InicializarProsgerBar(barra);
             }
         }
 
+        
         private void ActualizarDataGriedView(DataGridView dataGrid,List<Servicio> lista)
         {
             if (InvokeRequired)
@@ -170,6 +167,18 @@ namespace FrmPreueba
             else
             {
                 this.ActualizarDataGried(dataGrid, lista);
+            }
+        }
+        
+        private void InicializarProsgerBar(ProgressBar barra)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(() => InicializarProsgerBar(barra));
+            }
+            else
+            {
+                barra.Value = 0;
             }
         }
         private void IncrementarProgessBar(ProgressBar barra)
@@ -196,16 +205,6 @@ namespace FrmPreueba
             }
         }
 
-        /*this.unServicio = new Servicio("No anda", new Vehiculo("123456", Vehiculo.MarcaDelVehiculo.Pontiac, Vehiculo.TipoDeVehiculo.Auto, "Sunnaty"));
-            *//*if (base.element is not null)
-            {*//*
-                FrmDiagnosticar frmDiagnosticar = new FrmDiagnosticar(unServicio);
-        btnTerminarServicio.Enabled = false;
-                if (frmDiagnosticar.ShowDialog() == DialogResult.OK && Predicate is not null
-                  && Predicate(unServicio, btnTerminarServicio) is Task unaTarea)
-                {
-
-
-                }*/
+       
 }
 }

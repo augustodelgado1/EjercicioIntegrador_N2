@@ -140,7 +140,10 @@ namespace FrmPreueba
             {
                 frmAltaDeCliente = new FrmAltaDePersona(Usuario.Roles.Cliente, unClienteEdit);
                 frmAltaDeCliente.seIngesaronDatos += FrmAltaDeCliente_seRealizoUnAlta;
-                estado = frmAltaDeCliente.ShowDialog() != DialogResult.OK;
+                if(estado = frmAltaDeCliente.ShowDialog() != DialogResult.OK)
+                {
+                    unNegocio.Clientes[unNegocio.Clientes.IndexOf(unClienteEdit)] = unCliente;
+                }
             }
             return estado;
         }

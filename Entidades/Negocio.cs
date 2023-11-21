@@ -169,8 +169,6 @@ namespace Entidades
         public List<Servicio> ListaDeServicio { get => listaDeServicio; 
         }
         public List<Servicio> ServiciosEnProcesos { get => Servicio.BuscarPorEstado(listaDeServicio, Servicio.EstadoDelSevicio.EnProceso); }
-        public List<Servicio> ServiciosTerminados { get => Servicio.BuscarPorEstado(listaDeServicio, Servicio.EstadoDelSevicio.Terminado); }
-        public List<Servicio> ServiciosCancelado { get => Servicio.BuscarPorEstado(listaDeServicio, Servicio.EstadoDelSevicio.Cancelado); }
         public List<Usuario> ListaDeUsuarios { get => listaDeUsuarios;}
         public List<Vehiculo> ListaDeVehiculos { get => listaDeVehiculos;
            

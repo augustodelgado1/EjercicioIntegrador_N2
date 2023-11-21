@@ -48,17 +48,6 @@ namespace Entidades.BaseDeDatos
 
             return estado;
         }
-
-        protected SqlParameter SetValueSqlParameter(string parameter, object value)
-        {
-            SqlParameter parametro = new(parameter, value);
-            if (value is null)
-            {
-                parametro.Value = DBNull.Value;
-            }
-
-            return parametro;
-        }
         public bool Agregar(Servicio unElemento)
         {
             bool estado;
@@ -135,7 +124,9 @@ namespace Entidades.BaseDeDatos
       
         public Servicio ObtenerUnElemento(SqlDataReader dataReader)
         {
-            return new Servicio(Convert.ToInt32(dataReader["id"]), Convert.ToString(dataReader["descripcion"]), Convert.ToDateTime(dataReader["fechaDeIngreso"]),new VehiculoDao().ObtenerUnElemento(dataReader), new ClienteDao().ObtenerUnElemento(dataReader), (Servicio.EstadoDelSevicio)Convert.ToInt32(dataReader["estado"]));
+            return new Servicio(Convert.ToInt32(dataReader["id"]), Convert.ToString(dataReader["descripcion"])
+                , Convert.ToDateTime(dataReader["fechaDeIngreso"]),new VehiculoDao().ObtenerUnElemento(dataReader)
+                , new ClienteDao().ObtenerUnElemento(dataReader), (Servicio.EstadoDelSevicio)Convert.ToInt32(dataReader["estado"]));
         }
     }
 }

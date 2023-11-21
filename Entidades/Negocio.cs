@@ -72,6 +72,40 @@ namespace Entidades
 
             return result;
         }
+        
+        public static bool operator +(Negocio unNegocio, Cliente unCliente)
+        {
+            bool result = false;
+
+            if (unCliente is not null && unNegocio is not null
+             && unNegocio.listaDeUsuarios.Contains(unCliente) == false)
+            {
+                unNegocio.listaDeUsuarios.Add(unCliente);
+                result = true;
+            }
+
+
+            return result;
+        }
+        /// <summary>
+        /// Elimina un Usuario de la lista de Usuario de Negocio 
+        /// </summary>
+        /// <param name="unNegocio"></param>
+        /// <param name="unUsuario"></param>
+        /// <returns>(false) en caso de que pudo Elimina el parametro,(false) de caso contrario</returns>
+        public static bool operator -(Negocio unNegocio, Cliente unCliente)
+        {
+            bool result = false;
+
+            if (unNegocio is not null && unNegocio.listaDeUsuarios.Contains(unCliente) == true)
+            {
+                unNegocio.listaDeUsuarios.Remove(unCliente);
+                result = true;
+            }
+
+
+            return result;
+        }
         /// <summary>
         /// Guarda dentro de la lista de Servicio de Negocio un Servicio
         /// </summary>

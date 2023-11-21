@@ -143,7 +143,7 @@ namespace Entidades
             }
         }
         [JsonIgnore]
-        public List<Servicio> Servicios { get => this.servicios; }
+        public List<Servicio> Servicios { get => this.servicios; set => this.servicios = value; }
         public int CantidadDeServicios { get => this.servicios.Count; }
  
     }

@@ -19,6 +19,7 @@ namespace FrmPreueba
         OpenFileDialog ofd;
         Cliente unaPersona;
         Usuario.Roles unRol;
+        Cliente ClienteModify;
         public event Action<Cliente> seIngesaronDatos;
         bool result;
         string path;
@@ -44,9 +45,9 @@ namespace FrmPreueba
                 seIngesaronDatos(unaPersona);
             }
         }
-        public FrmAltaDePersona(Usuario.Roles unRol, Cliente unaPersona) : this(unRol)
+        public FrmAltaDePersona(Usuario.Roles unRol, Cliente ClienteModify) : this(unRol)
         {
-            this.unaPersona = unaPersona;
+            this.ClienteModify = ClienteModify;
             SetPersona();
         }
         private void FrmAltaDeCliente_Load(object sender, EventArgs e)
@@ -55,44 +56,33 @@ namespace FrmPreueba
         }
         private void SetPersona()
         {
-            if (this.unaPersona is not null)
+            if (this.ClienteModify is not null)
             {
-                this.txtEmail.Text = this.unaPersona.Email;
-                this.txtNombre.Text = this.unaPersona.Nombre;
-                this.txtDni.Text = this.unaPersona.Dni;
-                this.path = this.unaPersona.Path;
+                this.txtEmail.Text = this.ClienteModify.Email;
+                this.txtNombre.Text = this.ClienteModify.Nombre;
+                this.txtDni.Text = this.ClienteModify.Dni;
+                this.path = this.ClienteModify.Path;
                 this.txtClave.Visible = false;
-                this.txtClave.Text = this.unaPersona.Clave;
-                this.DateFechaDeNacimiento.Value = this.unaPersona.FechaDeNacimiento;
+                this.txtClave.Text = this.ClienteModify.Clave;
+                this.DateFechaDeNacimiento.Value = this.ClienteModify.FechaDeNacimiento;
             }
-        }
-        private Usuario CrearUsuario()
-        {
-            Usuario unUsuario = new Cliente(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text, path); ;
-
-         /*   if (this.unRol == Usuario.Roles.Cliente)
-            {
-                unUsuario = new Cliente(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text, path);
-            }
-            else
-            {
-               *//* unUsuario = new Mecanico(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text);*//*
-            }*/
-
-            return unUsuario;
         }
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            result = FrmMenuPrincipal.ActivarControlError(lb_Fallas, "No se aceptan valores vacios", FrmMenuPrincipal.DetectarTextBoxVacio, this.Controls) == true 
-                &&  FrmMenuPrincipal.ActivarControlError(lb_Fallas,"el dni debe tener como min 6 y max 8 numeros", Cliente.ValidarDni, this.txtDni.Text)
+            result = FrmMenuPrincipal.ActivarControlError(lb_Fallas, "No se aceptan valores vacios", FrmMenuPrincipal.DetectarTextBoxVacio, this.Controls) == true
+                && FrmMenuPrincipal.ActivarControlError(lb_Fallas, "el dni debe tener como min 6 y max 8 numeros", Cliente.ValidarDni, this.txtDni.Text)
                 && FrmMenuPrincipal.ActivarControlError(lb_Fallas, "La fecha no es valida", Cliente.ValidarFechaDeNacimiento, this.DateFechaDeNacimiento.Value) == true
-                && FrmMenuPrincipal.ActivarControlError(lb_Fallas,"el Nombre Debe Contener solo letras", Cliente.ValidarNombre, this.txtNombre.Text) == true
-                && FrmMenuPrincipal.ActivarControlError(lb_Fallas,"el Email Debe tener como min 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text)
-                && FrmMenuPrincipal.ActivarControlError(lb_Fallas,"el Clave Debe tener como min 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
-            
+                && FrmMenuPrincipal.ActivarControlError(lb_Fallas, "el Nombre Debe Contener solo letras", Cliente.ValidarNombre, this.txtNombre.Text) == true
+                && FrmMenuPrincipal.ActivarControlError(lb_Fallas, "el Email Debe tener como min 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text)
+                && FrmMenuPrincipal.ActivarControlError(lb_Fallas, "el Clave Debe tener como min 8 caracteres", Cliente.ValidarContracenia, this.txtClave.Text);
+
             if (result == true)
             {
-                this.unaPersona = (Cliente)this.CrearUsuario();
+                this.unaPersona = new Cliente(this.txtNombre.Text, this.txtDni.Text, this.DateFechaDeNacimiento.Value, this.txtEmail.Text, this.txtClave.Text, path); ;
+                if (ClienteModify is not null)
+                {
+                    this.unaPersona.Servicios = ClienteModify.Servicios;
+                }
                 ManejadorSeIngesaronDatos(this.unaPersona);
                 this.DialogResult = DialogResult.OK;
             }
@@ -100,7 +90,7 @@ namespace FrmPreueba
 
         private void txtEmail_TextChanged(object sender, EventArgs e)
         {
-            result = FrmMenuPrincipal.ActivarControlError(lb_Fallas,"el Email Debe tener como min 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text);
+            result = FrmMenuPrincipal.ActivarControlError(lb_Fallas, "el Email Debe tener como min 8 caracteres", Cliente.ValidarEmail, this.txtEmail.Text);
         }
 
         private void btnImagen_Click(object sender, EventArgs e)

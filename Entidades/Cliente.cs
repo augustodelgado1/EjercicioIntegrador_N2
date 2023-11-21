@@ -28,6 +28,32 @@ namespace Entidades
             this.servicios = new List<Servicio>();
         }
 
+        public List<Servicio> BuscarServiciosDelCliente(List<Servicio> servicios)
+        {
+            List<Servicio> result = new List<Servicio>();
+            if (servicios is not null)
+            {
+                result = servicios.FindAll(unServicio => unServicio is not null && unServicio.UnCliente  is not null && unServicio.UnCliente.Equals(this));
+                CargarServicios(result);
+            }
+
+            return result;
+        }
+
+        private bool CargarServicios(List<Servicio> listaDeServicios)
+        {
+            bool result;
+            result = false;
+            if (listaDeServicios is not null)
+            {
+                foreach (Servicio unServicio in listaDeServicios)
+                {
+                    result = unServicio + this;
+                }
+            }
+
+            return result;
+        }
         public override bool Equals(object? obj)
         {
             return base.Equals(obj) && obj is Cliente unCliente

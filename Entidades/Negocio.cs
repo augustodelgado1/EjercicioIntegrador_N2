@@ -13,7 +13,6 @@ namespace Entidades
     {
         string nombre;
         private List<Usuario> listaDeUsuarios;
-        private List<Cliente> listaDeCliente;
         private List<Vehiculo> listaDeVehiculos;
         private List<Servicio> listaDeServicio;
 
@@ -21,7 +20,6 @@ namespace Entidades
         {
             this.nombre = nombre;
             listaDeServicio = new List<Servicio>();
-            listaDeCliente = new List<Cliente>();
             listaDeUsuarios = new List<Usuario>();
         }
         
@@ -29,9 +27,8 @@ namespace Entidades
         {
             this.listaDeUsuarios = listaDeUsuarios;
             this.listaDeServicio = servicios;
-            this.listaDeCliente = listaDeClientes;
             this.listaDeVehiculos = listaDeVehiculos;
-            this.listaDeUsuarios.AddRange(new List<Cliente>(this.listaDeCliente));
+            this.listaDeUsuarios.AddRange(new List<Cliente>(listaDeClientes));
         }
         /// <summary>
         /// Guarda dentro de la lista de Usuario de Negocio un Usuario, verificando si ese elemento no se encuntra en la lista
@@ -66,40 +63,6 @@ namespace Entidades
             if (unNegocio is not null && unNegocio.listaDeUsuarios.Contains(unUsuario) == true)
             {
                 unNegocio.listaDeUsuarios.Remove(unUsuario);
-                result = true;
-            }
-
-
-            return result;
-        }
-        
-        public static bool operator +(Negocio unNegocio, Cliente unCliente)
-        {
-            bool result = false;
-
-            if (unCliente is not null && unNegocio is not null
-             && unNegocio.listaDeUsuarios.Contains(unCliente) == false)
-            {
-                unNegocio.listaDeUsuarios.Add(unCliente);
-                result = true;
-            }
-
-
-            return result;
-        }
-        /// <summary>
-        /// Elimina un Usuario de la lista de Usuario de Negocio 
-        /// </summary>
-        /// <param name="unNegocio"></param>
-        /// <param name="unUsuario"></param>
-        /// <returns>(false) en caso de que pudo Elimina el parametro,(false) de caso contrario</returns>
-        public static bool operator -(Negocio unNegocio, Cliente unCliente)
-        {
-            bool result = false;
-
-            if (unNegocio is not null && unNegocio.listaDeUsuarios.Contains(unCliente) == true)
-            {
-                unNegocio.listaDeUsuarios.Remove(unCliente);
                 result = true;
             }
 
@@ -208,6 +171,20 @@ namespace Entidades
             }
 
             return unNegocio;
+        }
+
+        public void ActualizarClientes()
+        {
+            if(this.listaDeUsuarios is not null)
+            {
+                foreach (Usuario unUsuario in this.listaDeUsuarios)
+                {
+                    if(unUsuario is Cliente unClienete)
+                    {
+                        unClienete.BuscarServiciosDelCliente(this.listaDeServicio);
+                    }
+                }
+            }
         }
         public List<Servicio> ListaDeServicio { get => listaDeServicio; 
         }

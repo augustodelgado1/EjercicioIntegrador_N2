@@ -57,9 +57,11 @@ namespace TallerMecanico
 
         private void FrmMenuPrincipal_Load(object? sender, EventArgs e)
         {
+            unNegocio.ActualizarClientes();
             frmClientes = new FrmClientesList(unNegocio, unUsuario.Rol);
             AbrirPanel(frmClientes);
             this.panelContenedor.Tag = "Clientes";
+           
         }
         /// <summary>
         /// Informa que sucedio un error atraves de un MessageBox
@@ -136,6 +138,7 @@ namespace TallerMecanico
             {
                 if (unUsuario is Cliente unCliente)
                 {
+                    unCliente.BuscarServiciosDelCliente(unNegocio.ListaDeServicio);
                     frmSevicios = new FrmSevicios(unCliente.Servicios, unNegocio, unCliente);
                     this.AbrirPanel(frmSevicios);
                 }

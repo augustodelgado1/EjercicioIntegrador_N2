@@ -115,7 +115,6 @@ namespace Entidades.BaseDeDatos
 
                 using (SqlDataReader dataReader = comando.ExecuteReader())
                 {
-                    var a = dataReader.GetColumnSchema();
                     list = new List<Servicio>();
                     while (dataReader.Read())
                     {

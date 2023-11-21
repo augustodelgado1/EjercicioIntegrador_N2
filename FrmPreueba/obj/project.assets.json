@@ -493,9 +493,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\FrmPreueba.csproj",
-      "projectName": "FrmPreueba",
-      "projectPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\FrmPreueba.csproj",
+      "projectUniqueName": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\FrmView.csproj",
+      "projectName": "FrmView",
+      "projectPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\FrmView.csproj",
       "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\obj\\",
       "projectStyle": "PackageReference",

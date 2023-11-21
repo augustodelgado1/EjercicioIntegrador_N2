@@ -11,7 +11,7 @@ namespace Test
         /// <summary>
         /// Verifica en que caso el metodo ValidarPatente deberia Retornar false  
         /// </summary>
-        /// <param name="patente"></param>
+        /// <param name="patente">la patente del vehiculo</param>
         [TestMethod]
         [DataRow("Hjajaajajajja")]
         [DataRow(null)]
@@ -24,7 +24,7 @@ namespace Test
         /// <summary>
         /// Verifica en que caso el metodo ValidarPatente deberia Retornar True  
         /// </summary>
-        /// <param name="patente"></param>
+        /// <param name="patente">la patente del vehiculo</param>
         [TestMethod]
         [DataRow("6S525A")]
         [DataRow("6S5 25A")]

@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TallerMecanico;
-using static Entidades.Vehiculo;
 using Entidades.Extension;
 
 namespace FrmPreueba

@@ -43,7 +43,12 @@ namespace FrmPreueba
             base.Filtrar += FrmVehiculo_Filtrar;
             base.Buscador += FrmVehiculo_Buscador;
         }
-
+        /// <summary>
+        /// Busca que elementos coicide con la patente en la lista de vehiculos con el string pasado por parametro 
+        /// </summary>
+        /// <param name="patente">el nombre del los vehiculos que se quiere buscar</param>
+        /// <param name="vehiculos">la lista donde se va a buscar</param>
+        /// <returns>(List<Vehiculo>) con lso elementos que coincide,(null) en caso de que no sean valido el texto</returns>
         private List<Vehiculo> FrmVehiculo_Buscador(string patente, List<Vehiculo> vehiculos)
         {
             List<Vehiculo> result = default;
@@ -54,6 +59,12 @@ namespace FrmPreueba
             return result;
         }
 
+        /// <summary>
+        /// Busca que elementos de la lista concide con el texto pasado por parametro
+        /// </summary>
+        /// <param name="unaLista"></param>
+        /// <param name="criterio"></param>
+        /// <returns>la lista con los elemntos que concidecon el texto o (NULL) en caso de que no se valido el texto</returns>
         private List<Vehiculo> FrmVehiculo_Filtrar(List<Vehiculo> vehiculos, string criterio)
         {
             List<Vehiculo> result = default;
@@ -68,6 +79,11 @@ namespace FrmPreueba
         {
             throw new NotImplementedException();
         }
+        /// <summary>
+        /// indica que dato de que propiedades que se van a mostrar
+        /// </summary>
+        /// <param name="unaPrpiedad"></param>
+        /// <returns>(true) si cumple con el criterio ,(false) de caso contrario</returns>
         private bool unPropertyInfoPredicate(PropertyInfo unaPrpiedad)
         {
             return string.Compare(unaPrpiedad.Name, "Patente", true) == 0

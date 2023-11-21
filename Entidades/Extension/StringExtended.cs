@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Entidades.Extension
 {
+    /// <summary>
+    /// Esta clase extiende la clase string , agragandole funcionalidades que manejan los caracteres del string
+    /// </summary>
     public static class StringExtended
     {
         /// <summary>
@@ -35,7 +38,7 @@ namespace Entidades.Extension
         /// Verifica si el string cumple con el criterio pasado por parametro 
         /// </summary>
         /// <param name="texto"></param>
-        /// <param name="criterio"></param>
+        /// <param name="criterio">el criterio que va a cumplir</param>
         /// <returns>(true) si cumple con el criterio,(false) de caso contrario</returns>
         private static bool VerificarString(this string texto, Predicate<char> criterio)
         {

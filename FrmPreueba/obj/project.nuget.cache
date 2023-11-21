@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "prw6466WLr7fyguOLC+an1Fl21MkbmR8RGVww+vd8dUvCJFauBWBIbsk1vmW0Wzim0up84L9Yl3lDT1qVZPD3g==",
+  "dgSpecHash": "b+TenlHdhPCjBsIYrpSmjwRVec6PZe4vJKJ5/kWtiA8IydnuVKp/OywFz8kfzAv9nkrOqy50qDKhXXw7BGqRMw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\FrmPreueba.csproj",
+  "projectFilePath": "C:\\Users\\PC\\Desktop\\Mecanicos\\Delgado.Augusto.C.TPFinal\\FrmPreueba\\FrmView.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",

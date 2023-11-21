@@ -162,7 +162,7 @@ namespace FrmPreueba
             return estado;
         }
         /// <summary>
-        /// mindica que los datos de que propiedades que se van a mostrar
+        /// indica que dato de que propiedades que se van a mostrar
         /// </summary>
         /// <param name="unaPrpiedad"></param>
         /// <returns>(true) si cumple con el criterio ,(false) de caso contrario</returns>
@@ -177,7 +177,11 @@ namespace FrmPreueba
             
         }
 
-        
+        /// <summary>
+        /// Muestra un mensaje Donde le permite al usuario elegir entre si o no quire eliminar ese servicio seleccionado
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmMostrar_Shown(object? sender, EventArgs e)
         {
             if (sender is FrmMostrar<Servicio>)

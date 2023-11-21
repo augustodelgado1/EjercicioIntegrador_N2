@@ -28,7 +28,7 @@ namespace FrmPreueba
         private void FrmTareas_Load(object sender, EventArgs e)
         {
             base.Buscador += FrmTareas_Buscador;
-            base.Filtrar += FrmTareas_Filtrar;
+            base.cmbFilter.Visible = false;
             base.cmbFilter.DataSource = Enum.GetValues(typeof(Servicio.Diagnostico));
             base.btnAgregar.Visible = false;
             base.btnEliminar.Visible = false;
@@ -40,16 +40,12 @@ namespace FrmPreueba
             this.progressBar1.Size = base.txtBuscar.Size;
             this.btnCancelarServicio.Enabled = false;
         }
-        private List<Servicio> FrmTareas_Filtrar(List<Servicio> unaLista, string criterio)
-        {
-            List<Servicio> result = default;
-            if (string.IsNullOrWhiteSpace(criterio) == false && unaLista is not null)
-            {
-                result = unaLista.FindAll(unServicio => string.Compare(unServicio.Diagnistico.ToString(),criterio,true) == 0);
-            }
-            return result;
-        }
-
+        /// <summary>
+        /// Busca que elementos coicide con la patente en la lista de vehiculos con el string pasado por parametro 
+        /// </summary>
+        /// <param name="Patente">la patente del los vehiculos que se quiere buscar</param>
+        /// <param name="unaLista">la lista donde se va a buscar</param>
+        /// <returns>(List<Vehiculo>) con lso elementos que coincide,(null) en caso de que no sean valido el texto</returns>
         private List<Servicio> FrmTareas_Buscador(string Patente, List<Servicio> unaLista)
         {
             List<Servicio> result = default;

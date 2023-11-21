@@ -29,7 +29,8 @@ namespace FrmPreueba
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             respuesta = FrmMenuPrincipal.ActivarControlError(lblError, "No se aceptan valores vacios", FrmMenuPrincipal.DetectarTextBoxVacio, this.Controls) &&
-            FrmMenuPrincipal.ActivarControlError<string>(lblError, "la cotizacion debe ser un valor numerico", unTexto => int.TryParse(unTexto, out cotizacion) == true && cotizacion > 0, txtCotizacion.Text);
+            FrmMenuPrincipal.ActivarControlError<string>(lblError, "la cotizacion debe ser un valor numerico", unTexto => int.TryParse(unTexto, out cotizacion) == true 
+            && cotizacion > 0, txtCotizacion.Text);
 
             if (unServicio is not null && respuesta == true &&
               cmbDignosticar.SelectedItem is Servicio.Diagnostico unDiagnostico)
